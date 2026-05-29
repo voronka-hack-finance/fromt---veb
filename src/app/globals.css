@@ -37,6 +37,7 @@ body {
   background: #e1e1e1;
   color: var(--foreground);
   font-family: var(--font-body), sans-serif;
+  overflow-x: hidden;
 }
 
 a {
@@ -77,4 +78,16 @@ svg {
 
 main {
   display: block;
+}
+
+@media (max-width: 360px) {
+  :root {
+    --mobile-nav-offset: 104px;
+  }
+}
+
+@media (max-width: 340px) {
+  :root {
+    --mobile-nav-offset: 96px;
+  }
 }

@@ -228,3 +228,45 @@
     padding-inline: 12px;
   }
 }
+
+@media (max-width: 360px) {
+  .phoneFrame {
+    padding: 52px 12px var(--mobile-nav-offset);
+  }
+
+  .sections {
+    gap: 18px;
+  }
+
+  .metricsGrid {
+    gap: 6px;
+  }
+
+  .statCard {
+    gap: 18px;
+    min-height: 204px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 340px) {
+  .phoneFrame {
+    padding-inline: 10px;
+  }
+
+  .sections {
+    gap: 16px;
+  }
+
+  .metricsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .gridSpanWide {
+    grid-column: auto;
+  }
+
+  .statCard {
+    min-height: 0;
+  }
+}

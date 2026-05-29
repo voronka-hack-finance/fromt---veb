@@ -484,3 +484,80 @@
   font-size: 18px;
   letter-spacing: -0.05em;
 }
+
+@media (max-width: 360px) {
+  .shell {
+    padding-inline: 12px;
+  }
+
+  .header {
+    gap: 12px;
+    padding-top: 16px;
+  }
+
+  .backButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .amount {
+    font-size: 30px;
+  }
+
+  .reserveTop,
+  .reserveBottom {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .reserveBottom {
+    flex-wrap: wrap;
+  }
+
+  .reserveBadge {
+    min-height: 36px;
+    padding-inline: 14px;
+  }
+
+  .scenarioViewport {
+    margin: 0 -12px;
+    padding-inline: calc(50% - 84px);
+    scroll-padding-inline: calc(50% - 84px);
+  }
+
+  .scenarioRail {
+    grid-template-columns: repeat(3, 168px);
+  }
+
+  .scenarioCard {
+    width: 168px;
+  }
+}
+
+@media (max-width: 340px) {
+  .shell {
+    padding-inline: 10px;
+  }
+
+  .reserveTop {
+    flex-direction: column;
+  }
+
+  .scenarioViewport {
+    margin: 0 -10px;
+    padding-inline: calc(50% - 78px);
+    scroll-padding-inline: calc(50% - 78px);
+  }
+
+  .scenarioRail {
+    grid-template-columns: repeat(3, 156px);
+  }
+
+  .scenarioCard {
+    width: 156px;
+  }
+}

@@ -212,14 +212,56 @@
 
 @media (max-width: 360px) {
   .content {
-    max-width: 52%;
+    gap: 22px;
+    max-width: 50%;
   }
 
   .scoreValue {
     font-size: 56px;
   }
 
+  .scorePercent {
+    font-size: 14px;
+    letter-spacing: -0.12em;
+    margin-bottom: 4px;
+  }
+
   .chartArea {
-    width: 48%;
+    right: 12px;
+    top: 56px;
+    width: 47%;
+  }
+}
+
+@media (max-width: 340px) {
+  .card {
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .content {
+    gap: 16px;
+    max-width: 100%;
+  }
+
+  .headerRow {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .title {
+    white-space: normal;
+  }
+
+  .scoreValue {
+    font-size: 48px;
+  }
+
+  .chartArea {
+    height: 112px;
+    position: relative;
+    right: auto;
+    top: auto;
+    width: 100%;
   }
 }

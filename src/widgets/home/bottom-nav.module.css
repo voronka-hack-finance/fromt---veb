@@ -21,6 +21,7 @@
 .navPill {
   align-items: center;
   background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(14px);
   border: 1px solid rgba(58, 58, 58, 0.25);
   border-radius: 81px;
   box-sizing: border-box;
@@ -39,15 +40,24 @@
   color: inherit;
   display: inline-flex;
   flex-shrink: 0;
+  height: 56px;
   justify-content: center;
   overflow: hidden;
   padding: 16px;
   text-decoration: none;
-  transition: background-color 180ms ease;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+  width: 56px;
 }
 
 .navItemActive {
   background: rgba(0, 0, 0, 0.5);
+}
+
+.navItem:hover,
+.navItem:focus-visible {
+  transform: translateY(-1px);
 }
 
 .navItem:focus-visible {
@@ -80,4 +90,32 @@
   position: absolute;
   transform: translateX(-50%);
   width: 134px;
+}
+
+@media (max-width: 360px) {
+  .navPill {
+    height: 60px;
+    width: 220px;
+  }
+
+  .navItem {
+    height: 52px;
+    padding: 14px;
+    width: 52px;
+  }
+
+  .navIcon {
+    height: 22px;
+    width: 22px;
+  }
+}
+
+@media (max-width: 340px) {
+  .navPill {
+    width: 208px;
+  }
+
+  .homeIndicatorArea {
+    height: 28px;
+  }
 }

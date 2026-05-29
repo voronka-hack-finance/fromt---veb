@@ -25,6 +25,11 @@ export {
   type InvestmentsBalanceResponse,
 } from "./investments-balance";
 export {
+  fetchSubscriptions,
+  useSubscriptionsQuery,
+  type SubscriptionsResponse,
+} from "./subscriptions";
+export {
   fetchOperationsBars,
   fetchOperationsScreen,
   fetchOperationsTrends,

@@ -117,12 +117,45 @@
 }
 
 @media (max-width: 360px) {
+  .card {
+    min-height: 144px;
+    padding: 14px;
+  }
+
   .orbWrap {
-    left: 120px;
-    width: 240px;
+    left: 110px;
+    top: -18px;
+    width: 220px;
+  }
+
+  .title {
+    white-space: normal;
   }
 
   .text {
+    font-size: 13px;
     max-width: 62%;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 340px) {
+  .orbWrap {
+    left: 104px;
+    width: 196px;
+  }
+
+  .content {
+    gap: 10px;
+  }
+
+  .text {
+    font-size: 12px;
+    max-width: 58%;
+  }
+
+  .cta {
+    font-size: 11px;
+    padding: 7px 8px;
   }
 }

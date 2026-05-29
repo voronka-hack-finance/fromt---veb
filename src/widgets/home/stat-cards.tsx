@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpRight, TrendingUp } from "lucide-react";
 
@@ -47,7 +48,12 @@ export function IncomeStatCard() {
           <div className={styles.mutedOnGreen}>Остаток от доходов</div>
           <div className={styles.bigValue}>+ {incomeRemainderParts.whole} ₽</div>
           <div className={styles.progressTrack}>
-            <div className={styles.progressFill} style={{ width: `${incomeProgressPercent}%` }} />
+            <motion.div
+              animate={{ width: `${incomeProgressPercent}%` }}
+              className={styles.progressFill}
+              initial={{ width: 0 }}
+              transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+            />
           </div>
           <div className={styles.level}>Мастер</div>
         </div>

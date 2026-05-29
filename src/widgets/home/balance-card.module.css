@@ -203,14 +203,56 @@
 }
 
 @media (max-width: 360px) {
+  .topRow {
+    gap: 14px;
+    padding-inline: 6px;
+  }
+
+  .walletButton,
+  .actionButton {
+    height: 48px;
+    padding: 12px;
+    width: 48px;
+  }
+
   .amountRow,
   .amountButton {
-    font-size: 32px;
-    letter-spacing: -1.28px;
-    line-height: 40px;
+    font-size: clamp(28px, 8.8vw, 32px);
+    letter-spacing: -0.04em;
+    line-height: 1.15;
+    padding-inline: 12px;
   }
 
   .title {
     font-size: 18px;
+    white-space: normal;
+  }
+
+  .bankSection {
+    padding: 0 16px 16px;
+  }
+
+  .bankSectionTitle {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 340px) {
+  .topRow {
+    align-items: flex-start;
+  }
+
+  .titleRow {
+    gap: 8px;
+  }
+
+  .amountRow,
+  .amountButton {
+    font-size: 26px;
+    white-space: normal;
+  }
+
+  .bankChipText {
+    white-space: normal;
   }
 }

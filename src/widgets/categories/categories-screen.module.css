@@ -305,3 +305,64 @@
     width: 250px;
   }
 }
+
+@media (max-width: 360px) {
+  .shell {
+    padding: 52px 12px var(--mobile-nav-offset);
+  }
+
+  .promoCard {
+    min-height: 156px;
+    padding: 16px 16px 14px 14px;
+  }
+
+  .promoBody {
+    gap: 10px;
+    max-width: 158px;
+  }
+
+  .promoImageWrap {
+    left: 122px;
+    top: -24px;
+    width: 228px;
+  }
+
+  .grid {
+    gap: 8px;
+  }
+
+  .categoryCard {
+    height: 150px;
+  }
+}
+
+@media (max-width: 340px) {
+  .shell {
+    padding-inline: 10px;
+  }
+
+  .promoCard {
+    min-height: 0;
+  }
+
+  .promoBody {
+    max-width: 148px;
+  }
+
+  .promoImageWrap {
+    left: 114px;
+    top: -16px;
+    width: 206px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    max-width: none;
+  }
+
+  .amountRow {
+    flex-wrap: wrap;
+    top: 96px;
+    white-space: normal;
+  }
+}

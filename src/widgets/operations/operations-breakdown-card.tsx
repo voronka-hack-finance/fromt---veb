@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowUpDown, BarChart3, ChevronLeft, ChevronRight, PieChart } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
@@ -174,40 +175,54 @@ function OperationsBreakdownCardContent({
                   const isActive = activeBreakdownId === id;
 
                   return (
-                    <button
+                    <motion.button
                       aria-label={`${breakdown.find((item) => item.id === id)?.label ?? id}`}
+                      animate={{
+                        opacity: isActive ? 1 : activeBreakdownId ? 0.42 : 1,
+                        scale: isActive ? 1.02 : 1,
+                      }}
                       className={cn(styles.arcSegment, arcClass[id])}
+                      initial={{ opacity: 0, scale: 0.92 }}
                       key={id}
                       onClick={() => selectBreakdown(id)}
-                      style={{ opacity: isActive ? 1 : activeBreakdownId ? 0.42 : 1 }}
+                      transition={{ duration: 0.35, delay: id === "transfers" ? 0.04 : id === "hotels" ? 0.09 : 0.14 }}
                       type="button"
                     >
                       <img alt="" className={styles.arcImage} src={ARC_SRC[id]} />
-                    </button>
+                    </motion.button>
                   );
                 })}
               </div>
 
-              <div className={styles.gaugeCenter}>
+              <motion.div
+                animate={{ opacity: 1, scale: 1 }}
+                className={styles.gaugeCenter}
+                initial={{ opacity: 0, scale: 0.92 }}
+                key={`${activePeriod}-${navigatorIndex}-${totalAmount}`}
+                transition={{ duration: 0.28 }}
+              >
                 <span>Всего</span>
                 <strong>{formatCurrencyParts(totalAmount).whole} ₽</strong>
-              </div>
+              </motion.div>
 
               {breakdown.map((item) => {
                 const isActive = activeBreakdownId === item.id;
                 const positionClass = bubbleClass[item.id as keyof typeof bubbleClass];
 
                 return (
-                  <button
+                  <motion.button
                     aria-label={`${item.label}: ${item.percent}%`}
                     aria-pressed={isActive}
+                    animate={{ opacity: 1, scale: isActive ? 1.08 : 1 }}
                     className={cn(styles.percentBubble, positionClass, isActive && styles.percentBubbleActive)}
+                    initial={{ opacity: 0, scale: 0.6 }}
                     key={item.id}
                     onClick={() => selectBreakdown(item.id)}
+                    transition={{ duration: 0.28, delay: item.id === "transfers" ? 0.18 : item.id === "hotels" ? 0.24 : 0.3 }}
                     type="button"
                   >
                     {item.percent}%
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>
@@ -220,14 +235,17 @@ function OperationsBreakdownCardContent({
                 const isActive = activeBreakdownId === item.id;
 
                 return (
-                  <button
+                  <motion.button
+                    animate={{ opacity: 1, y: 0 }}
                     className={cn(
                       styles.legendItem,
                       id === "hotels" && styles.legendItemWide,
                       isActive && styles.legendItemActive,
                     )}
+                    initial={{ opacity: 0, y: 10 }}
                     key={item.id}
                     onClick={() => selectBreakdown(item.id)}
+                    transition={{ duration: 0.28, delay: id === "transfers" ? 0.1 : id === "hotels" ? 0.16 : 0.22 }}
                     type="button"
                   >
                     <span className={cn(styles.legendContent, id === "hotels" && styles.legendContentWide)}>
@@ -237,7 +255,7 @@ function OperationsBreakdownCardContent({
                       </span>
                       <strong>{item.percent}%</strong>
                     </span>
-                  </button>
+                  </motion.button>
                 );
               })}
             </div>

@@ -129,3 +129,39 @@
 .investmentCard {
   background: #fff;
 }
+
+@media (max-width: 360px) {
+  .card {
+    gap: 18px;
+    min-height: 204px;
+    padding: 16px;
+  }
+
+  .trend {
+    font-size: 20px;
+  }
+
+  .bigValue {
+    font-size: 18px;
+  }
+
+  .muted {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 340px) {
+  .card {
+    min-height: 0;
+    padding: 14px;
+  }
+
+  .trend {
+    font-size: 18px;
+  }
+
+  .positivePill,
+  .detailButton {
+    font-size: 11px;
+  }
+}

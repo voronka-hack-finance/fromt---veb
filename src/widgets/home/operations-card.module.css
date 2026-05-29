@@ -235,3 +235,30 @@
     font-size: 14px;
   }
 }
+
+@media (max-width: 340px) {
+  .card {
+    gap: 24px;
+    padding: 14px;
+  }
+
+  .header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .title {
+    white-space: normal;
+  }
+
+  .summary {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .incomeColumn,
+  .expenseColumn {
+    width: 100%;
+  }
+}

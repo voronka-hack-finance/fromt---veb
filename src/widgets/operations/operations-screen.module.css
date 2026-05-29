@@ -506,3 +506,90 @@
 .amountIncome {
   color: #40a93d;
 }
+
+@media (max-width: 360px) {
+  .shell {
+    padding-inline: 12px;
+  }
+
+  .headerLeft {
+    gap: 10px;
+  }
+
+  .headerActions {
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .iconButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .cardTop {
+    gap: 10px;
+  }
+
+  .periodButton {
+    min-width: 64px;
+  }
+
+  .monthSwitcher {
+    gap: 18px;
+    margin-top: 18px;
+  }
+
+  .legendItem {
+    font-size: 14px;
+    min-height: 36px;
+    padding-inline: 10px;
+  }
+}
+
+@media (max-width: 340px) {
+  .shell {
+    padding-inline: 10px;
+  }
+
+  .header {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .headerActions {
+    gap: 10px;
+    padding: 10px 12px;
+  }
+
+  .cardTop {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .periodToggle,
+  .viewControls {
+    width: 100%;
+  }
+
+  .viewControls {
+    justify-content: flex-end;
+  }
+
+  .legendItem {
+    flex-basis: 100%;
+  }
+
+  .yesterdayHeader {
+    gap: 8px;
+    padding-inline: 4px;
+  }
+
+  .headerDivider {
+    flex: 1;
+    width: auto;
+  }
+}

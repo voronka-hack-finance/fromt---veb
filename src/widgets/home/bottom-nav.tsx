@@ -12,7 +12,8 @@ const navItems = [
     id: "home",
     href: "/",
     label: "Главная",
-    icon: "/dashboard/nav/home-active.svg",
+    icon: "/dashboard/nav/home-inactive.svg",
+    iconActive: "/dashboard/nav/home-active.svg",
     iconInactive: "/dashboard/nav/home-inactive.svg",
     match: (path: string) => path === "/",
   },
@@ -48,9 +49,11 @@ export function BottomNav() {
         {navItems.map((item) => {
           const isActive = item.match(pathname);
           const iconSrc =
-            item.id === "home" && !isActive && "iconInactive" in item
-              ? item.iconInactive
-              : item.icon;
+            isActive && "iconActive" in item
+              ? item.iconActive
+              : "iconInactive" in item && !isActive
+                ? item.iconInactive
+                : item.icon;
 
           return (
             <Link
@@ -65,7 +68,7 @@ export function BottomNav() {
                 aria-hidden
                 className={cn(
                   styles.navIcon,
-                  isActive && item.id !== "home" && styles.navIconActive,
+                  isActive && !("iconActive" in item) && styles.navIconActive,
                 )}
                 draggable={false}
                 src={iconSrc}

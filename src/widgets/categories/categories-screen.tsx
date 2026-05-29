@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { motion } from "framer-motion";
 
 import { useCategoriesQuery, type CategoriesResponse } from "@/shared/api/categories";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
@@ -110,23 +110,21 @@ function CategoriesScreenContent({ data }: { data: CategoriesResponse }) {
                   </div>
 
                   <div className={[styles.progressTrack, dark ? styles.progressTrackDark : ""].join(" ")}>
-                    <div
+                    <motion.div
+                      animate={{ width: `${category.progress * 100}%` }}
                       className={[
                         styles.progressValue,
                         dark ? styles.progressValueLight : "",
                         darkBar ? styles.progressValueDark : "",
                       ].join(" ")}
-                      style={{ width: `${category.progress * 100}%` }}
+                      initial={{ width: 0 }}
+                      transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
                     />
                   </div>
                 </button>
               );
             })}
           </div>
-
-          <Link className={styles.goalsLink} href="/goals">
-            Мои цели
-          </Link>
         </div>
       </div>
     </main>

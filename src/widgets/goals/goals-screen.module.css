@@ -345,3 +345,69 @@
   border-radius: 6px 0 0 6px;
   height: 100%;
 }
+
+@media (max-width: 360px) {
+  .shell {
+    padding: 52px 12px var(--mobile-nav-offset);
+  }
+
+  .header {
+    gap: 10px;
+    grid-template-columns: 44px 1fr 44px;
+    margin-bottom: 24px;
+  }
+
+  .iconButton,
+  .avatar {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .content,
+  .goalsList {
+    gap: 18px;
+  }
+
+  .createCard {
+    padding: 16px 16px 14px 14px;
+  }
+
+  .createIllustrationWrap {
+    right: -96px;
+    top: -48px;
+  }
+
+  .goalCard {
+    gap: 28px;
+  }
+}
+
+@media (max-width: 340px) {
+  .shell {
+    padding-inline: 10px;
+  }
+
+  .createCardBody {
+    max-width: 148px;
+  }
+
+  .createIllustrationWrap {
+    right: -116px;
+    top: -36px;
+  }
+
+  .goalCardTop {
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .goalCardTitleRow,
+  .accountChip,
+  .accountText {
+    flex-wrap: wrap;
+  }
+}

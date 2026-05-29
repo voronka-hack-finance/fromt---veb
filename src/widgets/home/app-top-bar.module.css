@@ -64,3 +64,30 @@
 .titleLowercase {
   text-transform: lowercase;
 }
+
+@media (max-width: 360px) {
+  .header {
+    gap: 10px;
+    grid-template-columns: 44px 1fr 44px;
+    margin-bottom: 20px;
+  }
+
+  .iconButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 340px) {
+  .header {
+    gap: 8px;
+  }
+
+  .title {
+    font-size: 17px;
+  }
+}

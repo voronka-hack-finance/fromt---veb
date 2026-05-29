@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -86,7 +87,13 @@ export function OperationsCard() {
 
           <div className={styles.barRow}>
             <span className={styles.barDivider} />
-            <span className={styles.incomeBar} />
+            <motion.span
+              animate={{ scaleX: 1 }}
+              className={styles.incomeBar}
+              initial={{ scaleX: 0 }}
+              style={{ transformOrigin: "left center" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            />
           </div>
         </button>
 
@@ -109,7 +116,13 @@ export function OperationsCard() {
 
           <div className={styles.barRow}>
             <span className={styles.barDividerOverlap} />
-            <span className={styles.expenseBar} />
+            <motion.span
+              animate={{ scaleX: 1 }}
+              className={styles.expenseBar}
+              initial={{ scaleX: 0 }}
+              style={{ transformOrigin: "left center" }}
+              transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            />
           </div>
         </button>
       </div>

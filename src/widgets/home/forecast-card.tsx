@@ -1,5 +1,6 @@
 "use client";
 
+import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 
 import { useDashboardData } from "@/shared/api/dashboard-context";
@@ -109,8 +110,22 @@ export function ForecastCard() {
             );
           })}
 
-          <path className={styles.chartLineIncome} d={incomePaths.linePath} />
-          <path className={styles.chartLineExpense} d={expensePaths.linePath} />
+          <motion.path
+            animate={{ opacity: 1, pathLength: 1 }}
+            className={styles.chartLineIncome}
+            d={incomePaths.linePath}
+            initial={{ opacity: 0.2, pathLength: 0 }}
+            key={`income-${period}`}
+            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <motion.path
+            animate={{ opacity: 1, pathLength: 1 }}
+            className={styles.chartLineExpense}
+            d={expensePaths.linePath}
+            initial={{ opacity: 0.2, pathLength: 0 }}
+            key={`expense-${period}`}
+            transition={{ duration: 0.95, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          />
 
           {incomePaths.coordinates.map((point, index) => {
             const isActive = index === activeIndex;
@@ -124,11 +139,13 @@ export function ForecastCard() {
                   onClick={() => setActiveIndex(index)}
                   r={12}
                 />
-                <circle
+                <motion.circle
                   className={cn(styles.chartPoint, isActive && styles.chartPointActive)}
                   cx={point.x}
                   cy={point.y}
-                  r={isActive ? 4.5 : 3}
+                  animate={{ opacity: 1, r: isActive ? 4.5 : 3, scale: 1 }}
+                  initial={{ opacity: 0, r: 0, scale: 0.5 }}
+                  transition={{ duration: 0.3, delay: index * 0.04 }}
                 />
               </g>
             );
@@ -136,10 +153,16 @@ export function ForecastCard() {
 
           {activePoint && activeCoordinate ? (
             <foreignObject height="40" width="72" x={activeCoordinate.x - 36} y={activeCoordinate.y - 48}>
-              <div className={styles.chartTooltip}>
+              <motion.div
+                animate={{ opacity: 1, y: 0 }}
+                className={styles.chartTooltip}
+                initial={{ opacity: 0, y: 6 }}
+                key={`${period}-${activePoint.month}`}
+                transition={{ duration: 0.2 }}
+              >
                 <span>{formatCurrencyParts(activePoint.balance).whole.replace(/\s/g, " ")}</span>
                 <span>Баланс</span>
-              </div>
+              </motion.div>
             </foreignObject>
           ) : null}
         </svg>

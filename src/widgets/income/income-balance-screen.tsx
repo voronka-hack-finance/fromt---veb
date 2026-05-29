@@ -3,13 +3,15 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, CircleDollarSign, Info, SlidersHorizontal } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { incomeBalanceScreenData } from "@/shared/data/income-balance";
+import { useIncomeBalanceQuery, type IncomeBalanceResponse } from "@/shared/api/income-balance";
 import { buildLineChartPaths } from "@/shared/lib/charts";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { useCenteredHorizontalScroll } from "@/shared/lib/use-centered-horizontal-scroll";
+import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./income-balance-screen.module.css";
@@ -17,13 +19,6 @@ import styles from "./income-balance-screen.module.css";
 const chartWidth = 328;
 const chartHeight = 128;
 const chartPadding = 12;
-const trendPath = buildLineChartPaths(
-  incomeBalanceScreenData.trend.map((point) => ({ value: point.value })),
-  chartWidth,
-  chartHeight,
-  chartPadding,
-);
-const { whole, fraction } = formatCurrencyParts(incomeBalanceScreenData.amount);
 
 function ScenarioCard({
   isActive,
@@ -33,7 +28,7 @@ function ScenarioCard({
   tone,
   totalIncome,
   onSelect,
-}: (typeof incomeBalanceScreenData.scenarios)[number] & {
+}: IncomeBalanceResponse["scenarios"][number] & {
   isActive: boolean;
   onSelect: () => void;
 }) {
@@ -61,13 +56,31 @@ function ScenarioCard({
 }
 
 export function IncomeBalanceScreen() {
+  const query = useIncomeBalanceQuery();
+
+  return (
+    <QueryBoundary loadingLabel="Загрузка доходов..." query={query}>
+      {(screenData) => <IncomeBalanceScreenContent screenData={screenData} />}
+    </QueryBoundary>
+  );
+}
+
+function IncomeBalanceScreenContent({ screenData }: { screenData: IncomeBalanceResponse }) {
+  const router = useRouter();
+  const trendPath = buildLineChartPaths(
+    screenData.trend.map((point) => ({ value: point.value })),
+    chartWidth,
+    chartHeight,
+    chartPadding,
+  );
+  const { whole, fraction } = formatCurrencyParts(screenData.amount);
   const { viewportRef: scenarioViewportRef, activeIndex, scrollToIndex } =
     useCenteredHorizontalScroll<HTMLDivElement>();
   const [activeChartIndex, setActiveChartIndex] = useState(3);
-  const [activeFilterId, setActiveFilterId] = useState(incomeBalanceScreenData.filters[0]?.id ?? "all");
-  const scenarioCount = incomeBalanceScreenData.scenarios.length;
+  const [activeFilterId, setActiveFilterId] = useState(screenData.filters[0]?.id ?? "all");
+  const scenarioCount = screenData.scenarios.length;
   const sliderHandlePosition = scenarioCount > 1 ? (activeIndex / (scenarioCount - 1)) * 100 : 50;
-  const activeTrendPoint = incomeBalanceScreenData.trend[activeChartIndex];
+  const activeTrendPoint = screenData.trend[activeChartIndex];
   const activeCoordinate = trendPath.coordinates[activeChartIndex];
 
   return (
@@ -78,24 +91,30 @@ export function IncomeBalanceScreen() {
             <Link aria-label="Назад" className={styles.backButton} href="/">
               <ArrowLeft size={22} strokeWidth={2} />
             </Link>
-            <h1 className={styles.title}>{incomeBalanceScreenData.title}</h1>
+            <button
+              className={styles.title}
+              onClick={() => router.push("/total")}
+              type="button"
+            >
+              {screenData.title}
+            </button>
           </header>
         </Reveal>
 
         <div className={styles.content}>
           <Reveal delay={0.08}>
             <section className={styles.balanceCard}>
-              <div className={styles.amount}>
+              <button className={styles.amount} onClick={() => router.push("/total")} type="button">
                 <span>{whole}</span>
                 <span className={styles.amountFraction}>, {fraction} ₽</span>
-              </div>
-              <p className={styles.subtitle}>{incomeBalanceScreenData.subtitle}</p>
+              </button>
+              <p className={styles.subtitle}>{screenData.subtitle}</p>
 
               <div className={styles.filterRow}>
                 <button aria-label="Фильтры" className={styles.filterButton} type="button">
                   <SlidersHorizontal size={18} strokeWidth={2} />
                 </button>
-                {incomeBalanceScreenData.filters.map((filter) => (
+                {screenData.filters.map((filter) => (
                   <button
                     className={cn(styles.valueChip, activeFilterId === filter.id && styles.valueChipActive)}
                     key={filter.id}
@@ -197,7 +216,7 @@ export function IncomeBalanceScreen() {
                 </svg>
 
                 <div className={styles.monthRow}>
-                  {incomeBalanceScreenData.trend.map((point) => (
+                  {screenData.trend.map((point) => (
                     <span key={point.month}>{point.month}</span>
                   ))}
                 </div>
@@ -210,16 +229,16 @@ export function IncomeBalanceScreen() {
               <div className={styles.summaryTop}>
                 <div className={styles.summaryHeadline}>
                   <span>Осталось</span>
-                  <strong>{incomeBalanceScreenData.summary.remainPercent}% дохода</strong>
+                  <strong>{screenData.summary.remainPercent}% дохода</strong>
                 </div>
                 <Info size={21} strokeWidth={2} />
               </div>
               <div className={styles.summaryBottom}>
                 <div className={styles.summaryValueGroup}>
                   <span>Потратили</span>
-                  <strong>{formatCurrencyParts(incomeBalanceScreenData.summary.spentAmount).whole} ₽</strong>
+                  <strong>{formatCurrencyParts(screenData.summary.spentAmount).whole} ₽</strong>
                 </div>
-                <div className={styles.summaryBadge}>{incomeBalanceScreenData.summary.badge}</div>
+                <div className={styles.summaryBadge}>{screenData.summary.badge}</div>
               </div>
             </button>
           </Reveal>
@@ -253,7 +272,7 @@ export function IncomeBalanceScreen() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {incomeBalanceScreenData.scenarios.map((scenario, index) => {
+                  {screenData.scenarios.map((scenario, index) => {
                     const isActive = index === activeIndex;
 
                     return (

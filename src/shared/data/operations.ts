@@ -5,6 +5,20 @@ export const operationsScreenData = {
   monthLabel: "Июнь",
   monthLabels: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь"] as const,
   defaultMonthIndex: 2,
+  periodNavigator: {
+    Нед: {
+      labels: ["10–16 мар", "17–23 мар", "24–30 мар"] as const,
+      defaultIndex: 1,
+    },
+    Мес: {
+      labels: ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь"] as const,
+      defaultIndex: 2,
+    },
+    Год: {
+      labels: ["2023", "2024", "2025"] as const,
+      defaultIndex: 1,
+    },
+  },
   totalAmount: 23456,
   breakdown: [
     { id: "transfers", label: "Переводы", percent: 50, color: "#4dbc47" },

@@ -3,20 +3,20 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { investmentsBalanceScreenData } from "@/shared/data/investments-balance";
+import { useInvestmentsBalanceQuery, type InvestmentsBalanceResponse } from "@/shared/api/investments-balance";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { useCenteredHorizontalScroll } from "@/shared/lib/use-centered-horizontal-scroll";
+import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./investments-balance-screen.module.css";
 
 const CHART_TRACK_HEIGHT = 128;
 const CHART_MAX_VALUE = 144;
-
-const { whole, fraction } = formatCurrencyParts(investmentsBalanceScreenData.amount);
 
 function ScenarioCard({
   isActive,
@@ -27,7 +27,7 @@ function ScenarioCard({
   tone,
   totalIncome,
   onSelect,
-}: (typeof investmentsBalanceScreenData.scenarios)[number] & {
+}: InvestmentsBalanceResponse["scenarios"][number] & {
   isActive: boolean;
   onSelect: () => void;
 }) {
@@ -70,16 +70,27 @@ function ScenarioCard({
 }
 
 export function InvestmentsBalanceScreen() {
+  const query = useInvestmentsBalanceQuery();
+
+  return (
+    <QueryBoundary loadingLabel="Загрузка инвестиций..." query={query}>
+      {(screenData) => <InvestmentsBalanceScreenContent screenData={screenData} />}
+    </QueryBoundary>
+  );
+}
+
+function InvestmentsBalanceScreenContent({ screenData }: { screenData: InvestmentsBalanceResponse }) {
+  const router = useRouter();
+  const { whole, fraction } = formatCurrencyParts(screenData.amount);
   const { viewportRef: scenarioViewportRef, activeIndex, scrollToIndex } =
     useCenteredHorizontalScroll<HTMLDivElement>();
-  const defaultColumnIndex = investmentsBalanceScreenData.chart.findIndex(
+  const defaultColumnIndex = screenData.chart.findIndex(
     (item) => "labelValue" in item && item.labelValue !== undefined,
   );
   const [activeColumnIndex, setActiveColumnIndex] = useState(
     defaultColumnIndex >= 0 ? defaultColumnIndex : 0,
   );
-  const scenarioCount = investmentsBalanceScreenData.scenarios.length;
-  const sliderHandlePosition = scenarioCount > 1 ? (activeIndex / (scenarioCount - 1)) * 100 : 50;
+  const scenarioCount = screenData.scenarios.length;
 
   return (
     <main className={styles.stage}>
@@ -89,7 +100,7 @@ export function InvestmentsBalanceScreen() {
             <Link aria-label="Назад" className={styles.backButton} href="/">
               <ArrowLeft size={22} strokeWidth={2} />
             </Link>
-            <h1 className={styles.title}>{investmentsBalanceScreenData.title}</h1>
+            <h1 className={styles.title}>{screenData.title}</h1>
           </header>
         </Reveal>
 
@@ -101,7 +112,7 @@ export function InvestmentsBalanceScreen() {
               </div>
 
               <div className={styles.columns}>
-                {investmentsBalanceScreenData.chart.map((item, index) => {
+                {screenData.chart.map((item, index) => {
                   const isActive = index === activeColumnIndex;
                   const activeLabel =
                     isActive && "labelValue" in item && item.labelValue !== undefined
@@ -156,12 +167,12 @@ export function InvestmentsBalanceScreen() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <button className={styles.summaryCard} type="button">
+            <button className={styles.summaryCard} onClick={() => router.push("/income")} type="button">
               <div className={styles.summaryTop}>
                 <div className={styles.summaryHeadline}>
                   <span>Осталось</span>
                   <span className={styles.summaryPercentPill}>
-                    {investmentsBalanceScreenData.summary.remainPercent} % дохода
+                    {screenData.summary.remainPercent} % дохода
                   </span>
                 </div>
                 <Info size={21} strokeWidth={2} />
@@ -169,9 +180,9 @@ export function InvestmentsBalanceScreen() {
               <div className={styles.summaryBottom}>
                 <div className={styles.summaryValueGroup}>
                   <span>Потратили</span>
-                  <strong>{formatCurrencyParts(investmentsBalanceScreenData.summary.spentAmount).whole} ₽</strong>
+                  <strong>{formatCurrencyParts(screenData.summary.spentAmount).whole} ₽</strong>
                 </div>
-                <div className={styles.summaryBadge}>{investmentsBalanceScreenData.summary.badge}</div>
+                <div className={styles.summaryBadge}>{screenData.summary.badge}</div>
               </div>
             </button>
           </Reveal>
@@ -179,24 +190,21 @@ export function InvestmentsBalanceScreen() {
           <Reveal delay={0.16}>
             <section className={styles.scenarioSection}>
               <div className={styles.sliderTrack}>
-                <span
-                  className={[styles.sliderDot, activeIndex === 0 ? styles.sliderDotActive : ""].join(" ")}
-                />
-                <span className={styles.sliderHandleRail}>
-                  <motion.span
-                    animate={{ left: `${sliderHandlePosition}%` }}
-                    className={styles.sliderHandleWrap}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <span className={styles.sliderHandle} />
-                  </motion.span>
-                </span>
-                <span
-                  className={[
-                    styles.sliderDot,
-                    activeIndex === scenarioCount - 1 ? styles.sliderDotActive : "",
-                  ].join(" ")}
-                />
+                <div className={styles.sliderRail}>
+                  {screenData.scenarios.map((scenario, index) => (
+                    <button
+                      aria-label={`Сценарий ${index + 1}`}
+                      aria-pressed={index === activeIndex}
+                      className={cn(styles.sliderDot, index === activeIndex && styles.sliderDotActive)}
+                      key={scenario.id}
+                      onClick={() => scrollToIndex(index, "smooth")}
+                      style={{
+                        left: `${scenarioCount > 1 ? (index / (scenarioCount - 1)) * 100 : 50}%`,
+                      }}
+                      type="button"
+                    />
+                  ))}
+                </div>
               </div>
 
               <div className={styles.scenarioViewport} ref={scenarioViewportRef}>
@@ -207,7 +215,7 @@ export function InvestmentsBalanceScreen() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {investmentsBalanceScreenData.scenarios.map((scenario, index) => {
+                  {screenData.scenarios.map((scenario, index) => {
                     const isActive = index === activeIndex;
 
                     return (

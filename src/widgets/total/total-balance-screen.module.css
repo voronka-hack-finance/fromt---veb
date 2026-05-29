@@ -8,7 +8,7 @@
   max-width: 393px;
   min-height: 100vh;
   overflow: hidden;
-  padding: 8px 14px 42px;
+  padding: 8px 14px var(--mobile-nav-offset);
   position: relative;
 }
 
@@ -103,6 +103,11 @@
 
 .filterRow::-webkit-scrollbar {
   display: none;
+}
+
+.filterButtonActive {
+  background: #63db69;
+  color: #1f1f1f;
 }
 
 .filterButton,
@@ -222,6 +227,58 @@
   text-align: center;
 }
 
+.monthButton {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 4px 0;
+  transition: color 180ms ease;
+}
+
+.monthButtonActive {
+  color: #1f1f1f;
+  font-weight: 700;
+}
+
+.sliderTrack {
+  padding: 0 2px 18px;
+}
+
+.sliderRail {
+  background: #bdbdbd;
+  border-radius: 999px;
+  height: 2px;
+  position: relative;
+  width: 100%;
+}
+
+.sliderDot {
+  background: #cacaca;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  height: 10px;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  transition:
+    background 0.25s ease,
+    height 0.25s ease,
+    width 0.25s ease;
+  width: 10px;
+}
+
+.sliderDotActive {
+  background: #1a1a1a;
+  border: 4px solid rgba(255, 255, 255, 0.72);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+  height: 22px;
+  width: 22px;
+}
+
 .reserveCard {
   background: linear-gradient(180deg, #1f1f1f 0%, #181818 100%);
   border: none;
@@ -318,50 +375,6 @@
 
 .scenarioViewport:active {
   cursor: grabbing;
-}
-
-.sliderTrack {
-  align-items: center;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 10px 1fr 10px;
-  padding: 0 2px 18px;
-}
-
-.sliderDot {
-  background: #cacaca;
-  border-radius: 50%;
-  height: 10px;
-  transition:
-    background 0.25s ease,
-    transform 0.25s ease;
-  width: 10px;
-}
-
-.sliderDotActive {
-  background: #1a1a1a;
-  transform: scale(1.25);
-}
-
-.sliderHandleRail {
-  background: #bdbdbd;
-  border-radius: 999px;
-  display: block;
-  height: 2px;
-  position: relative;
-}
-
-.sliderHandle {
-  background: #1a1a1a;
-  border: 4px solid rgba(255, 255, 255, 0.72);
-  border-radius: 50%;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
-  height: 22px;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 22px;
 }
 
 .scenarioRail {

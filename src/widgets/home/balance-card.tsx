@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { bankAccounts, dashboardData } from "@/shared/data/dashboard";
+import { useDashboardData } from "@/shared/api/dashboard-context";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 
 import styles from "./balance-card.module.css";
@@ -32,10 +32,10 @@ const bankMeta: Record<string, { divider: string; icon: string; textColor: strin
   },
 };
 
-const { whole, fraction } = formatCurrencyParts(dashboardData.totalBalance);
-
 export function BalanceCard() {
   const router = useRouter();
+  const { bankAccounts, dashboard } = useDashboardData();
+  const { whole, fraction } = formatCurrencyParts(dashboard.totalBalance);
 
   return (
     <section className={styles.card}>
@@ -48,7 +48,7 @@ export function BalanceCard() {
 
         <div className={styles.titleRow}>
           <h2 className={styles.title}>Всего средств</h2>
-          <Link aria-label="Открыть общий баланс" className={styles.actionButton} href="/total">
+          <Link aria-label="Открыть остаток от доходов" className={styles.actionButton} href="/income">
             <img alt="" aria-hidden className={styles.icon24} draggable={false} src={assets.iconArrow} />
           </Link>
         </div>
@@ -57,7 +57,7 @@ export function BalanceCard() {
       <button
         aria-label={`Общий баланс ${whole},${fraction} ₽`}
         className={styles.amountButton}
-        onClick={() => router.push("/total")}
+        onClick={() => router.push("/income")}
         type="button"
       >
         <span className={styles.amountWhole}>{whole}</span>

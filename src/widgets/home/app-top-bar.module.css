@@ -1,0 +1,66 @@
+.header {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 52px 1fr 52px;
+  margin-bottom: 24px;
+}
+
+.notificationWrap {
+  position: relative;
+}
+
+.iconButton {
+  align-items: center;
+  backdrop-filter: blur(12px);
+  background: rgba(243, 247, 244, 0.8);
+  border: none;
+  border-radius: 50%;
+  color: var(--text-primary);
+  cursor: pointer;
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 52px;
+}
+
+.iconButton:hover,
+.iconButton:focus-visible {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.badge {
+  align-items: center;
+  background: #cd5d58;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 400;
+  height: 15px;
+  justify-content: center;
+  position: absolute;
+  right: -4px;
+  top: 0;
+  width: 15px;
+}
+
+.title {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  justify-self: center;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 0;
+  text-align: center;
+}
+
+.titleLowercase {
+  text-transform: lowercase;
+}

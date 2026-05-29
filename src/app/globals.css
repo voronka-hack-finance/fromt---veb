@@ -1,4 +1,5 @@
 :root {
+  --mobile-nav-offset: 112px;
   --background: #dfe1db;
   --foreground: #171717;
   --surface: rgba(255, 255, 255, 0.8);

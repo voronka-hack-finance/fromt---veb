@@ -24,7 +24,6 @@ export const forecastYearPoints: ForecastPoint[] = [
 export const dashboardData = {
   notifications: 9,
   title: "заначка",
-  avatarLabel: "КУ",
   totalBalance: 654220.67,
   assistantText: "Анализирует траты и помогает управлять бюджетом",
   receipts: 529910.54,

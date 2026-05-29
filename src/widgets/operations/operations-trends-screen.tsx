@@ -15,15 +15,34 @@ import {
   Wifi,
   BanknoteArrowDown,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { operationsScreenData } from "@/shared/data/operations";
-import { operationsTrendsData } from "@/shared/data/operations-trends";
+import {
+  useOperationsScreenQuery,
+  useOperationsTrendsQuery,
+  type OperationsScreenResponse,
+  type OperationsTrendsResponse,
+} from "@/shared/api/operations";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
+import {
+  buildTrendLinePoints,
+  getTrendBarX,
+  TREND_CHART,
+  valueToBarHeight,
+} from "@/shared/lib/operations-chart-layout";
+import { operationsChartHref } from "@/shared/lib/operations-period";
+import { useOperationsPeriod } from "@/shared/lib/use-operations-period";
+import { QueryError, QueryLoading } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./operations-trends-screen.module.css";
+
+const SCALE_LABEL_TOPS = [0, 65.28, 128.15] as const;
+
+function clamp(value: number, min: number, max: number) {
+  return Math.min(Math.max(value, min), max);
+}
 
 function formatSignedAmount(value: number) {
   const sign = value > 0 ? "+" : "−";
@@ -35,8 +54,8 @@ function OperationIcon({
   icon,
   tone,
 }: {
-  icon: (typeof operationsScreenData.operations)[number]["icon"];
-  tone: (typeof operationsScreenData.operations)[number]["iconTone"];
+  icon: OperationsScreenResponse["operations"][number]["icon"];
+  tone: OperationsScreenResponse["operations"][number]["iconTone"];
 }) {
   const commonProps = { size: 18, strokeWidth: 1.9 };
   const className = [
@@ -65,8 +84,8 @@ function BankChip({
   bank,
   tone,
 }: {
-  bank: (typeof operationsScreenData.operations)[number]["bank"];
-  tone: (typeof operationsScreenData.operations)[number]["bankTone"];
+  bank: OperationsScreenResponse["operations"][number]["bank"];
+  tone: OperationsScreenResponse["operations"][number]["bankTone"];
 }) {
   return (
     <div
@@ -83,27 +102,85 @@ function BankChip({
 }
 
 export function OperationsTrendsScreenView() {
-  const [activePeriod, setActivePeriod] = useState<(typeof operationsTrendsData.periodTabs)[number]>(
-    operationsTrendsData.activePeriod,
-  );
-  const [activeBarIndex, setActiveBarIndex] = useState(
-    operationsTrendsData.bars.findIndex((bar) => bar.tone === "active"),
-  );
+  const screenQuery = useOperationsScreenQuery();
+  const trendsQuery = useOperationsTrendsQuery();
 
-  const maxBarValue = Math.max(...operationsTrendsData.bars.map((bar) => bar.value));
-  const activeBar = operationsTrendsData.bars[activeBarIndex] ?? operationsTrendsData.bars[0];
+  if (screenQuery.isLoading || trendsQuery.isLoading) {
+    return (
+      <main className={styles.stage}>
+        <QueryLoading label="Загрузка трендов..." />
+      </main>
+    );
+  }
+
+  if (screenQuery.isError || trendsQuery.isError || !screenQuery.data || !trendsQuery.data) {
+    return (
+      <main className={styles.stage}>
+        <QueryError
+          onRetry={() => {
+            void screenQuery.refetch();
+            void trendsQuery.refetch();
+          }}
+        />
+      </main>
+    );
+  }
+
+  return (
+    <OperationsTrendsScreenContent
+      operationsScreenData={screenQuery.data}
+      operationsTrendsData={trendsQuery.data}
+    />
+  );
+}
+
+function OperationsTrendsScreenContent({
+  operationsScreenData,
+  operationsTrendsData,
+}: {
+  operationsScreenData: OperationsScreenResponse;
+  operationsTrendsData: OperationsTrendsResponse;
+}) {
+  const [activePeriod, setActivePeriod] = useOperationsPeriod(operationsTrendsData.activePeriod);
+  const periodData = operationsTrendsData.byPeriod[activePeriod];
+  const [activeBarIndex, setActiveBarIndex] = useState(periodData.defaultActiveIndex);
+
+  const chartBars = useMemo(
+    () =>
+      periodData.bars.map((bar) => ({
+        ...bar,
+        height: bar.height ?? valueToBarHeight(bar.value, periodData.spendScale[0]),
+        tone: bar.tone,
+      })),
+    [periodData],
+  );
 
   const linePoints = useMemo(
-    () =>
-      operationsTrendsData.line
-        .map((value, index) => {
-          const x = 12 + index * 26.4;
-          const y = 110 - (value / maxBarValue) * 58;
-          return `${x},${y}`;
-        })
-        .join(" "),
-    [maxBarValue],
+    () => buildTrendLinePoints([...periodData.lineValues], chartBars.length),
+    [periodData.lineValues, chartBars.length],
   );
+
+  const activeBar = chartBars[activeBarIndex] ?? chartBars[0];
+  const activePoint = linePoints[activeBarIndex] ?? linePoints[0];
+
+  const linePath = useMemo(
+    () => linePoints.map((point, index) => `${index === 0 ? "M" : "L"} ${point.x} ${point.y}`).join(" "),
+    [linePoints],
+  );
+
+  const barBottom = TREND_CHART.barAreaTop + TREND_CHART.barAreaHeight;
+  const tooltipLeft = clamp(activePoint.x - 65, 6, TREND_CHART.width - 136);
+  const tooltipTop = clamp(activePoint.y - 42, 8, TREND_CHART.barAreaTop - 4);
+
+  const handlePeriodChange = (period: typeof activePeriod) => {
+    const nextData = operationsTrendsData.byPeriod[period];
+    setActivePeriod(period);
+    setActiveBarIndex(nextData.defaultActiveIndex);
+  };
+
+  useEffect(() => {
+    setActiveBarIndex(operationsTrendsData.byPeriod[activePeriod].defaultActiveIndex);
+  }, [activePeriod]);
 
   return (
     <main className={styles.stage}>
@@ -139,7 +216,7 @@ export function OperationsTrendsScreenView() {
                         tab === activePeriod && styles.periodButtonActive,
                       )}
                       key={tab}
-                      onClick={() => setActivePeriod(tab)}
+                      onClick={() => handlePeriodChange(tab)}
                       type="button"
                     >
                       {tab}
@@ -148,104 +225,120 @@ export function OperationsTrendsScreenView() {
                 </div>
 
                 <div className={styles.viewControls}>
-                  <Link className={styles.viewButton} href="/operations">
+                  <Link className={styles.viewButton} href={operationsChartHref("/operations", activePeriod)}>
                     <PieChart size={18} strokeWidth={2} />
                   </Link>
                   <button className={[styles.viewButton, styles.viewButtonActive].join(" ")} type="button">
                     <TrendingDown size={18} strokeWidth={2} />
                   </button>
-                  <Link className={styles.viewButton} href="/operations/bars">
+                  <Link className={styles.viewButton} href={operationsChartHref("/operations/bars", activePeriod)}>
                     <BarChart3 size={18} strokeWidth={2} />
                   </Link>
                 </div>
               </div>
 
-              <div className={styles.chartWrap}>
-                <div className={styles.scaleLabels}>
-                  {operationsTrendsData.spendScale.map((label) => (
-                    <span key={label}>{formatCurrencyParts(label).whole} ₽</span>
+              <div className={styles.chartBody}>
+                <div className={styles.graphArea}>
+                  {periodData.spendScale.map((label, index) => (
+                    <span className={styles.scaleLabel} key={label} style={{ top: `${SCALE_LABEL_TOPS[index]}px` }}>
+                      {formatCurrencyParts(label).whole} ₽
+                    </span>
                   ))}
+
+                  <svg
+                    aria-label="Тренд трат за месяц"
+                    className={styles.chartSvg}
+                    role="img"
+                    viewBox={`0 0 ${TREND_CHART.width} ${TREND_CHART.height}`}
+                  >
+                    {TREND_CHART.gridLineYs.map((y) => (
+                      <line
+                        className={styles.gridLine}
+                        key={y}
+                        x1={TREND_CHART.gridLineLeft}
+                        x2={TREND_CHART.gridLineLeft + TREND_CHART.gridLineWidth}
+                        y1={y}
+                        y2={y}
+                      />
+                    ))}
+
+                    {chartBars.map((bar, index) => {
+                      const x = getTrendBarX(index, chartBars.length);
+                      const y = barBottom - bar.height;
+                      const isActive = index === activeBarIndex;
+
+                      return (
+                        <motion.rect
+                          className={isActive ? styles.barActive : styles.barMuted}
+                          height={bar.height}
+                          initial={{ height: 0, y: barBottom }}
+                          key={`${activePeriod}-${bar.day}`}
+                          onClick={() => setActiveBarIndex(index)}
+                          rx="2.759"
+                          style={{ cursor: "pointer" }}
+                          viewport={{ once: true }}
+                          whileInView={{ height: bar.height, y }}
+                          width={TREND_CHART.barWidth}
+                          x={x}
+                          transition={{ duration: 0.55, delay: index * 0.035, ease: [0.22, 1, 0.36, 1] }}
+                        />
+                      );
+                    })}
+
+                    <motion.path
+                      className={styles.trendLine}
+                      d={linePath}
+                      fill="none"
+                      initial={{ pathLength: 0 }}
+                      key={activePeriod}
+                      viewport={{ once: true }}
+                      whileInView={{ pathLength: 1 }}
+                      transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                    />
+
+                    {linePoints.map((point, index) => {
+                      const isActive = index === activeBarIndex;
+
+                      return (
+                        <circle
+                          className={cn(styles.point, isActive && styles.pointActive)}
+                          cx={point.x}
+                          cy={point.y}
+                          key={`${activePeriod}-${point.x}-${point.y}`}
+                          onClick={() => setActiveBarIndex(index)}
+                          r={isActive ? 4 : 2.5}
+                          style={{ cursor: "pointer" }}
+                        />
+                      );
+                    })}
+                  </svg>
+
+                  <motion.div
+                    animate={{ opacity: 1, y: 0 }}
+                    className={styles.insightBubble}
+                    initial={{ opacity: 0, y: 6 }}
+                    key={`${activePeriod}-${activeBar?.day}`}
+                    style={{ left: `${tooltipLeft}px`, top: `${tooltipTop}px` }}
+                    transition={{ duration: 0.22 }}
+                  >
+                    <div className={styles.bubbleIcon}>
+                      <TrendingDown size={12} strokeWidth={2.4} />
+                    </div>
+                    <div className={styles.bubbleText}>
+                      <strong>{formatCurrencyParts(activeBar?.value ?? 0).whole} ₽</strong>
+                      <span>
+                        {activeBarIndex === periodData.defaultActiveIndex
+                          ? periodData.insight.date
+                          : activeBar?.day}
+                      </span>
+                    </div>
+                  </motion.div>
                 </div>
 
-                <svg className={styles.chart} viewBox="0 0 286 154" role="img" aria-label="Тренд трат за месяц">
-                  {[16, 79, 142].map((y) => (
-                    <line className={styles.gridLine} key={y} x1="0" x2="286" y1={y} y2={y} />
-                  ))}
-
-                  {operationsTrendsData.bars.map((bar, index) => {
-                    const x = 18 + index * 26.4;
-                    const height = (bar.value / maxBarValue) * 87;
-                    const y = 141 - height;
-                    const isActive = index === activeBarIndex;
-
-                    return (
-                      <motion.rect
-                        className={isActive ? styles.barActive : styles.barMuted}
-                        height={height}
-                        initial={{ height: 0, y: 141 }}
-                        key={bar.day}
-                        onClick={() => setActiveBarIndex(index)}
-                        rx="3"
-                        style={{ cursor: "pointer" }}
-                        viewport={{ once: true }}
-                        whileInView={{ height, y }}
-                        width="16"
-                        x={x}
-                        transition={{ duration: 0.6, delay: index * 0.035, ease: [0.22, 1, 0.36, 1] }}
-                      />
-                    );
-                  })}
-
-                  <motion.polyline
-                    className={styles.trendLine}
-                    fill="none"
-                    initial={{ pathLength: 0 }}
-                    points={linePoints}
-                    strokeDasharray="3 0"
-                    viewport={{ once: true }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                  />
-
-                  {operationsTrendsData.line.map((value, index) => {
-                    const x = 12 + index * 26.4;
-                    const y = 110 - (value / maxBarValue) * 58;
-                    const isActive = index === activeBarIndex;
-
-                    return (
-                      <circle
-                        className={cn(styles.point, isActive && styles.pointActive)}
-                        cx={x}
-                        cy={y}
-                        key={`${value}-${index}`}
-                        onClick={() => setActiveBarIndex(index)}
-                        r={isActive ? 4 : 2.5}
-                        style={{ cursor: "pointer" }}
-                      />
-                    );
-                  })}
-                </svg>
-
-                <motion.div
-                  animate={{ opacity: 1, y: 0 }}
-                  className={styles.insightBubble}
-                  initial={{ opacity: 0, y: 8 }}
-                  key={activeBar?.day}
-                  transition={{ duration: 0.25 }}
-                >
-                  <div className={styles.bubbleIcon}>
-                    <TrendingDown size={16} strokeWidth={2.2} />
-                  </div>
-                  <div>
-                    <strong>{formatCurrencyParts(activeBar?.value ?? 0).whole} ₽</strong>
-                    <span>{activeBar?.day}</span>
-                  </div>
-                </motion.div>
-              </div>
-
-              <div className={styles.chartFooter}>
-                <strong>{operationsTrendsData.insight.percent}%</strong>
-                <p>{operationsTrendsData.insight.text}</p>
+                <div className={styles.chartFooter}>
+                  <strong>{periodData.insight.percent}%</strong>
+                  <p>{periodData.insight.text}</p>
+                </div>
               </div>
             </section>
           </Reveal>

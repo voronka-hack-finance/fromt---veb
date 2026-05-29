@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-import { dashboardData, forecastPoints, forecastYearPoints } from "@/shared/data/dashboard";
+import { useDashboardData } from "@/shared/api/dashboard-context";
 import { buildLineChartPaths } from "@/shared/lib/charts";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
@@ -19,6 +19,7 @@ const chartHeight = 106;
 const chartPadding = 10;
 
 export function ForecastCard() {
+  const { dashboard, forecastPoints, forecastYearPoints } = useDashboardData();
   const [period, setPeriod] = useState<"year" | "week">("week");
   const [activeIndex, setActiveIndex] = useState(4);
 
@@ -80,7 +81,7 @@ export function ForecastCard() {
         </div>
 
         <div className={styles.scoreRow}>
-          <span className={styles.scoreValue}>{dashboardData.forecastPercent}</span>
+          <span className={styles.scoreValue}>{dashboard.forecastPercent}</span>
           <span className={styles.scorePercent}>%</span>
         </div>
       </div>

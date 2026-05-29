@@ -29,6 +29,19 @@
   z-index: 1;
 }
 
+.summary {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+}
+
+.chart {
+  cursor: pointer;
+}
+
 .header {
   align-items: center;
   display: flex;

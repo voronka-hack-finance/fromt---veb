@@ -14,9 +14,10 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import { operationsScreenData } from "@/shared/data/operations";
+import { useOperationsScreenQuery, type OperationsScreenResponse } from "@/shared/api/operations";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
+import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import { OperationsBreakdownCard } from "./operations-breakdown-card";
@@ -32,8 +33,8 @@ function OperationIcon({
   icon,
   tone,
 }: {
-  icon: (typeof operationsScreenData.operations)[number]["icon"];
-  tone: (typeof operationsScreenData.operations)[number]["iconTone"];
+  icon: OperationsScreenResponse["operations"][number]["icon"];
+  tone: OperationsScreenResponse["operations"][number]["iconTone"];
 }) {
   const commonProps = { size: 18, strokeWidth: 1.9 };
   const className = [
@@ -62,8 +63,8 @@ function BankChip({
   bank,
   tone,
 }: {
-  bank: (typeof operationsScreenData.operations)[number]["bank"];
-  tone: (typeof operationsScreenData.operations)[number]["bankTone"];
+  bank: OperationsScreenResponse["operations"][number]["bank"];
+  tone: OperationsScreenResponse["operations"][number]["bankTone"];
 }) {
   return (
     <div
@@ -80,6 +81,22 @@ function BankChip({
 }
 
 export function OperationsScreenView() {
+  const screenQuery = useOperationsScreenQuery();
+
+  return (
+    <QueryBoundary loadingLabel="Загрузка операций..." query={screenQuery}>
+      {(operationsScreenData) => (
+        <OperationsScreenContent operationsScreenData={operationsScreenData} />
+      )}
+    </QueryBoundary>
+  );
+}
+
+function OperationsScreenContent({
+  operationsScreenData,
+}: {
+  operationsScreenData: OperationsScreenResponse;
+}) {
   const [selectedOperationId, setSelectedOperationId] = useState<string | null>(null);
 
   return (
@@ -158,6 +175,10 @@ export function OperationsScreenView() {
                   </motion.button>
                 ))}
               </div>
+
+              <Link className={styles.categoriesLink} href="/categories">
+                Мои категории
+              </Link>
             </section>
           </Reveal>
         </div>

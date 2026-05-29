@@ -48,11 +48,15 @@
 }
 
 .title {
+  background: transparent;
+  border: none;
   color: #212121;
+  cursor: pointer;
   font-family: var(--font-heading), sans-serif;
   font-size: 20px;
   letter-spacing: -0.04em;
   margin: 0;
+  padding: 0;
 }
 
 .content {
@@ -71,12 +75,18 @@
 }
 
 .amount {
+  background: transparent;
+  border: none;
   color: #1c1c1c;
+  cursor: pointer;
+  display: block;
   font-family: var(--font-heading), sans-serif;
   font-size: 33px;
   letter-spacing: -0.06em;
   line-height: 1;
   padding: 0 16px;
+  text-align: left;
+  width: 100%;
 }
 
 .amountFraction {

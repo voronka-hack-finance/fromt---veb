@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 
-import { dashboardData } from "@/shared/data/dashboard";
+import { useDashboardData } from "@/shared/api/dashboard-context";
 
 import styles from "./recurring-expenses-card.module.css";
 
@@ -14,12 +14,13 @@ const assets = {
 
 export function RecurringExpensesCard() {
   const router = useRouter();
+  const { dashboard } = useDashboardData();
 
   return (
     <button
-      aria-label={`Постоянные расходы: ${dashboardData.recurringExpenses.total}, ${dashboardData.recurringExpenses.categories}`}
+      aria-label={`Постоянные расходы: ${dashboard.recurringExpenses.total}, ${dashboard.recurringExpenses.categories}`}
       className={styles.card}
-      onClick={() => router.push("/operations/bars")}
+      onClick={() => router.push("/operations")}
       type="button"
     >
       <div className={styles.info}>
@@ -31,11 +32,11 @@ export function RecurringExpensesCard() {
             <img alt="" className={styles.icon} draggable={false} src={assets.icon2} />
             <img alt="" className={styles.icon} draggable={false} src={assets.icon3} />
           </div>
-          <span className={styles.categories}>{dashboardData.recurringExpenses.categories}</span>
+          <span className={styles.categories}>{dashboard.recurringExpenses.categories}</span>
         </div>
       </div>
 
-      <div className={styles.value}>{dashboardData.recurringExpenses.total}</div>
+      <div className={styles.value}>{dashboard.recurringExpenses.total}</div>
     </button>
   );
 }

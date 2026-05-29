@@ -15,12 +15,19 @@ import {
   BarChart3,
   Wifi,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { operationsBarsData } from "@/shared/data/operations-bars";
-import { operationsScreenData } from "@/shared/data/operations";
+import {
+  useOperationsBarsQuery,
+  useOperationsScreenQuery,
+  type OperationsBarsResponse,
+  type OperationsScreenResponse,
+} from "@/shared/api/operations";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
+import { operationsChartHref } from "@/shared/lib/operations-period";
+import { useOperationsPeriod } from "@/shared/lib/use-operations-period";
+import { QueryError, QueryLoading } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./operations-bars-screen.module.css";
@@ -35,8 +42,8 @@ function OperationIcon({
   icon,
   tone,
 }: {
-  icon: (typeof operationsScreenData.operations)[number]["icon"];
-  tone: (typeof operationsScreenData.operations)[number]["iconTone"];
+  icon: OperationsScreenResponse["operations"][number]["icon"];
+  tone: OperationsScreenResponse["operations"][number]["iconTone"];
 }) {
   const commonProps = { size: 18, strokeWidth: 1.9 };
   const className = [
@@ -65,8 +72,8 @@ function BankChip({
   bank,
   tone,
 }: {
-  bank: (typeof operationsScreenData.operations)[number]["bank"];
-  tone: (typeof operationsScreenData.operations)[number]["bankTone"];
+  bank: OperationsScreenResponse["operations"][number]["bank"];
+  tone: OperationsScreenResponse["operations"][number]["bankTone"];
 }) {
   return (
     <div
@@ -83,10 +90,74 @@ function BankChip({
 }
 
 export function OperationsBarsScreenView() {
-  const [activePeriod, setActivePeriod] = useState<(typeof operationsBarsData.periodTabs)[number]>(
-    operationsBarsData.activePeriod,
+  const screenQuery = useOperationsScreenQuery();
+  const barsQuery = useOperationsBarsQuery();
+
+  if (screenQuery.isLoading || barsQuery.isLoading) {
+    return (
+      <main className={styles.stage}>
+        <QueryLoading label="Загрузка графика..." />
+      </main>
+    );
+  }
+
+  if (screenQuery.isError || barsQuery.isError || !screenQuery.data || !barsQuery.data) {
+    return (
+      <main className={styles.stage}>
+        <QueryError
+          onRetry={() => {
+            void screenQuery.refetch();
+            void barsQuery.refetch();
+          }}
+        />
+      </main>
+    );
+  }
+
+  return (
+    <OperationsBarsScreenContent
+      operationsBarsData={barsQuery.data}
+      operationsScreenData={screenQuery.data}
+    />
   );
+}
+
+function OperationsBarsScreenContent({
+  operationsBarsData,
+  operationsScreenData,
+}: {
+  operationsBarsData: OperationsBarsResponse;
+  operationsScreenData: OperationsScreenResponse;
+}) {
+  const [activePeriod, setActivePeriod] = useOperationsPeriod(operationsBarsData.activePeriod);
+  const bars = operationsBarsData.byPeriod[activePeriod];
   const [activeBarIndex, setActiveBarIndex] = useState(0);
+  const barColumnRefs = useRef<(HTMLButtonElement | null)[]>([]);
+  const barsScrollRef = useRef<HTMLDivElement>(null);
+
+  const handlePeriodChange = (period: typeof activePeriod) => {
+    setActivePeriod(period);
+    setActiveBarIndex(0);
+  };
+
+  useEffect(() => {
+    setActiveBarIndex(0);
+    barsScrollRef.current?.scrollTo({ left: 0, behavior: "smooth" });
+  }, [activePeriod]);
+
+  useEffect(() => {
+    barColumnRefs.current = barColumnRefs.current.slice(0, bars.length);
+  }, [bars.length]);
+
+  useEffect(() => {
+    const activeColumn = barColumnRefs.current[activeBarIndex];
+
+    activeColumn?.scrollIntoView({
+      behavior: "smooth",
+      block: "nearest",
+      inline: "center",
+    });
+  }, [activeBarIndex, activePeriod]);
 
   return (
     <main className={styles.stage}>
@@ -122,7 +193,7 @@ export function OperationsBarsScreenView() {
                         tab === activePeriod && styles.periodButtonActive,
                       )}
                       key={tab}
-                      onClick={() => setActivePeriod(tab)}
+                      onClick={() => handlePeriodChange(tab)}
                       type="button"
                     >
                       {tab}
@@ -131,10 +202,10 @@ export function OperationsBarsScreenView() {
                 </div>
 
                 <div className={styles.viewControls}>
-                  <Link className={styles.viewButton} href="/operations">
+                  <Link className={styles.viewButton} href={operationsChartHref("/operations", activePeriod)}>
                     <PieChart size={18} strokeWidth={2} />
                   </Link>
-                  <Link className={styles.viewButton} href="/operations/trends">
+                  <Link className={styles.viewButton} href={operationsChartHref("/operations/trends", activePeriod)}>
                     <TrendingDown size={18} strokeWidth={2} />
                   </Link>
                   <button className={[styles.viewButton, styles.viewButtonActive].join(" ")} type="button">
@@ -143,16 +214,25 @@ export function OperationsBarsScreenView() {
                 </div>
               </div>
 
-              <div className={styles.barsWrap}>
-                {operationsBarsData.bars.map((bar, index) => {
+              <div
+                aria-label="График расходов по периодам"
+                className={styles.barsScroll}
+                ref={barsScrollRef}
+                role="region"
+              >
+                <div className={styles.barsWrap}>
+                {bars.map((bar, index) => {
                   const isActive = index === activeBarIndex;
 
                   return (
                     <motion.button
                       className={cn(styles.barColumn, isActive && styles.barColumnActive)}
                       initial={{ opacity: 0, y: 12 }}
-                      key={bar.label}
+                      key={`${activePeriod}-${bar.label}`}
                       onClick={() => setActiveBarIndex(index)}
+                      ref={(node) => {
+                        barColumnRefs.current[index] = node;
+                      }}
                       type="button"
                       viewport={{ once: true }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -174,6 +254,7 @@ export function OperationsBarsScreenView() {
                     </motion.button>
                   );
                 })}
+                </div>
               </div>
             </section>
           </Reveal>

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-import { dashboardData } from "@/shared/data/dashboard";
+import { useDashboardData } from "@/shared/api/dashboard-context";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 
 import styles from "./operations-card.module.css";
@@ -14,14 +14,27 @@ const assets = {
   presentationChart: "/dashboard/operations/icon-presentation-chart.svg",
 } as const;
 
-const receiptsParts = formatCurrencyParts(dashboardData.receipts);
-const expensesParts = formatCurrencyParts(dashboardData.expenses);
-
 export function OperationsCard() {
   const router = useRouter();
+  const { dashboard } = useDashboardData();
+  const receiptsParts = formatCurrencyParts(dashboard.receipts);
+  const expensesParts = formatCurrencyParts(dashboard.expenses);
+
+  const openOperations = () => router.push("/operations");
 
   return (
-    <section className={styles.card}>
+    <section
+      className={styles.card}
+      onClick={openOperations}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openOperations();
+        }
+      }}
+      role="button"
+      tabIndex={0}
+    >
       <div className={styles.header}>
         <div className={styles.titleGroup}>
           <div className={styles.iconChipPrimary}>
@@ -34,12 +47,20 @@ export function OperationsCard() {
           <button
             aria-label="Выбрать период"
             className={styles.iconButton}
-            onClick={() => router.push("/operations/trends")}
+            onClick={(event) => {
+              event.stopPropagation();
+              router.push("/operations/trends");
+            }}
             type="button"
           >
             <img alt="" aria-hidden className={styles.icon20} draggable={false} src={assets.calendar} />
           </button>
-          <Link aria-label="Открыть операции" className={styles.iconButton} href="/operations">
+          <Link
+            aria-label="Открыть операции"
+            className={styles.iconButton}
+            href="/operations"
+            onClick={(event) => event.stopPropagation()}
+          >
             <img alt="" aria-hidden className={styles.icon20} draggable={false} src={assets.arrow} />
           </Link>
         </div>
@@ -49,7 +70,10 @@ export function OperationsCard() {
         <button
           aria-label="Поступления"
           className={styles.incomeColumn}
-          onClick={() => router.push("/operations")}
+          onClick={(event) => {
+            event.stopPropagation();
+            router.push("/operations");
+          }}
           type="button"
         >
           <div className={styles.metricBlock}>
@@ -69,7 +93,10 @@ export function OperationsCard() {
         <button
           aria-label="Расходы"
           className={styles.expenseColumn}
-          onClick={() => router.push("/operations/bars")}
+          onClick={(event) => {
+            event.stopPropagation();
+            router.push("/operations/bars");
+          }}
           type="button"
         >
           <div className={styles.metricBlock}>

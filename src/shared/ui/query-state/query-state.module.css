@@ -1,0 +1,52 @@
+.queryState {
+  align-items: center;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: center;
+  min-height: 120px;
+  padding: 24px;
+  text-align: center;
+}
+
+.queryStateCompact {
+  min-height: 64px;
+  padding: 16px;
+}
+
+.queryStateMessage {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.queryStateRetry {
+  background: var(--surface-dark);
+  border: 0;
+  border-radius: 999px;
+  color: var(--text-on-dark);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  padding: 10px 18px;
+}
+
+.queryStateRetry:hover {
+  opacity: 0.92;
+}
+
+.queryStateSpinner {
+  animation: querySpin 0.8s linear infinite;
+  border: 2px solid rgba(23, 23, 23, 0.12);
+  border-radius: 50%;
+  border-top-color: var(--surface-green);
+  height: 24px;
+  width: 24px;
+}
+
+@keyframes querySpin {
+  to {
+    transform: rotate(360deg);
+  }
+}

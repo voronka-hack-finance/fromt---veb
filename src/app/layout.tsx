@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter, Unbounded } from "next/font/google";
 
+import { QueryProvider } from "@/shared/providers/query-provider";
+import { MobileTabNav } from "@/widgets/home/mobile-tab-nav";
+
 import "./globals.css";
 
 const headingFont = Unbounded({
@@ -25,7 +28,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru">
-      <body className={`${headingFont.variable} ${bodyFont.variable}`}>{children}</body>
+      <body className={`${headingFont.variable} ${bodyFont.variable}`}>
+        <QueryProvider>
+          {children}
+          <MobileTabNav />
+        </QueryProvider>
+      </body>
     </html>
   );
 }

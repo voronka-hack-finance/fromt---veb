@@ -1,25 +1,47 @@
+const sharedMonths = ["Янв", "Фев", "Март", "Апр", "Май", "Июнь", "Июль"] as const;
+
+function buildTrend(values: number[]) {
+  return sharedMonths.map((month, index) => ({
+    month,
+    value: values[index] ?? values.at(-1) ?? 0,
+  }));
+}
+
 export const totalBalanceScreenData = {
   title: "Всего средств",
-  amount: 18753.85,
-  subtitle: "Без кредитки",
+  defaultFilterId: "reserve",
+  defaultChartIndex: 4,
   filters: [
-    { id: "all", label: "Все", value: null },
-    { id: "primary", label: "21 000 ₽", value: 21000 },
-    { id: "reserve", label: "5 521 ₽", value: 5521 },
-    { id: "backup", label: "2 521 ₽", value: 2521 },
-  ],
-  trend: [
-    { month: "Янв", value: 8600 },
-    { month: "Фев", value: 15400 },
-    { month: "Март", value: 10900 },
-    { month: "Апр", value: 12900 },
-    { month: "Май", value: 9400 },
-    { month: "Июнь", value: 17800 },
-    { month: "Июль", value: 16400 },
+    {
+      id: "all",
+      label: "Все",
+      amount: 18753.85,
+      subtitle: "Без кредитки",
+      trend: buildTrend([8600, 15400, 10900, 12900, 9400, 17800, 16400]),
+    },
+    {
+      id: "primary",
+      label: "21 000 ₽",
+      amount: 21000,
+      subtitle: "Основной счёт",
+      trend: buildTrend([10200, 18200, 12800, 15200, 11100, 21000, 19300]),
+    },
+    {
+      id: "reserve",
+      label: "5 521 ₽",
+      amount: 5521,
+      subtitle: "Накопительный счёт",
+      trend: buildTrend([2400, 4300, 3100, 3600, 2700, 5100, 4700]),
+    },
+    {
+      id: "backup",
+      label: "2 521 ₽",
+      amount: 2521,
+      subtitle: "Резервный счёт",
+      trend: buildTrend([1100, 2000, 1400, 1700, 1200, 2400, 2200]),
+    },
   ],
   reserveCard: {
-    months: 3,
-    monthlySpend: 66700,
     badge: "Неплохо",
   },
   scenarios: [
@@ -50,3 +72,4 @@ export const totalBalanceScreenData = {
   ] as const,
 };
 
+export type TotalBalanceFilter = (typeof totalBalanceScreenData.filters)[number];

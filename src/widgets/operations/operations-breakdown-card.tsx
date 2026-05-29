@@ -2,26 +2,35 @@
 
 import Link from "next/link";
 import { ArrowUpDown, BarChart3, ChevronLeft, ChevronRight, PieChart } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
-import { operationsScreenData } from "@/shared/data/operations";
+import {
+  useOperationsScreenQuery,
+  type OperationsScreenResponse,
+} from "@/shared/api/operations";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
+import { operationsChartHref } from "@/shared/lib/operations-period";
+import { useOperationsPeriod } from "@/shared/lib/use-operations-period";
+import { QueryLoading } from "@/shared/ui/query-state/query-state";
 
 import styles from "./operations-breakdown-card.module.css";
 
-type Period = (typeof operationsScreenData.periodTabs)[number];
-
-const GAUGE = {
-  width: 315,
-  height: 142,
-  cx: 157.5,
-  cy: 130,
-  radius: 96,
-  stroke: 32,
-} as const;
+type Period = OperationsScreenResponse["periodTabs"][number];
 
 const LEGEND_ORDER = ["transfers", "hotels", "groceries"] as const;
+
+const ARC_SRC = {
+  transfers: "/operations/breakdown/arc-transfers.svg",
+  hotels: "/operations/breakdown/arc-hotels.svg",
+  groceries: "/operations/breakdown/arc-groceries.svg",
+} as const;
+
+const arcClass = {
+  transfers: styles.arcTransfers,
+  hotels: styles.arcHotels,
+  groceries: styles.arcGroceries,
+} as const;
 
 const bubbleClass = {
   transfers: styles.percentBubble50,
@@ -35,58 +44,48 @@ const legendDotClass = {
   groceries: styles.legendDotGroceries,
 } as const;
 
-function polar(cx: number, cy: number, radius: number, angleDeg: number) {
-  const rad = (angleDeg * Math.PI) / 180;
-  return {
-    x: cx + radius * Math.cos(rad),
-    y: cy + radius * Math.sin(rad),
-  };
-}
-
-function buildArcPath(startDeg: number, endDeg: number) {
-  const start = polar(GAUGE.cx, GAUGE.cy, GAUGE.radius, startDeg);
-  const end = polar(GAUGE.cx, GAUGE.cy, GAUGE.radius, endDeg);
-  const delta = endDeg - startDeg;
-  const largeArc = delta > 180 ? 1 : 0;
-
-  return `M ${start.x} ${start.y} A ${GAUGE.radius} ${GAUGE.radius} 0 ${largeArc} 1 ${end.x} ${end.y}`;
-}
-
-function buildGaugeSegments(breakdown: Array<{ id: string; percent: number; color: string }>) {
-  const gap = 3;
-  let cursor = 180;
-
-  return breakdown.map((item) => {
-    const sweep = (item.percent / 100) * 180;
-    const start = cursor + gap / 2;
-    const end = cursor + sweep - gap / 2;
-    cursor += sweep;
-
-    return {
-      ...item,
-      path: buildArcPath(start, end),
-    };
-  });
-}
-
-function getMonthTotal(period: Period, monthIndex: number) {
+function getNavigatorTotal(
+  operationsScreenData: OperationsScreenResponse,
+  period: Period,
+  navigatorIndex: number,
+) {
+  const navigator = operationsScreenData.periodNavigator[period];
   const base = operationsScreenData.breakdownByPeriod[period].total;
-  const offset = monthIndex - operationsScreenData.defaultMonthIndex;
+  const offset = navigatorIndex - navigator.defaultIndex;
 
   return Math.round(base * (1 + offset * 0.02));
 }
 
 export function OperationsBreakdownCard() {
-  const [activePeriod, setActivePeriod] = useState<Period>(operationsScreenData.activePeriod);
+  const screenQuery = useOperationsScreenQuery();
+
+  if (screenQuery.isLoading) {
+    return <QueryLoading compact label="Загрузка графика..." />;
+  }
+
+  if (screenQuery.isError || !screenQuery.data) {
+    return null;
+  }
+
+  return <OperationsBreakdownCardContent operationsScreenData={screenQuery.data} />;
+}
+
+function OperationsBreakdownCardContent({
+  operationsScreenData,
+}: {
+  operationsScreenData: OperationsScreenResponse;
+}) {
+  const [activePeriod, setActivePeriod] = useOperationsPeriod(operationsScreenData.activePeriod);
   const [activeBreakdownId, setActiveBreakdownId] = useState<string>("transfers");
-  const [monthIndex, setMonthIndex] = useState(operationsScreenData.defaultMonthIndex);
+  const navigator = operationsScreenData.periodNavigator[activePeriod];
+  const [navigatorIndex, setNavigatorIndex] = useState(navigator.defaultIndex);
 
   const periodData = operationsScreenData.breakdownByPeriod[activePeriod];
-  const monthLabel = operationsScreenData.monthLabels[monthIndex] ?? operationsScreenData.monthLabel;
+  const navigatorLabel = navigator.labels[navigatorIndex] ?? navigator.labels[navigator.defaultIndex];
 
   const totalAmount = useMemo(
-    () => getMonthTotal(activePeriod, monthIndex),
-    [activePeriod, monthIndex],
+    () => getNavigatorTotal(operationsScreenData, activePeriod, navigatorIndex),
+    [activePeriod, navigatorIndex, operationsScreenData],
   );
 
   const breakdown = useMemo(
@@ -98,18 +97,16 @@ export function OperationsBreakdownCard() {
     [periodData.items, totalAmount],
   );
 
-  const gaugeSegments = useMemo(() => {
-    const ordered = ["groceries", "hotels", "transfers"]
-      .map((id) => breakdown.find((item) => item.id === id))
-      .filter((item): item is (typeof breakdown)[number] => Boolean(item));
-
-    return buildGaugeSegments(ordered);
-  }, [breakdown]);
-
   const handlePeriodChange = (period: Period) => {
+    const nextNavigator = operationsScreenData.periodNavigator[period];
     setActivePeriod(period);
     setActiveBreakdownId("transfers");
+    setNavigatorIndex(nextNavigator.defaultIndex);
   };
+
+  useEffect(() => {
+    setNavigatorIndex(operationsScreenData.periodNavigator[activePeriod].defaultIndex);
+  }, [activePeriod, operationsScreenData.periodNavigator]);
 
   const selectBreakdown = (id: string) => {
     setActiveBreakdownId(id);
@@ -136,10 +133,10 @@ export function OperationsBreakdownCard() {
             <button aria-label="Круговая диаграмма" className={cn(styles.viewButton, styles.viewButtonActive)} type="button">
               <PieChart size={24} strokeWidth={1.8} />
             </button>
-            <Link aria-label="Тренды" className={styles.viewButton} href="/operations/trends">
+            <Link aria-label="Тренды" className={styles.viewButton} href={operationsChartHref("/operations/trends", activePeriod)}>
               <ArrowUpDown size={24} strokeWidth={1.8} />
             </Link>
-            <Link aria-label="Столбцы" className={styles.viewButton} href="/operations/bars">
+            <Link aria-label="Столбцы" className={styles.viewButton} href={operationsChartHref("/operations/bars", activePeriod)}>
               <BarChart3 size={24} strokeWidth={1.8} />
             </Link>
           </div>
@@ -148,21 +145,21 @@ export function OperationsBreakdownCard() {
         <div className={styles.chartSection}>
           <div className={styles.monthSwitcher}>
             <button
-              aria-label="Предыдущий месяц"
+              aria-label="Предыдущий период"
               className={styles.monthArrow}
-              disabled={monthIndex === 0}
-              onClick={() => setMonthIndex((value) => Math.max(0, value - 1))}
+              disabled={navigatorIndex === 0}
+              onClick={() => setNavigatorIndex((value) => Math.max(0, value - 1))}
               type="button"
             >
               <ChevronLeft aria-hidden size={16} strokeWidth={2} />
             </button>
-            <span>{monthLabel}</span>
+            <span>{navigatorLabel}</span>
             <button
-              aria-label="Следующий месяц"
+              aria-label="Следующий период"
               className={styles.monthArrow}
-              disabled={monthIndex >= operationsScreenData.monthLabels.length - 1}
+              disabled={navigatorIndex >= navigator.labels.length - 1}
               onClick={() =>
-                setMonthIndex((value) => Math.min(operationsScreenData.monthLabels.length - 1, value + 1))
+                setNavigatorIndex((value) => Math.min(navigator.labels.length - 1, value + 1))
               }
               type="button"
             >
@@ -172,27 +169,24 @@ export function OperationsBreakdownCard() {
 
           <div className={styles.chartBlock}>
             <div className={styles.gaugeStage}>
-              <svg
-                aria-label="Распределение расходов"
-                className={styles.gaugeSvg}
-                role="img"
-                viewBox={`0 0 ${GAUGE.width} ${GAUGE.height}`}
-              >
-                {gaugeSegments.map((segment) => {
-                  const isActive = activeBreakdownId === segment.id;
+              <div aria-hidden className={styles.gaugeArcs}>
+                {(["transfers", "hotels", "groceries"] as const).map((id) => {
+                  const isActive = activeBreakdownId === id;
 
                   return (
-                    <path
-                      className={styles.gaugeSegment}
-                      d={segment.path}
-                      key={segment.id}
-                      onClick={() => selectBreakdown(segment.id)}
-                      stroke={segment.color}
+                    <button
+                      aria-label={`${breakdown.find((item) => item.id === id)?.label ?? id}`}
+                      className={cn(styles.arcSegment, arcClass[id])}
+                      key={id}
+                      onClick={() => selectBreakdown(id)}
                       style={{ opacity: isActive ? 1 : activeBreakdownId ? 0.42 : 1 }}
-                    />
+                      type="button"
+                    >
+                      <img alt="" className={styles.arcImage} src={ARC_SRC[id]} />
+                    </button>
                   );
                 })}
-              </svg>
+              </div>
 
               <div className={styles.gaugeCenter}>
                 <span>Всего</span>

@@ -122,7 +122,7 @@
 }
 
 .chartBlock {
-  align-items: flex-start;
+  align-items: center;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -133,25 +133,57 @@
   height: 142px;
   margin: 0 auto;
   max-width: 315px;
-  overflow: visible;
-  padding-right: 32px;
+  overflow: hidden;
   position: relative;
   width: 100%;
 }
 
-.gaugeSvg {
-  display: block;
-  height: 142px;
-  overflow: visible;
-  width: 100%;
+.gaugeArcs {
+  height: 252.512px;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: calc(50% + 55.26px);
+  transform: translate(-50%, -50%);
+  width: 252.512px;
 }
 
-.gaugeSegment {
+.arcSegment {
+  background: transparent;
+  border: none;
   cursor: pointer;
-  fill: none;
-  stroke-linecap: round;
-  stroke-width: 32;
+  padding: 0;
+  pointer-events: auto;
+  position: absolute;
   transition: opacity 180ms ease;
+}
+
+.arcTransfers {
+  bottom: 44.68%;
+  left: 50.63%;
+  right: 0;
+  top: 0.28%;
+}
+
+.arcHotels {
+  bottom: 67.11%;
+  left: 7.93%;
+  right: 50%;
+  top: 0.2%;
+}
+
+.arcGroceries {
+  bottom: 43.84%;
+  left: 0;
+  right: 79.82%;
+  top: 28.2%;
+}
+
+.arcImage {
+  display: block;
+  height: 100%;
+  max-width: none;
+  width: 100%;
 }
 
 .gaugeCenter {
@@ -159,11 +191,12 @@
   display: flex;
   flex-direction: column;
   gap: 0;
-  left: 110px;
+  left: 50%;
   pointer-events: none;
   position: absolute;
   text-align: center;
   top: 83px;
+  transform: translateX(-50%);
   width: 106px;
   z-index: 2;
 }
@@ -212,17 +245,17 @@
 }
 
 .percentBubble50 {
-  left: calc(50% + 110.3px);
+  left: calc(50% + 95.86px);
   top: calc(50% - 22.42px);
 }
 
 .percentBubble40 {
-  left: calc(50% - 69.7px);
+  left: calc(50% - 84.14px);
   top: calc(50% - 36.37px);
 }
 
 .percentBubble10 {
-  left: calc(50% - 116.19px);
+  left: calc(50% - 130.63px);
   top: calc(50% + 33px);
 }
 
@@ -316,20 +349,15 @@
     width: calc(50% - 3px);
   }
 
-  .gaugeCenter {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
   .percentBubble50 {
-    left: calc(50% + 92px);
+    left: calc(50% + 78px);
   }
 
   .percentBubble40 {
-    left: calc(50% - 58px);
+    left: calc(50% - 72px);
   }
 
   .percentBubble10 {
-    left: calc(50% - 98px);
+    left: calc(50% - 112px);
   }
 }

@@ -3,19 +3,15 @@
 import Link from "next/link";
 import { ArrowUpRight, TrendingUp } from "lucide-react";
 
-import { dashboardData } from "@/shared/data/dashboard";
+import { useDashboardData } from "@/shared/api/dashboard-context";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 
 import styles from "./stat-cards.module.css";
 
-const incomeRemainderParts = formatCurrencyParts(dashboardData.incomeRemainder);
-const incomeProgressPercent = Math.min(
-  100,
-  Math.round((dashboardData.incomeRemainder / dashboardData.receipts) * 100),
-);
-
 export function InvestmentStatCard() {
+  const { dashboard } = useDashboardData();
+
   return (
     <Link className={styles.cardLink} href="/investments">
       <section className={cn(styles.card, styles.investmentCard)}>
@@ -23,9 +19,9 @@ export function InvestmentStatCard() {
           <div className={styles.muted}>Инвестиции</div>
           <div className={styles.trend}>
             <TrendingUp size={32} strokeWidth={2.2} />
-            <span>{dashboardData.investmentPercent.toLocaleString("ru-RU")} %</span>
+            <span>{dashboard.investmentPercent.toLocaleString("ru-RU")} %</span>
           </div>
-          <div className={styles.positivePill}>{dashboardData.investmentGrowth}</div>
+          <div className={styles.positivePill}>{dashboard.investmentGrowth}</div>
         </div>
         <div className={styles.detailButton}>
           Подробнее
@@ -37,6 +33,13 @@ export function InvestmentStatCard() {
 }
 
 export function IncomeStatCard() {
+  const { dashboard } = useDashboardData();
+  const incomeRemainderParts = formatCurrencyParts(dashboard.incomeRemainder);
+  const incomeProgressPercent = Math.min(
+    100,
+    Math.round((dashboard.incomeRemainder / dashboard.receipts) * 100),
+  );
+
   return (
     <Link className={styles.cardLink} href="/income">
       <section className={cn(styles.card, styles.incomeCard)}>

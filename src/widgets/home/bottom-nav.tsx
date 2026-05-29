@@ -17,25 +17,25 @@ const navItems = [
     match: (path: string) => path === "/",
   },
   {
-    id: "stats",
-    href: "/operations",
-    label: "Аналитика",
+    id: "history",
+    href: "/operations/trends",
+    label: "История",
     icon: "/dashboard/nav/graph.svg",
-    match: (path: string) => path.startsWith("/operations"),
+    match: (path: string) => path.startsWith("/operations/trends"),
   },
   {
-    id: "tasks",
-    href: "/categories",
-    label: "Задачи",
+    id: "goals",
+    href: "/goals",
+    label: "Мои цели",
     icon: "/dashboard/nav/clipboard.svg",
-    match: (path: string) => path.startsWith("/categories"),
+    match: (path: string) => path.startsWith("/goals"),
   },
   {
-    id: "settings",
-    href: "/total",
-    label: "Настройки",
+    id: "categories",
+    href: "/categories",
+    label: "Категории",
     icon: "/dashboard/nav/settings.svg",
-    match: (path: string) => path.startsWith("/total"),
+    match: (path: string) => path.startsWith("/categories"),
   },
 ] as const;
 
@@ -47,7 +47,10 @@ export function BottomNav() {
       <div className={styles.navPill}>
         {navItems.map((item) => {
           const isActive = item.match(pathname);
-          const iconSrc = "iconInactive" in item && !isActive ? item.iconInactive : item.icon;
+          const iconSrc =
+            item.id === "home" && !isActive && "iconInactive" in item
+              ? item.iconInactive
+              : item.icon;
 
           return (
             <Link
@@ -60,7 +63,10 @@ export function BottomNav() {
               <img
                 alt=""
                 aria-hidden
-                className={cn(styles.navIcon, isActive && item.id !== "home" && styles.navIconActive)}
+                className={cn(
+                  styles.navIcon,
+                  isActive && item.id !== "home" && styles.navIconActive,
+                )}
                 draggable={false}
                 src={iconSrc}
               />

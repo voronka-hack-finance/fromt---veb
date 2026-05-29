@@ -1,0 +1,25 @@
+.avatar {
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+  flex-shrink: 0;
+  height: 52px;
+  overflow: hidden;
+  padding: 0;
+  position: relative;
+  transition: transform 180ms ease;
+  width: 52px;
+}
+
+.avatar:hover,
+.avatar:focus-visible {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.image {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  width: 100%;
+}

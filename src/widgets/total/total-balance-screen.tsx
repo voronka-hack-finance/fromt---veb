@@ -8,13 +8,14 @@ import {
   Info,
   SlidersHorizontal,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useRef, useState } from "react";
 
-import { totalBalanceScreenData } from "@/shared/data/total-balance";
+import { useTotalBalanceQuery, type TotalBalanceResponse } from "@/shared/api/total-balance";
 import { buildLineChartPaths } from "@/shared/lib/charts";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { useCenteredHorizontalScroll } from "@/shared/lib/use-centered-horizontal-scroll";
+import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./total-balance-screen.module.css";
@@ -22,13 +23,6 @@ import styles from "./total-balance-screen.module.css";
 const chartWidth = 328;
 const chartHeight = 128;
 const chartPadding = 12;
-const trendPath = buildLineChartPaths(
-  totalBalanceScreenData.trend.map((point) => ({ value: point.value })),
-  chartWidth,
-  chartHeight,
-  chartPadding,
-);
-const { whole, fraction } = formatCurrencyParts(totalBalanceScreenData.amount);
 
 function ScenarioCard({
   isActive,
@@ -38,7 +32,7 @@ function ScenarioCard({
   tag,
   tone,
   onSelect,
-}: (typeof totalBalanceScreenData.scenarios)[number] & {
+}: TotalBalanceResponse["scenarios"][number] & {
   isActive: boolean;
   onSelect: () => void;
 }) {
@@ -72,16 +66,57 @@ function ScenarioCard({
 }
 
 export function TotalBalanceScreen() {
-  const { viewportRef: scenarioViewportRef, activeIndex, scrollToIndex } =
-    useCenteredHorizontalScroll<HTMLDivElement>();
-  const [activeChartIndex, setActiveChartIndex] = useState(3);
-  const [activeFilterId, setActiveFilterId] = useState(
-    totalBalanceScreenData.filters[1]?.id ?? totalBalanceScreenData.filters[0]?.id ?? "all",
+  const query = useTotalBalanceQuery();
+
+  return (
+    <QueryBoundary loadingLabel="Загрузка баланса..." query={query}>
+      {(screenData) => <TotalBalanceScreenContent screenData={screenData} />}
+    </QueryBoundary>
   );
-  const scenarioCount = totalBalanceScreenData.scenarios.length;
-  const sliderHandlePosition = scenarioCount > 1 ? (activeIndex / (scenarioCount - 1)) * 100 : 50;
-  const activeTrendPoint = totalBalanceScreenData.trend[activeChartIndex];
+}
+
+function TotalBalanceScreenContent({ screenData }: { screenData: TotalBalanceResponse }) {
+  const accountFilters = screenData.filters.filter((filter) => filter.id !== "all");
+  const scenarioSectionRef = useRef<HTMLElement>(null);
+  const { viewportRef: scenarioViewportRef, activeIndex, scrollToIndex } =
+    useCenteredHorizontalScroll<HTMLDivElement>({ initialIndex: 1 });
+  const [activeChartIndex, setActiveChartIndex] = useState(screenData.defaultChartIndex);
+  const [activeFilterId, setActiveFilterId] = useState(screenData.defaultFilterId);
+
+  const activeFilter =
+    screenData.filters.find((filter) => filter.id === activeFilterId) ??
+    screenData.filters[0];
+  const activeScenario = screenData.scenarios[activeIndex] ?? screenData.scenarios[1];
+  const scenarioCount = screenData.scenarios.length;
+
+  const trendPath = useMemo(
+    () =>
+      buildLineChartPaths(
+        activeFilter.trend.map((point) => ({ value: point.value })),
+        chartWidth,
+        chartHeight,
+        chartPadding,
+      ),
+    [activeFilter],
+  );
+
+  const amountParts = formatCurrencyParts(activeFilter.amount);
+  const activeTrendPoint = activeFilter.trend[activeChartIndex];
   const activeCoordinate = trendPath.coordinates[activeChartIndex];
+
+  const handleFilterChange = (filterId: string) => {
+    setActiveFilterId(filterId);
+    setActiveChartIndex((index) => {
+      const nextLength =
+        screenData.filters.find((filter) => filter.id === filterId)?.trend.length ?? 1;
+
+      return Math.min(index, nextLength - 1);
+    });
+  };
+
+  const scrollToScenarios = () => {
+    scenarioSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
 
   return (
     <main className={styles.stage}>
@@ -91,7 +126,7 @@ export function TotalBalanceScreen() {
             <Link aria-label="Назад" className={styles.backButton} href="/">
               <ArrowLeft size={22} strokeWidth={2} />
             </Link>
-            <h1 className={styles.title}>{totalBalanceScreenData.title}</h1>
+            <h1 className={styles.title}>{screenData.title}</h1>
           </header>
         </Reveal>
 
@@ -99,20 +134,27 @@ export function TotalBalanceScreen() {
           <Reveal delay={0.08}>
             <section className={styles.balanceCard}>
               <div className={styles.amount}>
-                <span>{whole}</span>
-                <span className={styles.amountFraction}>, {fraction} ₽</span>
+                <span>{amountParts.whole}</span>
+                <span className={styles.amountFraction}>, {amountParts.fraction} ₽</span>
               </div>
-              <p className={styles.subtitle}>{totalBalanceScreenData.subtitle}</p>
+              <p className={styles.subtitle}>{activeFilter.subtitle}</p>
 
               <div className={styles.filterRow}>
-                <button aria-label="Фильтры" className={styles.filterButton} type="button">
+                <button
+                  aria-label="Все счета"
+                  aria-pressed={activeFilterId === "all"}
+                  className={cn(styles.filterButton, activeFilterId === "all" && styles.filterButtonActive)}
+                  onClick={() => handleFilterChange("all")}
+                  type="button"
+                >
                   <SlidersHorizontal size={18} strokeWidth={2} />
                 </button>
-                {totalBalanceScreenData.filters.slice(1).map((filter) => (
+                {accountFilters.map((filter) => (
                   <button
+                    aria-pressed={activeFilterId === filter.id}
                     className={cn(styles.valueChip, activeFilterId === filter.id && styles.valueChipActive)}
                     key={filter.id}
-                    onClick={() => setActiveFilterId(filter.id)}
+                    onClick={() => handleFilterChange(filter.id)}
                     type="button"
                   >
                     <CircleDollarSign size={18} strokeWidth={1.8} />
@@ -150,28 +192,28 @@ export function TotalBalanceScreen() {
                   </defs>
 
                   <motion.path
+                    animate={{ opacity: 1 }}
                     className={styles.chartArea}
                     d={trendPath.areaPath}
                     fill="url(#balanceArea)"
                     initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6 }}
+                    key={`${activeFilterId}-area`}
+                    transition={{ duration: 0.35 }}
                   />
                   <motion.path
+                    animate={{ pathLength: 1 }}
                     className={styles.chartLine}
                     d={trendPath.linePath}
                     initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                    key={`${activeFilterId}-line`}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                   />
 
                   {trendPath.coordinates.map((point, index) => {
                     const isActive = index === activeChartIndex;
 
                     return (
-                      <g key={`${point.x}-${point.y}`}>
+                      <g key={`${activeFilterId}-${point.x}-${point.y}`}>
                         <circle
                           className={styles.chartHitArea}
                           cx={point.x}
@@ -184,11 +226,8 @@ export function TotalBalanceScreen() {
                           className={cn(styles.chartPoint, isActive && styles.chartPointActive)}
                           cx={point.x}
                           cy={point.y}
-                          initial={{ scale: 0 }}
                           r={isActive ? 5.5 : 3.5}
-                          viewport={{ once: true }}
-                          whileInView={{ scale: 1 }}
-                          transition={{ delay: 0.3 + index * 0.05, type: "spring", stiffness: 240, damping: 18 }}
+                          transition={{ type: "spring", stiffness: 260, damping: 20 }}
                         />
                       </g>
                     );
@@ -210,8 +249,15 @@ export function TotalBalanceScreen() {
                 </svg>
 
                 <div className={styles.monthRow}>
-                  {totalBalanceScreenData.trend.map((point) => (
-                    <span key={point.month}>{point.month}</span>
+                  {activeFilter.trend.map((point, index) => (
+                    <button
+                      className={cn(styles.monthButton, index === activeChartIndex && styles.monthButtonActive)}
+                      key={`${activeFilterId}-${point.month}`}
+                      onClick={() => setActiveChartIndex(index)}
+                      type="button"
+                    >
+                      {point.month}
+                    </button>
                   ))}
                 </div>
               </div>
@@ -219,43 +265,42 @@ export function TotalBalanceScreen() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <button className={styles.reserveCard} type="button">
+            <button className={styles.reserveCard} onClick={scrollToScenarios} type="button">
               <div className={styles.reserveTop}>
                 <div className={styles.reserveHeadline}>
                   <span>Хватит на</span>
-                  <strong>{totalBalanceScreenData.reserveCard.months} месяца</strong>
+                  <strong>{activeScenario.months} месяца</strong>
                 </div>
-                <Info size={21} strokeWidth={2} />
+                <Info aria-hidden size={21} strokeWidth={2} />
               </div>
               <p className={styles.reserveLabel}>Столько вы тратите в месяц</p>
               <div className={styles.reserveBottom}>
                 <div className={styles.reserveValue}>
-                  {formatCurrencyParts(totalBalanceScreenData.reserveCard.monthlySpend).whole} ₽
+                  {formatCurrencyParts(activeScenario.avgSpend).whole} ₽
                 </div>
-                <div className={styles.reserveBadge}>{totalBalanceScreenData.reserveCard.badge}</div>
+                <div className={styles.reserveBadge}>{activeScenario.tag}</div>
               </div>
             </button>
           </Reveal>
 
           <Reveal delay={0.16}>
-            <section className={styles.scenarioSection}>
+            <section className={styles.scenarioSection} ref={scenarioSectionRef}>
               <div className={styles.sliderTrack}>
-                <span
-                  className={[styles.sliderDot, activeIndex === 0 ? styles.sliderDotActive : ""].join(" ")}
-                />
-                <span className={styles.sliderHandleRail}>
-                  <motion.span
-                    animate={{ left: `${sliderHandlePosition}%` }}
-                    className={styles.sliderHandle}
-                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                </span>
-                <span
-                  className={[
-                    styles.sliderDot,
-                    activeIndex === scenarioCount - 1 ? styles.sliderDotActive : "",
-                  ].join(" ")}
-                />
+                <div className={styles.sliderRail}>
+                  {screenData.scenarios.map((scenario, index) => (
+                    <button
+                      aria-label={`Сценарий ${index + 1}`}
+                      aria-pressed={index === activeIndex}
+                      className={cn(styles.sliderDot, index === activeIndex && styles.sliderDotActive)}
+                      key={scenario.id}
+                      onClick={() => scrollToIndex(index, "smooth")}
+                      style={{
+                        left: `${scenarioCount > 1 ? (index / (scenarioCount - 1)) * 100 : 50}%`,
+                      }}
+                      type="button"
+                    />
+                  ))}
+                </div>
               </div>
 
               <div className={styles.scenarioViewport} ref={scenarioViewportRef}>
@@ -266,7 +311,7 @@ export function TotalBalanceScreen() {
                   viewport={{ once: true }}
                   transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
                 >
-                  {totalBalanceScreenData.scenarios.map((scenario, index) => {
+                  {screenData.scenarios.map((scenario, index) => {
                     const isActive = index === activeIndex;
 
                     return (

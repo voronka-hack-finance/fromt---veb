@@ -1,8 +1,10 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-import { categoryRadarMetrics, dashboardData } from "@/shared/data/dashboard";
+import type { DashboardResponse } from "@/shared/api/dashboard";
+import { useDashboardData } from "@/shared/api/dashboard-context";
 
 import styles from "./categories-card.module.css";
 
@@ -18,7 +20,7 @@ const assets = {
   radarDotAlt: "/dashboard/categories/radar-dot-alt.svg",
 } as const;
 
-type MetricId = (typeof categoryRadarMetrics)[number]["id"];
+type MetricId = DashboardResponse["categoryRadarMetrics"][number]["id"];
 
 const hitAreaStyle = {
   background: "transparent",
@@ -59,15 +61,6 @@ const unlabeledDots = [
   { id: "credit" as const, dotClass: styles.radarDotBottom, dotSrc: assets.radarDot },
 ] as const;
 
-const allDots = [
-  ...unlabeledDots,
-  ...(["expenses", "reserve", "protection"] as const).map((metricId) => ({
-    id: metricId,
-    dotClass: labeledMetrics[metricId].dotClass,
-    dotSrc: labeledMetrics[metricId].dotSrc,
-  })),
-];
-
 function ChartLayer({ className, src }: { className: string; src: string }) {
   return (
     <div className={className}>
@@ -95,13 +88,27 @@ function getActiveLabelStyle(isActive: boolean) {
 }
 
 export function CategoriesCard() {
+  const router = useRouter();
+  const { categoryRadarMetrics, dashboard } = useDashboardData();
   const [activeMetricId, setActiveMetricId] = useState<MetricId>("reserve");
 
-  const activeMetric = categoryRadarMetrics.find((metric) => metric.id === activeMetricId) ?? categoryRadarMetrics[1];
+  const allDots = [
+    ...unlabeledDots,
+    ...(["expenses", "reserve", "protection"] as const).map((metricId) => ({
+      id: metricId,
+      dotClass: labeledMetrics[metricId].dotClass,
+      dotSrc: labeledMetrics[metricId].dotSrc,
+    })),
+  ];
+
+  const activeMetric =
+    categoryRadarMetrics.find((metric) => metric.id === activeMetricId) ?? categoryRadarMetrics[1];
 
   const handleSelect = (metricId: MetricId) => {
     setActiveMetricId(metricId);
   };
+
+  const openOperations = () => router.push("/operations");
 
   return (
     <section className={styles.card}>
@@ -114,7 +121,19 @@ export function CategoriesCard() {
         <h2 className={styles.title}>Ваши категории</h2>
       </div>
 
-      <div aria-label="Распределение категорий" className={styles.chart} role="group">
+      <div
+        aria-label="Открыть операции"
+        className={styles.chart}
+        onClick={openOperations}
+        onKeyDown={(event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openOperations();
+          }
+        }}
+        role="button"
+        tabIndex={0}
+      >
         <ChartLayer className={`${styles.chartLayer} ${styles.radarGrid1}`} src={assets.radarGrid1} />
         <ChartLayer className={`${styles.chartLayer} ${styles.radarGrid2}`} src={assets.radarGrid2} />
         <ChartLayer className={`${styles.chartLayer} ${styles.radarGrid3}`} src={assets.radarGrid3} />
@@ -138,7 +157,10 @@ export function CategoriesCard() {
               aria-pressed={activeMetricId === dot.id}
               className={`${styles.chartLayer} ${dot.dotClass}`}
               key={`hit-${dot.id}`}
-              onClick={() => handleSelect(dot.id)}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleSelect(dot.id);
+              }}
               style={hitAreaStyle}
               type="button"
             />
@@ -160,7 +182,10 @@ export function CategoriesCard() {
               aria-pressed={isActive}
               className={`${styles.tag} ${ui.tagClass}`}
               key={`tag-${metricId}`}
-              onClick={() => handleSelect(metricId)}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleSelect(metricId);
+              }}
               style={getActiveTagStyle(isActive)}
               type="button"
             >
@@ -184,7 +209,10 @@ export function CategoriesCard() {
               aria-pressed={isActive}
               className={`${styles.label} ${ui.labelClass}`}
               key={`label-${metricId}`}
-              onClick={() => handleSelect(metricId)}
+              onClick={(event) => {
+                event.stopPropagation();
+                handleSelect(metricId);
+              }}
               style={getActiveLabelStyle(isActive)}
               type="button"
             >
@@ -194,7 +222,12 @@ export function CategoriesCard() {
         })}
       </div>
 
-      <div aria-live="polite" className={styles.summary}>
+      <button
+        aria-label="Открыть операции"
+        className={styles.summary}
+        onClick={openOperations}
+        type="button"
+      >
         <div className={styles.summaryValue} key={activeMetric.id}>
           {activeMetric.percent} %
         </div>
@@ -203,9 +236,9 @@ export function CategoriesCard() {
           <br />
           финансы и делаете это лучше
           <br />
-          {dashboardData.betterThanUsers}% пользователей
+          {dashboard.betterThanUsers}% пользователей
         </p>
-      </div>
+      </button>
     </section>
   );
 }

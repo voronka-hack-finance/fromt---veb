@@ -1,0 +1,443 @@
+.stage {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.shell {
+  margin: 0 auto;
+  max-width: 393px;
+  min-height: 100vh;
+  padding: 8px 14px 32px;
+  position: relative;
+}
+
+.shell::before {
+  background:
+    radial-gradient(circle at 50% 84%, rgba(255, 255, 255, 0.92), transparent 32%),
+    radial-gradient(circle at 92% 22%, rgba(110, 227, 113, 0.08), transparent 22%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.header,
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0 0;
+}
+
+.headerLeft,
+.headerActions {
+  align-items: center;
+  display: flex;
+}
+
+.headerLeft {
+  gap: 16px;
+}
+
+.headerActions {
+  background: rgba(243, 247, 244, 0.9);
+  border-radius: 30px;
+  gap: 16px;
+  padding: 14px 16px;
+}
+
+.iconButton,
+.actionButton,
+.viewButton,
+.periodButton {
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+}
+
+.iconButton,
+.actionButton,
+.viewButton,
+.periodButton,
+.operationCard {
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.iconButton {
+  background: rgba(243, 247, 244, 0.9);
+  border-radius: 50%;
+  color: #202020;
+  height: 52px;
+  width: 52px;
+}
+
+.iconButton:hover,
+.iconButton:focus-visible,
+.actionButton:hover,
+.actionButton:focus-visible,
+.viewButton:hover,
+.viewButton:focus-visible,
+.periodButton:hover,
+.periodButton:focus-visible {
+  transform: translateY(-1px);
+}
+
+.actionButton {
+  background: transparent;
+  color: #212121;
+  padding: 0;
+}
+
+.title {
+  color: #212121;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.chartCard {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(153, 153, 153, 0.18);
+  border-radius: 32px;
+  overflow: hidden;
+  padding: 8px 8px 16px;
+}
+
+.cardTop {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.periodToggle {
+  background: #f7f9fb;
+  border: 1px solid rgba(153, 153, 153, 0.3);
+  border-radius: 40px;
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+}
+
+.periodButton {
+  background: transparent;
+  border-radius: 40px;
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  min-height: 42px;
+  min-width: 72px;
+}
+
+.periodButtonActive {
+  background: #1f1f1f;
+  color: white;
+}
+
+.viewControls {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.viewButton {
+  background: transparent;
+  color: #8a8a8a;
+  padding: 0;
+}
+
+.viewButtonActive {
+  color: #151515;
+}
+
+.chartWrap {
+  margin-top: 16px;
+  position: relative;
+}
+
+.scaleLabels {
+  color: #767676;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 8px;
+  gap: 50px;
+  left: 0;
+  position: absolute;
+  top: 6px;
+}
+
+.chart {
+  display: block;
+  height: auto;
+  margin-left: 34px;
+  width: calc(100% - 34px);
+}
+
+.gridLine {
+  stroke: rgba(179, 179, 179, 0.5);
+  stroke-width: 1;
+}
+
+.barMuted {
+  fill: #e9ecf1;
+}
+
+.barActive {
+  fill: #5fe274;
+}
+
+.trendLine {
+  stroke: #5fe274;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.point {
+  fill: #5fe274;
+}
+
+.pointActive {
+  fill: #1f1f1f;
+  stroke: #5fe274;
+  stroke-width: 2;
+}
+
+.insightBubble {
+  align-items: center;
+  background: #efefef;
+  border-radius: 20px;
+  box-shadow:
+    0 91px 136px rgba(0, 0, 0, 0.08),
+    0 38px 56px rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: 6px;
+  left: 147px;
+  min-height: 36px;
+  padding: 3px 12px 3px 6px;
+  position: absolute;
+  top: 23px;
+}
+
+.bubbleIcon {
+  align-items: center;
+  background: #b1f670;
+  border-radius: 50%;
+  color: #3a7d34;
+  display: inline-flex;
+  height: 21px;
+  justify-content: center;
+  width: 21px;
+}
+
+.insightBubble strong,
+.insightBubble span {
+  display: block;
+  font-family: var(--font-heading), sans-serif;
+  line-height: 1.2;
+}
+
+.insightBubble strong {
+  color: #232323;
+  font-size: 10px;
+}
+
+.insightBubble span {
+  color: #767676;
+  font-size: 8px;
+}
+
+.chartFooter {
+  align-items: flex-start;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: auto 1fr;
+  margin-top: 6px;
+  padding: 0 10px;
+}
+
+.chartFooter strong {
+  color: #2e2e30;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+}
+
+.chartFooter p {
+  color: #767676;
+  font-size: 10px;
+  line-height: 1.25;
+  margin: 0;
+  max-width: 220px;
+}
+
+.listSection {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.yesterdayHeader {
+  align-items: center;
+  color: #1f1f1f;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  gap: 12px;
+  padding: 0 8px;
+}
+
+.yesterdayHeader strong {
+  font-size: 14px;
+  margin-left: auto;
+}
+
+.headerDivider {
+  background: rgba(153, 153, 153, 0.35);
+  height: 1px;
+  width: 114px;
+}
+
+.operationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.operationCard {
+  background: rgba(255, 255, 255, 0.82);
+  border: none;
+  border-radius: 28px;
+  cursor: pointer;
+  overflow: hidden;
+  padding: 14px 18px 16px 12px;
+  text-align: left;
+  width: 100%;
+}
+
+.operationCard:hover,
+.operationCard:focus-visible {
+  box-shadow: 0 14px 28px rgba(31, 39, 26, 0.12);
+  transform: translateY(-2px);
+}
+
+.operationRow {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.operationIconWrap {
+  align-items: center;
+  border: 1px solid rgba(153, 153, 153, 0.35);
+  border-radius: 999px;
+  color: #606060;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.operationIconAccent {
+  border-color: #bdb4f2;
+  color: #8277dc;
+}
+
+.operationIconSuccess {
+  border-color: #40a93d;
+  color: #40a93d;
+}
+
+.operationText {
+  flex: 1;
+  min-width: 0;
+}
+
+.operationText span {
+  color: #999;
+  display: block;
+  font-size: 10px;
+  line-height: 1.25;
+}
+
+.operationText p {
+  color: #1f1f1f;
+  font-size: 12px;
+  line-height: 1.25;
+  margin: 2px 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.operationMeta {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bankChip {
+  align-items: center;
+  background: #e1e1e1;
+  border-radius: 8px;
+  color: #1f1f1f;
+  display: inline-flex;
+  font-size: 8px;
+  gap: 4px;
+  min-height: 24px;
+  padding: 4px 8px;
+}
+
+.bankChipWarn {
+  background: #f6ecb8;
+}
+
+.bankChipDanger {
+  background: #f0d6d5;
+}
+
+.bankMark {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: inline-flex;
+  font-size: 8px;
+  font-weight: 700;
+  height: 12px;
+  justify-content: center;
+  width: 12px;
+}
+
+.amountOutcome,
+.amountIncome {
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.amountOutcome {
+  color: #d85752;
+}
+
+.amountIncome {
+  color: #40a93d;
+}

@@ -1,0 +1,131 @@
+.cardLink {
+  color: inherit;
+  display: flex;
+  height: 100%;
+  text-decoration: none;
+  transition: transform 180ms ease;
+}
+
+.cardLink:hover,
+.cardLink:focus-visible {
+  transform: translateY(-2px);
+}
+
+.card {
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 20px;
+  box-shadow: none;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  height: 100%;
+  min-height: 221px;
+  padding: 20px;
+  width: 100%;
+}
+
+.cardBody {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 0;
+}
+
+.muted {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.mutedOnGreen {
+  color: rgba(20, 53, 19, 0.76);
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.trend {
+  align-items: center;
+  color: #1f1f1f;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  gap: 4px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.positivePill {
+  background: #5fe274;
+  border-radius: 999px;
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  padding: 4px 8px;
+  text-align: center;
+  width: 100%;
+}
+
+.bigValue {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.progressTrack {
+  background: #e9edf0;
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progressFill {
+  background: #5fe274;
+  border-radius: 6px 0 0 6px;
+  height: 100%;
+  transition: width 280ms ease;
+}
+
+.level {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.detailButton {
+  align-items: center;
+  background: #e1e1e1;
+  border-radius: 14px;
+  color: #1f1f1f;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  gap: 4px;
+  justify-content: center;
+  margin-top: auto;
+  padding: 8px 8px 8px 12px;
+  width: 100%;
+}
+
+.incomeCard {
+  background: #40a93d;
+  border-color: transparent;
+  color: #1f1f1f;
+}
+
+.investmentCard {
+  background: #fff;
+}

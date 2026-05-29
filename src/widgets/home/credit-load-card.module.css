@@ -1,0 +1,162 @@
+.card {
+  background: #232323;
+  border: none;
+  border-radius: 36px;
+  box-shadow: none;
+  overflow: hidden;
+  padding: 16px;
+  width: 100%;
+}
+
+.body {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.tag {
+  background: #fff;
+  border-radius: 100px;
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 16px;
+  padding: 6px 10px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.menuButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 0;
+}
+
+.menuIcon {
+  display: block;
+  height: 24px;
+  width: 24px;
+}
+
+.gauge {
+  align-items: center;
+  aspect-ratio: 288 / 168;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 288px;
+  padding: 0;
+  position: relative;
+  width: 100%;
+}
+
+.gauge:hover,
+.gauge:focus-visible {
+  opacity: 0.95;
+}
+
+.gaugeSvg {
+  display: block;
+  height: 100%;
+  overflow: visible;
+  width: 100%;
+}
+
+.gaugeTrackArc,
+.gaugeProgressArc {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 26;
+}
+
+.gaugeTrackArc {
+  stroke: #e9edf0;
+}
+
+.gaugeProgressArc {
+  stroke: #5fe274;
+}
+
+.gaugeNeedle {
+  stroke: #999;
+  stroke-linecap: round;
+  stroke-width: 2;
+}
+
+.center {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  left: 50%;
+  position: absolute;
+  top: 40.05%;
+  transform: translateX(-50%);
+  width: 26.74%;
+  z-index: 1;
+}
+
+.smiley {
+  display: block;
+  height: 40px;
+  width: 40px;
+}
+
+.scoreBlock {
+  align-items: center;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 700;
+  line-height: normal;
+  text-align: center;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.score {
+  font-size: 24px;
+}
+
+.scoreLabel {
+  font-size: 12px;
+}
+
+.cta {
+  background: #fff;
+  border: 1px solid #40a93d;
+  border-radius: 36px;
+  color: #40a93d;
+  cursor: pointer;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  padding: 14px 10px;
+  width: 100%;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  transform: translateY(-1px);
+}

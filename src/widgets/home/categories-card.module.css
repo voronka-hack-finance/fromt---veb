@@ -1,0 +1,264 @@
+.card {
+  border: none;
+  border-radius: 36px;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  isolation: isolate;
+  overflow: visible;
+  padding: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.cardBg {
+  height: 100%;
+  inset: 0;
+  object-fit: cover;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  z-index: 0;
+}
+
+.header,
+.chart,
+.summary {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 40px;
+  width: 100%;
+}
+
+.iconButton {
+  align-items: center;
+  background: rgba(64, 169, 61, 0.2);
+  border: 1px solid rgba(64, 169, 61, 0.25);
+  border-radius: 100px;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 14px;
+}
+
+.icon {
+  display: block;
+  height: 16px;
+  width: 16px;
+}
+
+.title {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: normal;
+  margin: 0;
+}
+
+.chart {
+  aspect-ratio: 300.31 / 300.958;
+  margin: 0 auto;
+  max-width: 300.31px;
+  overflow: visible;
+  position: relative;
+  width: 100%;
+}
+
+.chartLayer {
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+.chartImage {
+  display: block;
+  height: 100%;
+  object-fit: fill;
+  width: 100%;
+}
+
+.radarGrid1 {
+  height: 73.21%;
+  left: calc(50% - 7.16%);
+  top: 16.61%;
+  width: 85.68%;
+}
+
+.radarGrid2 {
+  height: 52.61%;
+  left: calc(50% - 7.33%);
+  top: 27.52%;
+  width: 61.75%;
+}
+
+.radarGrid3 {
+  height: 31.15%;
+  left: calc(50% - 7.33%);
+  top: 37.9%;
+  width: 36.77%;
+}
+
+.radarDataFill {
+  height: 67.32%;
+  left: calc(50% - 4.39%);
+  top: 22.15%;
+  width: 69.72%;
+}
+
+.radarDataStroke {
+  height: 36.69%;
+  left: calc(50% + 0.82%);
+  top: 52.79%;
+  width: 58.62%;
+}
+
+.radarDotRightMid,
+.radarDotLeftTop,
+.radarDotLeftMid,
+.radarDotLeftBottom,
+.radarDotBottom,
+.radarDotRightTop {
+  aspect-ratio: 1;
+  height: auto;
+  width: 2.77%;
+}
+
+.radarDotRightMid {
+  left: calc(50% + 30.48%);
+  top: 51.4%;
+}
+
+.radarDotLeftTop {
+  left: calc(50% - 25.37%);
+  top: 20.94%;
+}
+
+.radarDotLeftMid {
+  left: calc(50% - 38.93%);
+  top: 51.4%;
+}
+
+.radarDotLeftBottom {
+  left: calc(50% - 28.15%);
+  top: 87.06%;
+}
+
+.radarDotBottom {
+  left: calc(50% + 2.38%);
+  top: 68.36%;
+}
+
+.radarDotRightTop {
+  left: calc(50% + 7.93%);
+  top: 26.13%;
+}
+
+.tag {
+  align-items: center;
+  background: #1f1f1f;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  font-family: var(--font-body), sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  height: 18.751px;
+  justify-content: center;
+  line-height: normal;
+  padding: 2.083px 8.334px;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.tagExpenses {
+  left: calc(50% - 28.49%);
+  top: 0;
+}
+
+.tagReserve {
+  left: calc(50% + 42.79%);
+  top: 35.65%;
+}
+
+.tagProtection {
+  left: calc(50% - 41.33%);
+  top: 85.84%;
+}
+
+.label {
+  color: #1f1f1f;
+  font-family: var(--font-body), sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+  opacity: 0.9;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.labelExpenses {
+  left: calc(50% - 35.77%);
+  top: 9.17%;
+}
+
+.labelReserve {
+  left: calc(50% + 35.68%);
+  top: 44.83%;
+}
+
+.labelProtection {
+  left: calc(50% - 48.62%);
+  top: 95.02%;
+}
+
+.summary {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 16px;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 8px;
+  width: 100%;
+}
+
+.summaryValue {
+  align-items: center;
+  align-self: stretch;
+  background: #5fe274;
+  border-radius: 10px;
+  color: #fff;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  justify-content: center;
+  letter-spacing: -0.64px;
+  line-height: normal;
+  padding: 4px;
+  white-space: nowrap;
+}
+
+.summaryText {
+  color: #999;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+}

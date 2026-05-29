@@ -1,0 +1,128 @@
+.card {
+  background: rgba(64, 169, 61, 0.4);
+  border: none;
+  border-radius: 34px;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  isolation: isolate;
+  min-height: 154px;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.orbWrap {
+  align-items: center;
+  display: flex;
+  height: 266.739px;
+  justify-content: center;
+  left: 146px;
+  pointer-events: none;
+  position: absolute;
+  top: -25px;
+  width: 286.983px;
+  z-index: 0;
+}
+
+.orbRotated {
+  flex-shrink: 0;
+  transform: rotate(153deg);
+}
+
+.orbFrame {
+  border-radius: 24px;
+  height: 182.683px;
+  overflow: hidden;
+  position: relative;
+  width: 229.007px;
+}
+
+.orbImage {
+  height: 255.33%;
+  left: -161.25%;
+  max-width: none;
+  pointer-events: none;
+  position: absolute;
+  top: -77.87%;
+  width: 363.98%;
+}
+
+.backdrop {
+  backdrop-filter: blur(2px);
+  background: rgba(217, 217, 217, 0.01);
+  height: 154px;
+  left: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.content {
+  color: #1f1f1f;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.text {
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  max-width: 58%;
+  white-space: nowrap;
+}
+
+.cta {
+  align-self: flex-start;
+  background: #e1e1e1;
+  border: none;
+  border-radius: 18px;
+  color: #1f1f1f;
+  cursor: pointer;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  padding: 8px;
+  position: relative;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  box-shadow: 0 10px 24px rgba(23, 23, 23, 0.12);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 360px) {
+  .orbWrap {
+    left: 120px;
+    width: 240px;
+  }
+
+  .text {
+    max-width: 62%;
+  }
+}

@@ -1,0 +1,225 @@
+.card {
+  background: #40a93d;
+  border: none;
+  border-radius: 36px;
+  box-shadow: none;
+  min-height: 192px;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 29px;
+  max-width: 58%;
+  position: relative;
+  z-index: 1;
+}
+
+.headerBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.headerRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.title {
+  color: #fff;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.toggle {
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.toggleItem {
+  background: transparent;
+  border: none;
+  border-radius: 12.93px;
+  color: #fff;
+  cursor: pointer;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: normal;
+  padding: 4px 6px;
+  white-space: nowrap;
+}
+
+.toggleItemActive {
+  background: #fff;
+  color: #1f1f1f;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: 85px;
+}
+
+.legendItem {
+  align-items: center;
+  color: #fff;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 8px;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.legendDot {
+  display: block;
+  flex-shrink: 0;
+  height: 8px;
+  width: 8px;
+}
+
+.scoreRow {
+  align-items: flex-end;
+  color: #fbfbfb;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.scoreValue {
+  font-size: 64px;
+  letter-spacing: -2.56px;
+}
+
+.scorePercent {
+  font-size: 16px;
+  height: 23px;
+  letter-spacing: -3.8px;
+  margin-bottom: 2px;
+  width: 21px;
+}
+
+.chartArea {
+  display: flex;
+  flex-direction: column;
+  height: 124px;
+  justify-content: space-between;
+  position: absolute;
+  right: 16px;
+  top: 52px;
+  width: min(185px, 51.7%);
+  z-index: 1;
+}
+
+.chart {
+  flex-shrink: 0;
+  height: 106px;
+  overflow: visible;
+  width: 100%;
+}
+
+.chartGrid {
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 1;
+}
+
+.chartLineIncome,
+.chartLineExpense {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.chartLineIncome {
+  stroke: rgba(255, 255, 255, 0.95);
+}
+
+.chartLineExpense {
+  stroke: rgba(20, 20, 20, 0.85);
+  stroke-dasharray: 5 4;
+}
+
+.chartHitArea {
+  cursor: pointer;
+  fill: transparent;
+}
+
+.chartPoint {
+  fill: #fff;
+  pointer-events: none;
+  stroke: rgba(36, 136, 44, 0.35);
+  stroke-width: 0;
+}
+
+.chartPointActive {
+  stroke-width: 4;
+}
+
+.chartTooltip {
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  color: #171717;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  gap: 2px;
+  height: 34px;
+  justify-content: center;
+  pointer-events: none;
+  width: 100%;
+}
+
+.chartTooltip span:last-child {
+  color: #8a8f85;
+  font-size: 7px;
+  font-weight: 600;
+}
+
+.months {
+  align-items: center;
+  color: #fbfbfb;
+  display: flex;
+  flex-shrink: 0;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 6.183px;
+  font-weight: 600;
+  justify-content: space-between;
+  line-height: normal;
+  white-space: nowrap;
+  width: 100%;
+}
+
+@media (max-width: 360px) {
+  .content {
+    max-width: 52%;
+  }
+
+  .scoreValue {
+    font-size: 56px;
+  }
+
+  .chartArea {
+    width: 48%;
+  }
+}

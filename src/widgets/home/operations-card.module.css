@@ -1,0 +1,236 @@
+.card {
+  backdrop-filter: blur(5px);
+  background: rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 36px;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  overflow: hidden;
+  padding: 16px;
+  transition: transform 180ms ease;
+  width: 100%;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.titleGroup {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+}
+
+.iconChipPrimary {
+  align-items: center;
+  background: rgba(64, 169, 61, 0.2);
+  border: 1px solid rgba(64, 169, 61, 0.25);
+  border-radius: 100px;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 14px;
+}
+
+.icon16 {
+  display: block;
+  height: 16px;
+  width: 16px;
+}
+
+.title {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: normal;
+  padding-bottom: 2px;
+  white-space: nowrap;
+}
+
+.actions {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.iconButton {
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 100px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 12px;
+  text-decoration: none;
+  transition: transform 180ms ease;
+}
+
+.iconButton:hover,
+.iconButton:focus-visible {
+  transform: translateY(-1px);
+}
+
+.icon20 {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.summary {
+  align-items: flex-end;
+  display: flex;
+  width: 100%;
+}
+
+.incomeColumn,
+.expenseColumn {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  justify-content: flex-end;
+  padding: 0;
+  text-align: left;
+  transition: opacity 180ms ease;
+}
+
+.incomeColumn:hover,
+.expenseColumn:hover,
+.incomeColumn:focus-visible,
+.expenseColumn:focus-visible {
+  opacity: 0.88;
+}
+
+.incomeColumn {
+  flex-shrink: 0;
+  width: 185px;
+}
+
+.expenseColumn {
+  flex: 1;
+  min-width: 0;
+}
+
+.metricBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.metricLabel {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 8px;
+  font-weight: 400;
+  line-height: normal;
+  white-space: nowrap;
+}
+
+.incomeValue,
+.expenseValue {
+  color: #1f1f1f;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 400;
+  line-height: normal;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.incomeValue {
+  font-size: 16px;
+}
+
+.expenseValue {
+  font-size: 18px;
+  gap: 4px;
+}
+
+.valueFraction {
+  color: #999;
+  font-size: 16px;
+}
+
+.barRow {
+  align-items: flex-end;
+  display: flex;
+  isolation: isolate;
+  width: 100%;
+}
+
+.barDivider {
+  background: #999;
+  flex-shrink: 0;
+  height: 44px;
+  width: 1px;
+}
+
+.barDividerOverlap {
+  background: #999;
+  flex-shrink: 0;
+  height: 44px;
+  margin-right: -1px;
+  position: relative;
+  width: 1px;
+  z-index: 2;
+}
+
+.incomeBar {
+  background: #40a93d;
+  border-radius: 12px;
+  flex: 1;
+  height: 36px;
+  min-width: 0;
+}
+
+.expenseBar {
+  background:
+    repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.95),
+      rgba(255, 255, 255, 0.95) 7px,
+      rgba(236, 236, 236, 1) 7px,
+      rgba(236, 236, 236, 1) 13px
+    );
+  border-radius: 12px;
+  flex: 1;
+  height: 36px;
+  min-width: 0;
+  z-index: 1;
+}
+
+@media (max-width: 360px) {
+  .incomeColumn {
+    width: 150px;
+  }
+
+  .titleGroup {
+    gap: 16px;
+  }
+
+  .incomeValue,
+  .expenseValue,
+  .valueFraction {
+    font-size: 14px;
+  }
+}

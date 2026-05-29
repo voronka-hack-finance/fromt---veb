@@ -1,0 +1,268 @@
+.stage {
+  min-height: 100vh;
+  padding: 0;
+}
+
+.shell {
+  margin: 0 auto;
+  max-width: 393px;
+  min-height: 100vh;
+  padding: 8px 14px 34px;
+  position: relative;
+}
+
+.shell::before {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(110, 227, 113, 0.14), transparent 22%),
+    radial-gradient(circle at 50% 88%, rgba(255, 255, 255, 0.92), transparent 30%);
+  content: "";
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+}
+
+.header,
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0 0;
+}
+
+.headerLeft {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+}
+
+.iconButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.9);
+  border-radius: 50%;
+  color: #202020;
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  width: 52px;
+}
+
+.title {
+  color: #212121;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.promoCard {
+  background: white;
+  border: 1px solid rgba(153, 153, 153, 0.18);
+  border-radius: 32px;
+  min-height: 198px;
+  overflow: hidden;
+  position: relative;
+}
+
+.promoTexture {
+  background:
+    radial-gradient(circle at 70% 20%, rgba(119, 231, 118, 0.95), rgba(87, 201, 84, 0.85) 34%, rgba(68, 171, 67, 0.68) 58%, transparent 72%),
+    radial-gradient(circle at 84% 50%, rgba(164, 247, 147, 0.78), rgba(111, 213, 103, 0.45) 38%, transparent 70%),
+    radial-gradient(circle at 60% 84%, rgba(94, 206, 94, 0.92), rgba(77, 174, 77, 0.5) 45%, transparent 76%);
+  border-radius: 42% 0 0 42%;
+  bottom: -16px;
+  filter: blur(1px) saturate(110%);
+  position: absolute;
+  right: -44px;
+  top: 22px;
+  width: 220px;
+}
+
+.promoBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 18px 18px 18px;
+  position: relative;
+  width: 62%;
+  z-index: 1;
+}
+
+.promoBody h2 {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.promoBody p {
+  color: #1f1f1f;
+  font-size: 8px;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.promoButton {
+  align-items: center;
+  align-self: flex-start;
+  background: #e5e5e5;
+  border: none;
+  border-radius: 999px;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 16px;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.promoButton span {
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+}
+
+.promoButton:hover,
+.promoButton:focus-visible {
+  background: #dcdcdc;
+  transform: translateY(-1px);
+}
+
+.grid {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.categoryCard {
+  background: white;
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  min-height: 158px;
+  padding: 16px;
+  text-align: left;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.categoryCard:hover,
+.categoryCard:focus-visible {
+  box-shadow: 0 16px 30px rgba(31, 39, 26, 0.12);
+  transform: translateY(-2px);
+}
+
+.categoryCardDark {
+  background: #232323;
+  color: white;
+}
+
+.categoryIconWrap {
+  align-items: center;
+  background: rgba(95, 226, 116, 0.18);
+  border: 1px solid rgba(64, 169, 61, 0.45);
+  border-radius: 50%;
+  color: #3b9f3a;
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.categoryIconWrapDark {
+  background: rgba(95, 226, 116, 0.12);
+  color: #5fe274;
+}
+
+.categoryTitle {
+  color: #656565;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.15;
+  margin-top: 10px;
+  min-height: 34px;
+}
+
+.categoryCardDark .categoryTitle {
+  color: white;
+}
+
+.amountRow {
+  align-items: baseline;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  margin-top: 16px;
+}
+
+.amountStrong,
+.amountMuted {
+  font-family: var(--font-heading), sans-serif;
+  font-size: 19px;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.amountStrong {
+  color: rgba(0, 0, 0, 0.82);
+}
+
+.amountMuted {
+  color: rgba(189, 189, 189, 0.7);
+}
+
+.categoryCardDark .amountStrong {
+  color: white;
+}
+
+.categoryCardDark .amountMuted {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.progressTrack {
+  background: rgba(141, 141, 141, 0.3);
+  border-radius: 6px;
+  height: 10px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.progressTrackDark {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.progressValue {
+  background: #5fe274;
+  border-radius: 6px 0 0 6px;
+  height: 100%;
+  width: 0;
+}
+
+.progressValueLight {
+  background: white;
+}
+
+.progressValueDark {
+  background: #515151;
+}
+
+@media (max-width: 380px) {
+  .promoBody {
+    width: 66%;
+  }
+}

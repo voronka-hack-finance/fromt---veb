@@ -1,0 +1,335 @@
+.card {
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 32px;
+  overflow: hidden;
+  padding: 8px;
+  width: 100%;
+}
+
+.cardInner {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 339px;
+  width: 100%;
+}
+
+.cardTop {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.periodToggle {
+  background: #f7f9fb;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 40px;
+  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 4px;
+  padding: 4px 5px;
+}
+
+.periodButton {
+  background: #f7f9fb;
+  border: none;
+  border-radius: 40px;
+  color: #1f1f1f;
+  cursor: pointer;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 14px;
+  min-height: 42px;
+  min-width: 72px;
+  padding: 14px 24px;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+.periodButtonActive {
+  background: #1f1f1f;
+  color: #fff;
+}
+
+.viewControls {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.viewButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: #8a8a8a;
+  cursor: pointer;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  width: 24px;
+}
+
+.viewButtonActive {
+  color: #1f1f1f;
+}
+
+.chartSection {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.monthSwitcher {
+  align-items: center;
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+}
+
+.monthSwitcher span {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 14px;
+}
+
+.monthArrow {
+  align-items: center;
+  background: transparent;
+  border: none;
+  color: #c4c4c4;
+  cursor: pointer;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  padding: 0;
+  width: 16px;
+}
+
+.monthArrow:disabled {
+  cursor: default;
+  opacity: 0.35;
+}
+
+.chartBlock {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.gaugeStage {
+  height: 142px;
+  margin: 0 auto;
+  max-width: 315px;
+  overflow: visible;
+  padding-right: 32px;
+  position: relative;
+  width: 100%;
+}
+
+.gaugeSvg {
+  display: block;
+  height: 142px;
+  overflow: visible;
+  width: 100%;
+}
+
+.gaugeSegment {
+  cursor: pointer;
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 32;
+  transition: opacity 180ms ease;
+}
+
+.gaugeCenter {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  left: 110px;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  top: 83px;
+  width: 106px;
+  z-index: 2;
+}
+
+.gaugeCenter span,
+.gaugeCenter strong {
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  line-height: normal;
+}
+
+.gaugeCenter span {
+  color: #a5a5a5;
+  font-weight: 500;
+}
+
+.gaugeCenter strong {
+  color: #232323;
+  font-weight: 700;
+  white-space: pre;
+}
+
+.percentBubble {
+  align-items: center;
+  background: #ece8fb;
+  border: none;
+  border-radius: 999px;
+  color: #171717;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  height: 46.619px;
+  justify-content: center;
+  line-height: 1;
+  padding: 0;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 46.619px;
+  z-index: 3;
+}
+
+.percentBubbleActive {
+  box-shadow: 0 0 0 2px rgba(77, 188, 71, 0.45);
+}
+
+.percentBubble50 {
+  left: calc(50% + 110.3px);
+  top: calc(50% - 22.42px);
+}
+
+.percentBubble40 {
+  left: calc(50% - 69.7px);
+  top: calc(50% - 36.37px);
+}
+
+.percentBubble10 {
+  left: calc(50% - 116.19px);
+  top: calc(50% + 33px);
+}
+
+.legendGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 6px;
+  justify-content: space-between;
+  max-width: 314px;
+  width: 100%;
+}
+
+.legendItem {
+  align-items: center;
+  background: #f6f6f6;
+  border: 1px solid transparent;
+  border-radius: 20px;
+  cursor: pointer;
+  display: flex;
+  height: 35px;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+  width: 154px;
+}
+
+.legendItemWide {
+  padding: 8px 12px;
+}
+
+.legendItemActive {
+  background: #eef8ec;
+  border-color: rgba(77, 188, 71, 0.45);
+}
+
+.legendContent {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.legendContentWide {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.legendLabel {
+  align-items: center;
+  color: #767676;
+  display: inline-flex;
+  font-family: var(--font-body), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  gap: 5px;
+  line-height: normal;
+}
+
+.legendDot {
+  border-radius: 50%;
+  flex-shrink: 0;
+  height: 10px;
+  width: 10px;
+}
+
+.legendDotTransfers {
+  background: #4dbc47;
+}
+
+.legendDotHotels {
+  background: #b2ff27;
+}
+
+.legendDotGroceries {
+  background: #d2d2d2;
+}
+
+.legendItem strong {
+  color: #404040;
+  font-family: var(--font-body), sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+}
+
+@media (max-width: 360px) {
+  .legendItem {
+    width: calc(50% - 3px);
+  }
+
+  .gaugeCenter {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .percentBubble50 {
+    left: calc(50% + 92px);
+  }
+
+  .percentBubble40 {
+    left: calc(50% - 58px);
+  }
+
+  .percentBubble10 {
+    left: calc(50% - 98px);
+  }
+}

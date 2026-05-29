@@ -1,0 +1,66 @@
+export const categoriesScreenData = {
+  title: "Мои категории",
+  promo: {
+    title: "Защитите деньги от мошенников",
+    description:
+      "Мы защищаем вас от мошенников и блокируем подозрительные звонки. Но средства всё же украдут — вернём до 300 тыс. ₽.",
+    cta: "Подключить",
+  },
+  categories: [
+    {
+      id: "coffee",
+      title: "Кофемания",
+      spent: 2000,
+      total: 4000,
+      tone: "dark",
+      icon: "coffee",
+      progress: 0.5,
+    },
+    {
+      id: "wb",
+      title: "Покупки на wb",
+      spent: 2000,
+      total: 4000,
+      tone: "light",
+      icon: "bag",
+      progress: 0.5,
+    },
+    {
+      id: "sushi",
+      title: "Суши-бар",
+      spent: 1500,
+      total: 3000,
+      tone: "light",
+      icon: "bag",
+      progress: 0.5,
+    },
+    {
+      id: "pet",
+      title: "Зоомагазин",
+      spent: 3000,
+      total: 5000,
+      tone: "light-darkbar",
+      icon: "paw",
+      progress: 0.6,
+    },
+    {
+      id: "books",
+      title: "Книжный магазин",
+      spent: 2500,
+      total: 4500,
+      tone: "light",
+      icon: "bag",
+      progress: 0.56,
+    },
+    {
+      id: "grill",
+      title: "Ресторан 'Гриль'",
+      spent: 3600,
+      total: 3800,
+      tone: "light-darkbar",
+      icon: "cloche",
+      progress: 0.95,
+    },
+  ] as const,
+};
+

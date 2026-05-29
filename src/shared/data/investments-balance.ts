@@ -1,0 +1,47 @@
+export const investmentsBalanceScreenData = {
+  title: "Инвестиции",
+  amount: 3753.85,
+  chart: [
+    { month: "Авг", value: 76, tone: "muted", label: undefined },
+    { month: "Сен", value: 96, tone: "muted", label: undefined },
+    { month: "Окт", value: 116, tone: "muted", label: undefined },
+    { month: "Ноя", value: 83, tone: "muted", label: undefined },
+    { month: "Дек", value: 144, tone: "active", labelValue: 4055.42 },
+    { month: "Янв", value: 79, tone: "future", label: undefined },
+    { month: "Фев", value: 104, tone: "future", label: undefined },
+  ] as const,
+  summary: {
+    remainPercent: 2,
+    spentAmount: 149688,
+    badge: "Неплохо",
+  },
+  scenarios: [
+    {
+      id: "bad",
+      tone: "bad",
+      tag: "Плохо",
+      percentLabel: "2% дохода",
+      spent: 153442,
+      left: 0,
+      totalIncome: 153442,
+    },
+    {
+      id: "focus",
+      tone: "default",
+      tag: "Неплохо",
+      percentLabel: "2% дохода",
+      spent: 149688,
+      left: 3753,
+      totalIncome: 153442,
+    },
+    {
+      id: "good",
+      tone: "good",
+      tag: "Хорошо",
+      percentLabel: "10% дохода",
+      spent: 149688,
+      left: 3753,
+      totalIncome: 153442,
+    },
+  ] as const,
+};

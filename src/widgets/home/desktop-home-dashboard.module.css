@@ -916,33 +916,35 @@
   stroke: #50b848;
 }
 
-.creditMarker {
-  align-items: center;
-  background: #ffffff;
-  border-radius: 50%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
-  display: inline-flex;
-  height: 42px;
-  justify-content: center;
-  pointer-events: none;
-  position: absolute;
-  transform: translate(-50%, -50%);
-  width: 42px;
-  z-index: 3;
+.creditNeedle {
+  stroke: #50b848;
+  stroke-linecap: round;
+  stroke-width: 3;
 }
 
 .creditCenter {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
   left: 50%;
   position: absolute;
   text-align: center;
-  top: 63%;
-  transform: translate(-50%, -50%);
+  top: 40%;
+  transform: translateX(-50%);
   width: 77px;
   z-index: 2;
+}
+
+.creditSmileyWrap {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 50%;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
 }
 
 .creditSmiley {

@@ -870,7 +870,7 @@
   padding: 0;
   position: absolute;
   right: 23px;
-  top: 24px;
+  top: 16px;
   z-index: 2;
 }
 
@@ -882,10 +882,12 @@
 
 .creditGaugeWrap {
   align-items: center;
+  aspect-ratio: 288 / 168;
   display: flex;
   flex: 1 1 auto;
   justify-content: center;
-  margin: 4px auto 0;
+  margin: 0 auto;
+  max-height: 168px;
   max-width: min(100%, 287px);
   min-height: 0;
   position: relative;
@@ -914,21 +916,30 @@
   stroke: #50b848;
 }
 
-.creditNeedle {
-  stroke: #50b848;
-  stroke-linecap: round;
-  stroke-width: 3;
+.creditMarker {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 42px;
+  z-index: 3;
 }
 
 .creditCenter {
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
   left: 50%;
   position: absolute;
   text-align: center;
-  top: 58%;
+  top: 63%;
   transform: translate(-50%, -50%);
   width: 77px;
   z-index: 2;
@@ -936,8 +947,8 @@
 
 .creditSmiley {
   display: block;
-  height: 40px;
-  width: 40px;
+  height: 28px;
+  width: 28px;
 }
 
 .creditValue {
@@ -980,9 +991,12 @@
 }
 
 .calendarCard {
+  align-self: stretch;
   display: flex;
   flex-direction: column;
+  max-height: 100%;
   min-height: 0;
+  overflow: hidden;
   padding: 14px 16px;
 }
 
@@ -1009,7 +1023,9 @@
   margin-top: 12px;
   min-height: 0;
   overflow: auto;
+  padding-bottom: 4px;
   padding-right: 4px;
+  scrollbar-gutter: stable;
 }
 
 .calendarGroup {
@@ -1024,6 +1040,11 @@
   font-size: 15px;
   font-weight: 700;
   gap: 10px;
+}
+
+.calendarGroupHeader strong {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .calendarDivider {
@@ -1043,6 +1064,7 @@
   background: #efefef;
   border-radius: 14px;
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   padding: 8px 10px;
 }
@@ -1050,13 +1072,22 @@
 .calendarItem strong {
   flex-shrink: 0;
   font-size: 13px;
+  margin-left: 4px;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .calendarItemMeta {
   align-items: center;
   display: flex;
+  flex: 1 1 auto;
   gap: 10px;
   min-width: 0;
+}
+
+.calendarItemMeta > div:last-child {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .calendarBadge {
@@ -1076,12 +1107,14 @@
 .calendarCategory {
   color: #9297a0;
   font-size: 12px;
+  line-height: 1.2;
 }
 
 .calendarTitle {
   color: #232323;
   font-size: 14px;
   font-weight: 700;
+  line-height: 1.2;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1234,10 +1267,14 @@
   background: transparent;
 }
 
-@media (min-width: 1024px) and (max-width: 1440px), (min-width: 1024px) and (max-height: 900px) {
+@media (min-width: 1024px) and (max-width: 1440px) {
   .shell {
-    gap: 14px;
-    padding: 12px 16px 14px;
+    gap: 12px;
+    padding: 10px 16px 12px;
+  }
+
+  .pageHeader {
+    margin-bottom: 8px;
   }
 
   .pageTitle {
@@ -1245,22 +1282,28 @@
   }
 
   .dashboardGrid {
-    gap: 12px;
+    gap: 8px;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 1.05fr) minmax(180px, 0.68fr) minmax(220px, 0.82fr);
   }
 
+  .metricsRow {
+    gap: 10px;
+  }
+
   .balanceCard {
-    gap: 20px;
-    padding: 20px 24px 22px;
+    align-self: stretch;
+    gap: 12px;
+    padding: 18px 22px 16px;
   }
 
   .balanceContent {
-    gap: 16px;
+    gap: 14px;
   }
 
   .legendRow {
     font-size: 14px;
-    gap: 10px 14px;
+    gap: 8px 12px;
+    margin-top: auto;
   }
 
   .legendSwatch {
@@ -1274,15 +1317,97 @@
   }
 
   .forecastCard {
-    padding: 20px 22px 18px;
+    padding: 18px 20px 16px;
   }
 
   .forecastTop {
-    gap: 16px;
+    gap: 12px;
   }
 
   .forecastBody {
-    gap: 16px;
+    gap: 12px;
+  }
+
+  .forecastChartWrap {
+    max-width: min(100%, 340px);
+  }
+
+  .creditCard {
+    min-height: 220px;
+    padding: 14px 20px 16px;
+  }
+
+  .tertiaryBottomStack {
+    gap: 8px;
+  }
+
+  .remainderCard,
+  .investmentsCard {
+    padding: 10px 14px 12px;
+  }
+
+  .calendarCard {
+    padding: 10px 12px 10px;
+  }
+
+  .calendarCard .cardTitleWrap h2 {
+    font-size: 15px;
+  }
+
+  .calendarGroups {
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .calendarGroup {
+    gap: 8px;
+  }
+
+  .calendarGroupHeader {
+    font-size: 13px;
+    gap: 8px;
+  }
+
+  .calendarGroupHeader strong {
+    font-size: 13px;
+  }
+
+  .calendarList {
+    gap: 4px;
+  }
+
+  .calendarItem {
+    gap: 6px;
+    padding: 6px 8px;
+  }
+
+  .calendarItemMeta {
+    gap: 8px;
+  }
+
+  .calendarBadge {
+    font-size: 10px;
+    height: 26px;
+    width: 26px;
+  }
+
+  .calendarCategory {
+    font-size: 11px;
+  }
+
+  .calendarTitle {
+    font-size: 12px;
+  }
+
+  .calendarItem strong {
+    font-size: 12px;
+    margin-left: 2px;
+  }
+}
+
+@media (min-width: 1441px) and (max-height: 900px) {
+  .forecastCard {
+    padding: 20px 22px 18px;
   }
 
   .forecastChartWrap {

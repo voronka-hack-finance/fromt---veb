@@ -68,12 +68,14 @@
 
 .wrap_wide .incomeLine {
   stroke: #ffffff;
+  stroke-linecap: butt;
 }
 
 .incomeArrow {
   fill: #ffffff;
-  transform-box: fill-box;
-  transform-origin: center;
+  stroke: #ffffff;
+  stroke-linejoin: round;
+  stroke-width: 0.5;
 }
 
 .expenseLine {
@@ -115,10 +117,19 @@
   opacity: 0;
 }
 
+.expensePoint {
+  fill: #111111;
+  stroke: #ffffff;
+}
+
 .wrap_wide .pointActive {
   opacity: 1;
   stroke: #111111;
   stroke-width: 3.5;
+}
+
+.wrap_wide .expensePoint.pointActive {
+  stroke: #ffffff;
 }
 
 .activeMarker {

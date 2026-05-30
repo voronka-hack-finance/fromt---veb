@@ -78,13 +78,13 @@ const creditGaugeEndX = creditGaugeCenterX + creditGaugeRadius;
 const creditGaugeArcPath = `M ${creditGaugeStartX} ${creditGaugeCenterY} A ${creditGaugeRadius} ${creditGaugeRadius} 0 0 1 ${creditGaugeEndX} ${creditGaugeCenterY}`;
 
 function CreditGauge({ label, ratio, score }: { label: string; ratio: number; score: number }) {
-  const needleAngle = Math.PI * (1 - ratio);
-  const needleInnerRadius = creditGaugeRadius - 10;
-  const needleOuterRadius = creditGaugeRadius + 2;
-  const needleX1 = creditGaugeCenterX + Math.cos(needleAngle) * needleInnerRadius;
-  const needleY1 = creditGaugeCenterY - Math.sin(needleAngle) * needleInnerRadius;
-  const needleX2 = creditGaugeCenterX + Math.cos(needleAngle) * needleOuterRadius;
-  const needleY2 = creditGaugeCenterY - Math.sin(needleAngle) * needleOuterRadius;
+  const markerAngle = Math.PI * (1 - ratio);
+  const markerX = creditGaugeCenterX + Math.cos(markerAngle) * creditGaugeRadius;
+  const markerY = creditGaugeCenterY - Math.sin(markerAngle) * creditGaugeRadius;
+  const markerPosition = {
+    left: `${(markerX / creditGaugeWidth) * 100}%`,
+    top: `${(markerY / creditGaugeHeight) * 100}%`,
+  };
 
   return (
     <div className={styles.creditGaugeWrap}>
@@ -96,11 +96,13 @@ function CreditGauge({ label, ratio, score }: { label: string; ratio: number; sc
           pathLength={100}
           strokeDasharray={`${ratio * 100} 100`}
         />
-        <line className={styles.creditNeedle} x1={needleX1} x2={needleX2} y1={needleY1} y2={needleY2} />
       </svg>
 
+      <div aria-hidden className={styles.creditMarker} style={markerPosition}>
+        <img alt="" className={styles.creditSmiley} draggable={false} src={creditAssets.smiley} />
+      </div>
+
       <div className={styles.creditCenter}>
-        <img alt="" aria-hidden className={styles.creditSmiley} draggable={false} src={creditAssets.smiley} />
         <span className={styles.creditValue}>{score}</span>
         <span className={styles.creditLabel}>{label}</span>
       </div>

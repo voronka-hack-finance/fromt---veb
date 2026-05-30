@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import { buildDualLineChartPaths } from "@/shared/lib/charts";
 import { cn } from "@/shared/lib/cn";
@@ -31,18 +31,59 @@ type ForecastLineChartProps = {
   animateKey?: string;
 };
 
+type ChartSeries = "income" | "expense";
+
+function buildSmoothLinePathFromCoordinates(coordinates: { x: number; y: number }[]) {
+  return coordinates.reduce((path, point, index) => {
+    if (index === 0) {
+      return `M ${point.x} ${point.y}`;
+    }
+
+    const previous = coordinates[index - 1];
+    const controlX = (previous.x + point.x) / 2;
+
+    return `${path} C ${controlX} ${previous.y}, ${controlX} ${point.y}, ${point.x} ${point.y}`;
+  }, "");
+}
+
+function buildTrimmedSmoothLinePath(
+  coordinates: { x: number; y: number }[],
+  trimFromEnd: number,
+) {
+  if (coordinates.length < 2 || trimFromEnd <= 0) {
+    return buildSmoothLinePathFromCoordinates(coordinates);
+  }
+
+  const tip = coordinates.at(-1);
+  const previous = coordinates.at(-2);
+
+  if (!tip || !previous) {
+    return buildSmoothLinePathFromCoordinates(coordinates);
+  }
+
+  const deltaX = tip.x - previous.x;
+  const deltaY = tip.y - previous.y;
+  const distance = Math.hypot(deltaX, deltaY) || 1;
+  const trimRatio = Math.min(1, Math.max(0, (distance - trimFromEnd) / distance));
+  const trimmedTip = {
+    x: previous.x + deltaX * trimRatio,
+    y: previous.y + deltaY * trimRatio,
+  };
+
+  return buildSmoothLinePathFromCoordinates([...coordinates.slice(0, -1), trimmedTip]);
+}
+
 function buildArrowHeadPoints(
   coordinates: { x: number; y: number }[],
-  length = 18,
-  halfWidth = 8,
-  inset = 3,
+  length = 12,
+  halfWidth = 5.5,
 ) {
-  if (coordinates.length === 0) {
+  if (coordinates.length < 2) {
     return "";
   }
 
   const tip = coordinates.at(-1);
-  const previous = coordinates.at(-2) ?? tip;
+  const previous = coordinates.at(-2);
 
   if (!tip || !previous) {
     return "";
@@ -55,14 +96,12 @@ function buildArrowHeadPoints(
   const unitY = deltaY / magnitude;
   const perpendicularX = -unitY;
   const perpendicularY = unitX;
-  const baseCenterX = tip.x - unitX * inset;
-  const baseCenterY = tip.y - unitY * inset;
-  const tailCenterX = baseCenterX - unitX * length;
-  const tailCenterY = baseCenterY - unitY * length;
-  const leftX = tailCenterX + perpendicularX * halfWidth;
-  const leftY = tailCenterY + perpendicularY * halfWidth;
-  const rightX = tailCenterX - perpendicularX * halfWidth;
-  const rightY = tailCenterY - perpendicularY * halfWidth;
+  const baseCenterX = tip.x - unitX * length;
+  const baseCenterY = tip.y - unitY * length;
+  const leftX = baseCenterX + perpendicularX * halfWidth;
+  const leftY = baseCenterY + perpendicularY * halfWidth;
+  const rightX = baseCenterX - perpendicularX * halfWidth;
+  const rightY = baseCenterY - perpendicularY * halfWidth;
 
   return `${tip.x},${tip.y} ${leftX},${leftY} ${rightX},${rightY}`;
 }
@@ -75,6 +114,7 @@ export function ForecastLineChart({
   animateKey,
 }: ForecastLineChartProps) {
   const { width, height, padding } = chartSizes[variant];
+  const [activeSeries, setActiveSeries] = useState<ChartSeries>("income");
 
   const paths = useMemo(
     () =>
@@ -89,10 +129,18 @@ export function ForecastLineChart({
   );
 
   const activePoint = points[activeIndex];
-  const activeCoordinate = paths.income.coordinates[activeIndex];
+  const activeCoordinate = paths[activeSeries].coordinates[activeIndex];
   const animationKey = animateKey ?? points.map((point) => point.month).join("-");
+  const incomeArrowLength = 12;
+  const incomeLinePath =
+    variant === "wide"
+      ? buildTrimmedSmoothLinePath(paths.income.coordinates, incomeArrowLength)
+      : paths.income.linePath;
   const incomeArrowPoints = useMemo(
-    () => (variant === "wide" ? buildArrowHeadPoints(paths.income.coordinates) : ""),
+    () =>
+      variant === "wide"
+        ? buildArrowHeadPoints(paths.income.coordinates, incomeArrowLength, 5.5)
+        : "",
     [paths.income.coordinates, variant],
   );
   const activePosition = activeCoordinate
@@ -101,6 +149,21 @@ export function ForecastLineChart({
         top: `${(activeCoordinate.y / height) * 100}%`,
       }
     : undefined;
+  const activeTooltipValue =
+    activeSeries === "income" ? activePoint?.balance : activePoint?.spend;
+  const activeTooltipLabel =
+    activeSeries === "income"
+      ? variant === "wide"
+        ? "Баланс"
+        : "баланс"
+      : variant === "wide"
+        ? "Расходы"
+        : "расходы";
+
+  const handlePointSelect = (series: ChartSeries, index: number) => {
+    setActiveSeries(series);
+    onActiveIndexChange(index);
+  };
 
   return (
     <div className={cn(styles.wrap, styles[`wrap_${variant}`])}>
@@ -128,46 +191,80 @@ export function ForecastLineChart({
           })}
 
           <motion.path
-            animate={{ opacity: 1, pathLength: 1 }}
+            animate={{ opacity: 1 }}
             className={styles.expenseLine}
             d={paths.expense.linePath}
-            initial={{ opacity: 0.2, pathLength: 0 }}
+            initial={{ opacity: 0 }}
             key={`expense-${animationKey}`}
             transition={{ duration: 0.95, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.path
             animate={{ opacity: 1, pathLength: 1 }}
             className={styles.incomeLine}
-            d={paths.income.linePath}
+            d={incomeLinePath}
             initial={{ opacity: 0.2, pathLength: 0 }}
             key={`income-${animationKey}`}
             transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           />
           {variant === "wide" && incomeArrowPoints ? (
             <motion.polygon
-              animate={{ opacity: 1, scale: 1 }}
+              animate={{ opacity: 1 }}
               className={styles.incomeArrow}
-              initial={{ opacity: 0, scale: 0.8 }}
+              initial={{ opacity: 0 }}
               key={`income-arrow-${animationKey}`}
               points={incomeArrowPoints}
               transition={{ duration: 0.24, delay: 0.68 }}
             />
           ) : null}
 
-          {paths.income.coordinates.map((coordinate, index) => {
-            const isActive = index === activeIndex;
+          {paths.expense.coordinates.map((coordinate, index) => {
+            const isActive = activeSeries === "expense" && index === activeIndex;
 
             return (
-              <g key={points[index]?.month ?? index}>
+              <g key={`expense-point-${points[index]?.month ?? index}`}>
                 <circle
+                  aria-label={`Расходы за ${points[index]?.month ?? index}`}
                   className={styles.hitArea}
                   cx={coordinate.x}
                   cy={coordinate.y}
-                  onClick={() => onActiveIndexChange(index)}
+                  onClick={() => handlePointSelect("expense", index)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      onActiveIndexChange(index);
+                      handlePointSelect("expense", index);
+                    }
+                  }}
+                  r={variant === "wide" ? 12 : 12}
+                  role="button"
+                  tabIndex={0}
+                />
+                <motion.circle
+                  animate={{ opacity: isActive ? 1 : 0, r: isActive ? 4.5 : 3, scale: 1 }}
+                  className={cn(styles.point, styles.expensePoint, isActive && styles.pointActive)}
+                  cx={coordinate.x}
+                  cy={coordinate.y}
+                  initial={{ opacity: 0, r: 0, scale: 0.5 }}
+                  transition={{ duration: 0.3, delay: index * 0.04 }}
+                />
+              </g>
+            );
+          })}
+
+          {paths.income.coordinates.map((coordinate, index) => {
+            const isActive = activeSeries === "income" && index === activeIndex;
+
+            return (
+              <g key={`income-point-${points[index]?.month ?? index}`}>
+                <circle
+                  aria-label={`Баланс за ${points[index]?.month ?? index}`}
+                  className={styles.hitArea}
+                  cx={coordinate.x}
+                  cy={coordinate.y}
+                  onClick={() => handlePointSelect("income", index)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      handlePointSelect("income", index);
                     }
                   }}
                   r={variant === "wide" ? 10 : 12}
@@ -197,26 +294,26 @@ export function ForecastLineChart({
           </div>
         ) : null}
 
-        {activePoint && activeCoordinate && activePosition ? (
+        {activePoint && activeTooltipValue !== undefined && activeCoordinate && activePosition ? (
           <motion.div
             animate={{ opacity: 1 }}
             className={styles.tooltip}
             initial={{ opacity: 0 }}
-            key={`${animationKey}-${activePoint.month}`}
+            key={`${animationKey}-${activeSeries}-${activePoint.month}`}
             style={{
               left: activePosition.left,
               top: activePosition.top,
               transform:
                 variant === "wide"
-                  ? "translate(-50%, calc(-100% - 6px))"
+                  ? "translate(-50%, calc(-100% - 14px))"
                   : "translate(-50%, calc(-100% - 4px))",
             }}
             transition={{ duration: 0.2 }}
           >
             <span className={styles.tooltipValue}>
-              {formatCurrencyParts(activePoint.balance).whole.replace(/\s/g, " ")}
+              {formatCurrencyParts(activeTooltipValue).whole.replace(/\s/g, " ")}
             </span>
-            <span className={styles.tooltipLabel}>{variant === "wide" ? "Баланс" : "баланс"}</span>
+            <span className={styles.tooltipLabel}>{activeTooltipLabel}</span>
           </motion.div>
         ) : null}
       </div>

@@ -113,6 +113,20 @@ export const totalBalanceScreenData = {
         id: "vtb",
         tone: "blue",
       },
+      {
+        accountBadges: ["Счет • 8812", "Счет • 8820"],
+        amount: 89_320,
+        bank: "Газпромбанк",
+        id: "gpb",
+        tone: "blue",
+      },
+      {
+        accountBadges: ["Счет • 3310"],
+        amount: 45_120,
+        bank: "Райффайзен",
+        id: "raif",
+        tone: "green",
+      },
     ] as const,
     protection: {
       button: "Защитить",

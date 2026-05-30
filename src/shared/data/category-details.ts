@@ -32,6 +32,19 @@ export type CategoryDetailData = {
   };
 };
 
+function createFallbackCategoryDetailData(category: Category): CategoryDetailData {
+  return {
+    banks: bankStats,
+    groups: [],
+    limit: {
+      periodEnd: "01.07.2026",
+      periodStart: "01.05.2026",
+      spent: category.spent,
+      total: category.total,
+    },
+  };
+}
+
 const bankStats: BankStat[] = [
   {
     amount: 158_945,
@@ -59,7 +72,7 @@ const bankStats: BankStat[] = [
   },
 ];
 
-const detailByCategoryId: Record<Category["id"], CategoryDetailData> = {
+const detailByCategoryId: Partial<Record<Category["id"], CategoryDetailData>> = {
   books: {
     banks: bankStats,
     groups: [
@@ -277,5 +290,5 @@ const detailByCategoryId: Record<Category["id"], CategoryDetailData> = {
 };
 
 export function getCategoryDetailData(category: Category) {
-  return detailByCategoryId[category.id];
+  return detailByCategoryId[category.id] ?? createFallbackCategoryDetailData(category);
 }

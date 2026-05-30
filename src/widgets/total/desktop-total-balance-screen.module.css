@@ -1,7 +1,10 @@
 .desktopViewport {
   background: linear-gradient(180deg, #f8f8fd 0%, #f2f3fb 100%);
   color: #232323;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .topBar {
@@ -72,11 +75,16 @@
 }
 
 .shell {
+  align-items: stretch;
   display: grid;
+  flex: 1;
   gap: 26px;
   grid-template-columns: 280px minmax(0, 1fr);
-  min-height: calc(100vh - 132px);
+  margin: 0 auto;
+  max-width: 1820px;
+  min-height: 0;
   padding: 22px 40px 32px;
+  width: 100%;
 }
 
 .sidebar {
@@ -122,11 +130,18 @@
 }
 
 .content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
   min-width: 0;
+  overflow: auto;
+  padding-right: 6px;
 }
 
 .pageTitle {
   color: #232323;
+  flex-shrink: 0;
   font-size: 32px;
   font-weight: 600;
   letter-spacing: -0.05em;
@@ -134,9 +149,12 @@
 }
 
 .contentGrid {
+  align-items: stretch;
   display: grid;
-  gap: 18px;
-  grid-template-columns: minmax(0, 1fr) 410px;
+  flex: 1;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
+  min-height: 0;
 }
 
 .leftColumn,
@@ -144,10 +162,46 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  min-height: 0;
   min-width: 0;
 }
 
+.leftColumn {
+  overflow: hidden;
+}
+
+.rightColumn {
+  overflow: hidden;
+}
+
+.cardsScroll {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
+}
+
+.cardsScroll::-webkit-scrollbar,
+.rightColumn::-webkit-scrollbar {
+  width: 8px;
+}
+
+.cardsScroll::-webkit-scrollbar-thumb,
+.rightColumn::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.28);
+  border-radius: 999px;
+}
+
+.cardsScroll::-webkit-scrollbar-track,
+.rightColumn::-webkit-scrollbar-track {
+  background: transparent;
+}
+
 .cardsGrid {
+  align-items: stretch;
   display: grid;
   gap: 18px 20px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -167,21 +221,25 @@
 }
 
 .accountCard {
-  min-height: 189px;
-  padding: 24px 24px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 220px;
+  padding: 22px 22px 18px;
 }
 
 .accountTop {
   align-items: flex-start;
   display: flex;
+  gap: 12px;
   justify-content: space-between;
-  gap: 18px;
 }
 
 .accountMeta {
   align-items: center;
   display: flex;
   gap: 12px;
+  min-width: 0;
 }
 
 .accountIcon {
@@ -222,6 +280,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 0;
 }
 
 .accountText span {
@@ -232,14 +291,16 @@
 
 .accountText strong {
   color: #383838;
-  font-size: 36px;
+  font-size: clamp(28px, 3vw, 36px);
   font-weight: 600;
   letter-spacing: -0.05em;
+  line-height: 1;
 }
 
 .cardActions {
   align-items: center;
   display: flex;
+  flex-shrink: 0;
   gap: 10px;
 }
 
@@ -257,10 +318,12 @@
 }
 
 .badgeRow {
+  align-items: flex-end;
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 22px;
+  margin-top: auto;
+  padding-top: 18px;
 }
 
 .accountBadge,
@@ -323,23 +386,28 @@
   align-items: center;
   display: flex;
   gap: 12px;
+  grid-column: 1 / -1;
+  justify-content: space-between;
   min-height: 158px;
-  padding: 0 18px 0 0;
+  padding: 0 24px 0 0;
 }
 
 .addBankImage {
   display: block;
-  height: 177px;
+  flex-shrink: 0;
+  height: 150px;
   margin-left: -6px;
   object-fit: contain;
-  width: 211px;
+  width: 180px;
 }
 
 .addBankContent {
   align-items: flex-end;
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
+  min-width: 0;
   text-align: right;
 }
 
@@ -349,6 +417,7 @@
   font-weight: 600;
   line-height: 1.12;
   margin: 0;
+  max-width: 420px;
 }
 
 .addBankContent span {
@@ -370,7 +439,8 @@
 .protectionCard {
   background: #dcdcdc;
   border-radius: 27px;
-  min-height: 217px;
+  flex-shrink: 0;
+  min-height: 116px;
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -378,13 +448,14 @@
 
 .protectionImageWrap {
   border-radius: 27px 27px 0 27px;
-  height: 246px;
-  left: -34px;
+  height: 100%;
+  left: -24px;
+  max-width: 48%;
   overflow: hidden;
   pointer-events: none;
   position: absolute;
-  top: -9px;
-  width: 248px;
+  top: 0;
+  width: 220px;
 }
 
 .protectionImage {
@@ -395,17 +466,20 @@
 }
 
 .protectionContent {
-  left: 206px;
-  padding: 27px 16px 20px 0;
-  position: absolute;
-  right: 0;
-  top: 0;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+  max-width: 58%;
+  min-height: 116px;
+  padding: 18px 16px 18px 0;
 }
 
 .protectionContent h2 {
   color: #000000;
   font-family: var(--font-body), sans-serif;
-  font-size: 21.5px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.1;
   margin: 0;
@@ -413,33 +487,34 @@
 
 .protectionContent p {
   color: #787878;
-  font-size: 17px;
-  line-height: 1.1;
+  font-size: 14px;
+  line-height: 1.25;
   margin: 10px 0 0;
-  max-width: 184px;
 }
 
 .protectionButton {
   align-items: center;
   background: #000000;
   border: none;
-  border-radius: 27px;
+  border-radius: 999px;
   color: #ffffff;
   display: inline-flex;
-  font-size: 17px;
+  font-size: 14px;
   justify-content: center;
   line-height: 1.1;
-  margin-top: 16px;
-  min-height: 42px;
-  min-width: 189px;
-  padding: 11px 53px;
+  margin-top: 14px;
+  min-height: 38px;
+  padding: 0 26px;
 }
 
 .topBanksCard {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
+  margin-top: auto;
   min-height: 0;
-  padding: 24px 30px;
+  overflow: hidden;
+  padding: 20px 22px;
 }
 
 .topBanksHeader {
@@ -454,12 +529,13 @@
 .topBanksTitle {
   align-items: center;
   display: inline-flex;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
 }
 
 .topBanksTitle h2 {
   color: #1f1f1f;
-  font-size: 24px;
+  font-size: 18px;
   margin: 0;
 }
 
@@ -479,9 +555,14 @@
 
 .topBanksList {
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 14px;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
 }
 
 .topBankRow {
@@ -489,23 +570,33 @@
   border: 1px solid rgba(153, 153, 153, 0.4);
   border-radius: 10px;
   display: flex;
+  gap: 12px;
   justify-content: space-between;
-  gap: 16px;
-  padding: 12px 18px;
+  padding: 10px 14px;
 }
 
 .topBankMeta {
   align-items: center;
   color: #1f1f1f;
   display: flex;
-  gap: 12px;
+  flex: 1 1 auto;
+  gap: 10px;
   min-width: 0;
 }
 
-.topBankMeta span,
-.topBankRow strong {
-  font-size: 16px;
+.topBankMeta span {
+  font-size: 14px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topBankRow strong {
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .bankBadge {
@@ -513,11 +604,11 @@
   border-radius: 10px;
   display: inline-flex;
   flex-shrink: 0;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
-  height: 32px;
+  height: 30px;
   justify-content: center;
-  width: 32px;
+  width: 30px;
 }
 
 .bankBadgeGreen {
@@ -540,21 +631,155 @@
   color: #db4437;
 }
 
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .shell {
+    gap: 16px;
+    padding: 12px 20px 20px;
+  }
+
+  .pageTitle {
+    font-size: 28px;
+    margin: 4px 0 12px;
+  }
+
+  .contentGrid {
+    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 14px;
+  }
+
+  .cardsGrid {
+    gap: 14px 16px;
+  }
+
+  .accountCard {
+    min-height: 200px;
+    padding: 18px 18px 16px;
+  }
+
+  .accountIcon {
+    height: 40px;
+    width: 40px;
+  }
+
+  .accountText span {
+    font-size: 14px;
+  }
+
+  .accountText strong {
+    font-size: clamp(24px, 2.6vw, 30px);
+  }
+
+  .badgeRow {
+    padding-top: 14px;
+  }
+
+  .addBankCard {
+    min-height: 140px;
+    padding-right: 16px;
+  }
+
+  .addBankImage {
+    height: 128px;
+    width: 150px;
+  }
+
+  .addBankContent p {
+    font-size: 16px;
+    max-width: 320px;
+  }
+
+  .addBankButton {
+    font-size: 14px;
+    min-height: 34px;
+    padding: 6px 22px;
+  }
+
+  .protectionCard {
+    min-height: 108px;
+  }
+
+  .protectionContent h2 {
+    font-size: 16px;
+  }
+
+  .protectionContent p {
+    font-size: 13px;
+  }
+
+  .protectionButton {
+    margin-top: 10px;
+    min-height: 34px;
+    padding: 0 20px;
+  }
+
+  .topBanksCard {
+    padding: 16px 18px;
+  }
+
+  .topBanksTitle h2 {
+    font-size: 16px;
+  }
+
+  .topBankMeta span,
+  .topBankRow strong {
+    font-size: 13px;
+  }
+
+  .bankBadge {
+    height: 28px;
+    width: 28px;
+  }
+}
+
+@media (min-width: 1441px) {
+  .contentGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
+  }
+
+  .cardsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1440px) {
+  .cardsGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .addBankCard {
+    grid-column: 1 / -1;
+  }
+}
+
 @media (max-width: 1023px) {
   .contentGrid {
     grid-template-columns: 1fr;
   }
 
   .rightColumn {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 16px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-}
 
-@media (max-width: 1023px) {
-  .cardsGrid,
-  .rightColumn {
+  .cardsGrid {
     grid-template-columns: 1fr;
+  }
+
+  .addBankCard {
+    grid-column: auto;
+    flex-direction: column;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .addBankContent {
+    align-items: center;
+    text-align: center;
   }
 }

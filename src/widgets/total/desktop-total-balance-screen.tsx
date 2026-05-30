@@ -1,12 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import {
   ChevronRight,
   CircleDollarSign,
   Ellipsis,
   Pencil,
-  Settings2,
   Trash2,
   Wallet,
 } from "lucide-react";
@@ -99,12 +97,13 @@ export function DesktopTotalBalanceScreen({ screenData }: { screenData: TotalBal
 
           <div className={styles.contentGrid}>
             <div className={styles.leftColumn}>
-              <div className={styles.cardsGrid}>
-                {desktop.banks.map((bank) => (
-                  <AccountCard bank={bank} key={bank.id} />
-                ))}
+              <div className={styles.cardsScroll}>
+                <div className={styles.cardsGrid}>
+                  {desktop.banks.map((bank) => (
+                    <AccountCard bank={bank} key={bank.id} />
+                  ))}
 
-                <section className={styles.addBankCard}>
+                  <section className={styles.addBankCard}>
                   <img
                     alt=""
                     aria-hidden
@@ -122,6 +121,7 @@ export function DesktopTotalBalanceScreen({ screenData }: { screenData: TotalBal
                     </button>
                   </div>
                 </section>
+                </div>
               </div>
             </div>
 

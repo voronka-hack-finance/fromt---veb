@@ -83,12 +83,16 @@
 }
 
 .desktopShell {
+  align-items: stretch;
   display: grid;
   flex: 1;
   gap: 26px;
   grid-template-columns: 280px minmax(0, 1fr);
+  margin: 0 auto;
+  max-width: 1820px;
   min-height: 0;
   padding: 30px 50px 50px;
+  width: 100%;
 }
 
 .desktopShell > * {
@@ -168,10 +172,12 @@
 
 .desktopContent {
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  overflow: hidden;
+  overflow: auto;
+  padding-right: 6px;
 }
 
 .desktopHeaderRow {
@@ -285,7 +291,7 @@
   display: grid;
   flex: 1;
   gap: 24px;
-  grid-template-columns: minmax(0, 1fr) 610px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 610px);
   min-height: 0;
 }
 
@@ -317,9 +323,11 @@
   flex-direction: column;
   gap: 26px;
   min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-right: 6px;
+  scrollbar-gutter: stable;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -430,6 +438,9 @@
 .operationText strong {
   font-size: 15px;
   line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .desktopAside {
@@ -445,9 +456,18 @@
   display: grid;
   flex-shrink: 0;
   gap: 26px;
-  grid-template-columns: 250px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 250px) minmax(0, 1fr);
   min-height: 330px;
   padding: 30px 34px 30px 24px;
+}
+
+.banksCard {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  margin-top: auto;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .limitChart,
@@ -522,14 +542,6 @@
 .banksCard,
 .mobileCard {
   padding: 24px 30px;
-}
-
-.banksCard {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
 }
 
 .banksHeader,
@@ -812,6 +824,162 @@
   }
 }
 
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .desktopShell {
+    gap: 16px;
+    padding: 12px 20px 20px;
+  }
+
+  .desktopHeaderRow {
+    gap: 16px;
+    padding: 10px 0 14px;
+  }
+
+  .categoryHero {
+    gap: 16px;
+    min-width: 0;
+  }
+
+  .categoryHeroIcon {
+    height: 68px;
+    width: 68px;
+  }
+
+  .categoryHeroImage {
+    height: 28px;
+    width: 28px;
+  }
+
+  .overline {
+    font-size: 14px;
+  }
+
+  .categoryHeroText h1 {
+    font-size: clamp(24px, 2.8vw, 30px);
+  }
+
+  .desktopActions .actionButtonPrimary,
+  .desktopActions .actionButtonDanger {
+    height: 48px;
+    width: 48px;
+  }
+
+  .desktopGrid {
+    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+  }
+
+  .historyCard {
+    padding: 18px 20px;
+  }
+
+  .historyScroller {
+    gap: 16px;
+  }
+
+  .groupDate,
+  .groupTotal {
+    font-size: 18px;
+  }
+
+  .groupHeader {
+    gap: 10px;
+  }
+
+  .operationRow {
+    gap: 8px;
+    padding: 8px 10px;
+  }
+
+  .operationIcon {
+    height: 32px;
+    width: 32px;
+  }
+
+  .operationText span {
+    font-size: 11px;
+  }
+
+  .operationText strong {
+    font-size: 13px;
+  }
+
+  .operationAmount {
+    font-size: 16px;
+  }
+
+  .desktopAside {
+    gap: 14px;
+  }
+
+  .limitCard {
+    gap: 14px;
+    grid-template-columns: minmax(0, 132px) minmax(0, 1fr);
+    min-height: 0;
+    padding: 18px 16px;
+  }
+
+  .limitChart {
+    height: 132px;
+    width: 132px;
+  }
+
+  .limitInfo {
+    gap: 14px;
+  }
+
+  .limitBlock > span {
+    font-size: 14px;
+  }
+
+  .limitBlock strong {
+    font-size: 22px;
+  }
+
+  .periodRow {
+    flex-wrap: wrap;
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .banksCard {
+    padding: 16px 18px;
+  }
+
+  .banksHeader h2 {
+    font-size: 18px;
+  }
+
+  .banksTitle {
+    gap: 8px;
+  }
+
+  .banksList {
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .bankRow {
+    padding: 10px 12px;
+  }
+
+  .bankMeta span,
+  .bankRow strong {
+    font-size: 14px;
+  }
+
+  .bankBadge {
+    height: 28px;
+    width: 28px;
+  }
+}
+
+@media (min-width: 1441px) {
+  .desktopGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(480px, 610px);
+  }
+}
+
 @media (min-width: 1024px) {
   .desktopOnly {
     display: block;
@@ -819,16 +987,5 @@
 
   .mobileOnly {
     display: none;
-  }
-}
-
-@media (max-width: 1023px) {
-  .desktopGrid {
-    grid-template-columns: minmax(0, 1fr) 440px;
-  }
-
-  .limitCard {
-    grid-template-columns: 1fr;
-    justify-items: center;
   }
 }

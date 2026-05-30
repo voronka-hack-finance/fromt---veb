@@ -537,7 +537,7 @@
 
 .funnelHeader h2 {
   color: #000000;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   letter-spacing: -0.03em;
   line-height: 1.1;
@@ -561,9 +561,10 @@
 .funnelChart {
   display: grid;
   flex: 1;
-  gap: 0;
-  grid-template-columns: 100px minmax(0, 1fr) 100px;
-  margin-top: 18px;
+  gap: 8px;
+  grid-template-columns: minmax(72px, 30%) minmax(0, 40%) minmax(72px, 30%);
+  margin-top: 14px;
+  min-height: 0;
 }
 
 .funnelColumn {
@@ -625,11 +626,12 @@
 .funnelColumnBodyLeft span,
 .funnelColumnBodyRight span {
   color: #000000;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.2;
   position: relative;
+  white-space: nowrap;
   z-index: 1;
 }
 
@@ -637,7 +639,6 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 0 -8px;
   min-width: 0;
   position: relative;
   z-index: 1;
@@ -648,23 +649,26 @@
   display: flex;
   flex: 1;
   justify-content: center;
-  min-height: 340px;
+  min-height: 0;
   position: relative;
 }
 
 .funnelBridgeSvg {
   display: block;
   height: 100%;
+  max-height: 100%;
+  min-height: 240px;
   width: 100%;
 }
 
 .funnelCenterValue {
   color: #000000;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   left: 50%;
   letter-spacing: -0.04em;
   line-height: 1.1;
+  max-width: 90%;
   position: absolute;
   text-align: center;
   top: 50%;
@@ -672,30 +676,114 @@
   white-space: nowrap;
 }
 
-@media (max-width: 1023px) {
-  .cardsGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .shell {
+    gap: 16px;
+    padding: 12px 20px 20px;
+  }
+
+  .pageTitle {
+    font-size: 28px;
+  }
+
+  .contentGrid {
+    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 14px;
   }
 
   .searchBar {
-    width: calc((100% - 18px) / 2);
+    height: 48px;
+    padding: 0 16px;
+  }
+
+  .searchBar input {
+    font-size: 14px;
+  }
+
+  .cardsGrid {
+    gap: 14px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .createCard,
+  .categoryCard {
+    min-height: 220px;
+  }
+
+  .createText h2 {
+    font-size: 16px;
+  }
+
+  .categoryTitle {
+    font-size: 16px;
+    margin-top: 14px;
+  }
+
+  .amountStrong {
+    font-size: 26px;
+  }
+
+  .amountMuted {
+    font-size: 22px;
+  }
+
+  .funnelCard {
+    min-height: 300px;
+    padding: 14px 12px 16px;
+  }
+
+  .funnelHeader h2 {
+    font-size: 16px;
+  }
+
+  .funnelColumnLabel {
+    font-size: 9px;
+    min-height: 22px;
+  }
+
+  .funnelColumnBodyLeft span,
+  .funnelColumnBodyRight span {
+    font-size: 10px;
+  }
+
+  .funnelBridgeSvg {
+    min-height: 200px;
+  }
+
+  .funnelCenterValue {
+    font-size: 12px;
+  }
+
+  .protectionContent h2 {
+    font-size: 16px;
+  }
+
+  .protectionContent p {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1441px) {
+  .contentGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
   }
 }
 
 @media (max-width: 1023px) {
   .contentGrid {
     grid-template-columns: 1fr;
-    grid-template-rows: auto;
   }
 
-  .searchBar,
-  .leftColumn,
+  .cardsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .rightColumn {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .searchBar {
-    width: 100%;
+    overflow: visible;
   }
 }

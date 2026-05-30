@@ -7,6 +7,8 @@ import {
   type BankAccountDetail,
 } from "@/shared/data/bank-account-detail";
 
+import { loadBankAccountDetailScreenData } from "./backend-entity-loaders";
+import { tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
 
@@ -17,13 +19,18 @@ export async function fetchBankAccountDetail(
 ): Promise<BankAccountDetailResponse> {
   await mockDelay();
 
-  const account = bankAccountDetails[accountId];
+  return tryLoadScreenData(
+    () => loadBankAccountDetailScreenData(accountId),
+    () => {
+      const account = bankAccountDetails[accountId];
 
-  if (!account) {
-    throw new Error(`Bank account not found: ${accountId}`);
-  }
+      if (!account) {
+        throw new Error(`Bank account not found: ${accountId}`);
+      }
 
-  return account;
+      return account;
+    },
+  );
 }
 
 export function useBankAccountDetailQuery(accountId: string) {

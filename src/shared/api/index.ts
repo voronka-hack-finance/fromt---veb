@@ -83,6 +83,19 @@ export {
 } from "./total-balance";
 export {
   fetchAgentChat,
+  sendAgentChatMessage,
   useAgentChatQuery,
   type AgentChatResponse,
 } from "./agent-chat";
+export {
+  saveCategoryWithLimit,
+  saveCreditAsCategoryLimit,
+  type SaveCategoryInput,
+  type SaveCreditInput,
+} from "./category-mutations";
+export { uploadFileAndWaitForImport, waitForImportCompletion } from "./import";
+export {
+  fetchNotifications,
+  useNotificationsQuery,
+  type NotificationsResponse,
+} from "./notifications";

@@ -1,0 +1,231 @@
+.stage {
+  background: #e1e1e1;
+  min-height: 100%;
+}
+
+.shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 100%;
+  padding: 48px 16px 32px;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: grid;
+  gap: 46px;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  padding-bottom: 20px;
+}
+
+.backButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: none;
+  border-radius: 100px;
+  color: #1c1b1b;
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  justify-self: start;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 52px;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background: rgba(248, 251, 249, 0.96);
+  transform: translateY(-1px);
+}
+
+.title {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  text-align: center;
+}
+
+.sections {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.sectionTitleWrap {
+  padding: 8px 10px;
+}
+
+.sectionTitle {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 42px;
+  margin: 0;
+}
+
+.sectionTitleSecondary {
+  font-family: var(--font-body), sans-serif;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.card {
+  backdrop-filter: blur(5px);
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 36px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 16px 16px 14px;
+  width: 100%;
+}
+
+.cardRead {
+  gap: 8px;
+}
+
+.cardUnread {
+  gap: 0;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.cardContentUnread {
+  margin-bottom: -4px;
+}
+
+.cardHeader {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  width: 100%;
+}
+
+.iconWrap {
+  display: inline-flex;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.iconWrapUnread {
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.iconButton {
+  align-items: center;
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 100px;
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.iconButtonUnread {
+  margin-right: -13px;
+}
+
+.iconImage {
+  display: block;
+  height: 16px;
+  width: 16px;
+}
+
+.unreadBadge {
+  background: #cd5d58;
+  border-radius: 100px;
+  flex-shrink: 0;
+  height: 15px;
+  width: 15px;
+}
+
+.cardTitle {
+  color: #1f1f1f;
+  flex: 1 1 auto;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  min-width: 0;
+  padding-bottom: 2px;
+}
+
+.cardBody {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  padding: 0 8px 2px;
+}
+
+.cardTime {
+  color: #999;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  line-height: normal;
+  margin: 0;
+  padding: 0 8px 2px 0;
+  text-align: right;
+  width: 100%;
+}
+
+@media (max-width: 360px) {
+  .shell {
+    padding-inline: 12px;
+  }
+
+  .backButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .header {
+    gap: 24px;
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .sectionTitle {
+    font-size: 22px;
+    line-height: 36px;
+  }
+}

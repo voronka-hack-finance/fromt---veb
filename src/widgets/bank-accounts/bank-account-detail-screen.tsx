@@ -14,7 +14,6 @@ import {
   useBankAccountDetailQuery,
   type BankAccountDetailResponse,
 } from "@/shared/api/bank-account-detail";
-import { operationDetailIds } from "@/shared/data/operation-details";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
@@ -156,7 +155,7 @@ function AccountDetailContent({ account }: { account: BankAccountDetailResponse 
 
                 <div className={styles.operationsList}>
                   {section.operations.map((operation) => {
-                    const hasDetail = operationDetailIds.includes(operation.id);
+                    const hasDetail = Boolean(operation.id);
                     const cardContent = (
                       <div className={styles.operationRow}>
                         <OperationIcon icon={operation.icon} tone={operation.iconTone} />

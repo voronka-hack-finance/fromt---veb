@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowLeft, Send } from "lucide-react";
 
 import {
+  sendAgentChatMessage,
   useAgentChatQuery,
   type AgentChatResponse,
 } from "@/shared/api/agent-chat";
@@ -118,7 +119,7 @@ function AgentChatContent({ chat }: { chat: AgentChatResponse }) {
   }, [messages, isReplying, scrollToBottom]);
 
   const sendMessage = useCallback(
-    (text: string) => {
+    async (text: string) => {
       const trimmed = text.trim();
       if (!trimmed || isReplying) return;
 
@@ -129,13 +130,25 @@ function AgentChatContent({ chat }: { chat: AgentChatResponse }) {
       ]);
       setIsReplying(true);
 
-      window.setTimeout(() => {
+      try {
+        if (chat.chatId) {
+          const nextMessages = await sendAgentChatMessage(chat.chatId, trimmed);
+          setMessages(nextMessages);
+        } else {
+          await new Promise((resolve) => window.setTimeout(resolve, 600));
+          setMessages((current) => [
+            ...current,
+            createBotMessage(resolveBotReply(chat, trimmed)),
+          ]);
+        }
+      } catch {
         setMessages((current) => [
           ...current,
           createBotMessage(resolveBotReply(chat, trimmed)),
         ]);
+      } finally {
         setIsReplying(false);
-      }, 600);
+      }
     },
     [chat, isReplying],
   );

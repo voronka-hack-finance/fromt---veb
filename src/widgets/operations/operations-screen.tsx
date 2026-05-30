@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 
 import { useOperationsScreenQuery, type OperationsScreenResponse } from "@/shared/api/operations";
-import { operationDetailIds } from "@/shared/data/operation-details";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
@@ -135,7 +134,7 @@ function OperationsScreenContent({
 
               <div className={styles.operationsList}>
                 {operationsScreenData.operations.map((operation, index) => {
-                  const hasDetail = operationDetailIds.includes(operation.id);
+                  const hasDetail = Boolean(operation.id);
                   const cardClassName = styles.operationCard;
                   const cardContent = (
                     <div className={styles.operationRow}>

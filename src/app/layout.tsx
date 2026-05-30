@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Unbounded } from "next/font/google";
 
+import { DemoAuthProvider } from "@/shared/providers/demo-auth-provider";
 import { FirebaseNotificationsProvider } from "@/shared/providers/firebase-notifications-provider";
 import { QueryProvider } from "@/shared/providers/query-provider";
 import { MobileTabNav } from "@/widgets/home/mobile-tab-nav";
@@ -31,10 +32,12 @@ export default function RootLayout({
     <html lang="ru">
       <body className={`${headingFont.variable} ${bodyFont.variable}`}>
         <QueryProvider>
-          <FirebaseNotificationsProvider>
-            {children}
-            <MobileTabNav />
-          </FirebaseNotificationsProvider>
+          <DemoAuthProvider>
+            <FirebaseNotificationsProvider>
+              {children}
+              <MobileTabNav />
+            </FirebaseNotificationsProvider>
+          </DemoAuthProvider>
         </QueryProvider>
       </body>
     </html>

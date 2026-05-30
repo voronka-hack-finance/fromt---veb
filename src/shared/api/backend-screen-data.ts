@@ -35,6 +35,9 @@ import {
   fetchChats,
   fetchExpectedExpenses,
   fetchExpectedIncomes,
+  fetchFinancialHealthHistory,
+  fetchFinancialHealthProfile,
+  fetchFinancialHealthScore,
   fetchGoalsPage,
   fetchLimitsPage,
   fetchTransactions,
@@ -44,6 +47,7 @@ import {
   type ChatResponse,
   type ExpectedExpenseResponse,
   type ExpectedIncomeResponse,
+  type FinancialHealthScoreResponse,
   type GoalResponse,
   type LimitResponse,
   type TransactionResponse,
@@ -265,6 +269,25 @@ function monthKey(date: Date) {
 
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
+}
+
+function mapFinancialHealthToDashboardCredit(health: FinancialHealthScoreResponse) {
+  const financialScore = parseDecimal(health.financial_health_score);
+
+  return {
+    betterThanUsers: clamp(Math.round(financialScore), 0, 100),
+    creditLabel: health.financial_health_status,
+    creditMax: 500,
+    creditScore: Math.round(financialScore * 5),
+  };
+}
+
+async function fetchFinancialHealthScoreSafe() {
+  try {
+    return await fetchFinancialHealthScore();
+  } catch {
+    return null;
+  }
 }
 
 function sortByDateDesc<T extends { created_at?: string | null; operation_at?: string | null }>(
@@ -1066,6 +1089,7 @@ export async function loadDashboardScreenData() {
     expectedExpenses,
     transactionsResponse,
     recommendationsResponse,
+    financialHealth,
   ] = await Promise.all([
     fetchAccounts({ page_size: 100 }),
     fetchAvailableBalance(),
@@ -1073,6 +1097,7 @@ export async function loadDashboardScreenData() {
     fetchExpectedExpenses({ page_size: 100 }),
     fetchTransactions({ page_size: 200 }),
     fetchAgentRecommendations(),
+    fetchFinancialHealthScoreSafe(),
   ]);
 
   const accounts = accountsResponse.items;
@@ -1141,6 +1166,7 @@ export async function loadDashboardScreenData() {
     }),
     dashboard: {
       ...dashboardData,
+      ...(financialHealth ? mapFinancialHealthToDashboardCredit(financialHealth) : {}),
       assistantText: recommendations[0]?.title ?? dashboardData.assistantText,
       expenses,
       forecastPercent,
@@ -1475,28 +1501,63 @@ export async function loadOperationsBarsScreenData() {
   };
 }
 
+function buildHealthHistoryTrend(
+  items: Awaited<ReturnType<typeof fetchFinancialHealthHistory>>["items"],
+  length: number,
+) {
+  const sorted = [...items].sort((left, right) => left.period.localeCompare(right.period));
+  const slice = sorted.slice(-length);
+
+  if (!slice.length) {
+    return null;
+  }
+
+  return slice.map((item) => {
+    const [, monthPart] = item.period.split("-");
+    const monthIndex = Number.parseInt(monthPart ?? "1", 10) - 1;
+    const date = new Date(2026, monthIndex, 1);
+
+    return {
+      month: formatMonthShort(date),
+      value: Math.round(parseDecimal(item.financial_health_score) * 100),
+    };
+  });
+}
+
 export async function loadTotalBalanceScreenData() {
-  const [accountsResponse, availableBalance, transactionsResponse] = await Promise.all([
-    fetchAccounts({ page_size: 100 }),
-    fetchAvailableBalance(),
-    fetchTransactions({ page_size: 500 }),
-  ]);
+  const [accountsResponse, availableBalance, transactionsResponse, healthHistory] =
+    await Promise.all([
+      fetchAccounts({ page_size: 100 }),
+      fetchAvailableBalance(),
+      fetchTransactions({ page_size: 500 }),
+      fetchFinancialHealthHistory({ page_size: 12 }).catch(() => ({
+        items: [],
+        pagination: { page: 1, page_size: 12, total_items: 0, total_pages: 0 },
+      })),
+    ]);
 
   const accounts = accountsResponse.items;
   const totalBalance = accounts.reduce(
     (sum, account) => sum + parseDecimal(account.current_balance),
     0,
   );
+  const healthTrend = buildHealthHistoryTrend(
+    healthHistory.items,
+    totalBalanceScreenData.filters[0].trend.length,
+  );
+  const defaultTrendLength = totalBalanceScreenData.filters[0].trend.length;
   const filters = [
     {
       ...totalBalanceScreenData.filters[0],
       amount: totalBalance,
       label: totalBalanceScreenData.filters[0].label,
       subtitle: totalBalanceScreenData.filters[0].subtitle,
-      trend: buildMonthSeries(transactionsResponse.items, totalBalanceScreenData.filters[0].trend.length).map((item) => ({
-        month: item.month,
-        value: item.value,
-      })),
+      trend:
+        healthTrend ??
+        buildMonthSeries(transactionsResponse.items, defaultTrendLength).map((item) => ({
+          month: item.month,
+          value: item.value,
+        })),
     },
     ...accounts.slice(0, 3).map((account) => ({
       amount: parseDecimal(account.current_balance),
@@ -1618,7 +1679,7 @@ export async function tryLoadScreenData<T>(loader: () => Promise<T>, fallback: (
   try {
     return await loader();
   } catch (error) {
-    if (error instanceof ApiError) {
+    if (error instanceof ApiError || error instanceof Error) {
       return fallback();
     }
 

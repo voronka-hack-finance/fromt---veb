@@ -34,7 +34,7 @@ export function AppTopBar({ lowercaseTitle, notifications, title }: AppTopBarPro
         <button
           aria-label="Уведомления"
           className={styles.iconButton}
-          onClick={() => router.push("/operations")}
+          onClick={() => router.push("/notifications")}
           type="button"
         >
           <img alt="" aria-hidden className={styles.icon} draggable={false} src={assets.notification} />

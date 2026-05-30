@@ -7,6 +7,8 @@ import {
   type OperationDetail,
 } from "@/shared/data/operation-details";
 
+import { loadOperationDetailScreenData } from "./backend-entity-loaders";
+import { tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
 
@@ -17,13 +19,18 @@ export async function fetchOperationDetail(
 ): Promise<OperationDetailResponse> {
   await mockDelay();
 
-  const operation = operationDetails[operationId];
+  return tryLoadScreenData(
+    () => loadOperationDetailScreenData(operationId),
+    () => {
+      const operation = operationDetails[operationId];
 
-  if (!operation) {
-    throw new Error(`Operation not found: ${operationId}`);
-  }
+      if (!operation) {
+        throw new Error(`Operation not found: ${operationId}`);
+      }
 
-  return operation;
+      return operation;
+    },
+  );
 }
 
 export function useOperationDetailQuery(operationId: string) {

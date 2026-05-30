@@ -1,9 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { ArrowLeft, Check } from "lucide-react";
 
+import { saveCreditAsCategoryLimit } from "@/shared/api/category-mutations";
+import { queryKeys } from "@/shared/api/query-keys";
 import { addCreditScreenData } from "@/shared/data/add-credit";
 import { AppDatePicker } from "@/shared/ui/app-date-picker/app-date-picker";
 import { AppSelect } from "@/shared/ui/app-select/app-select";
@@ -76,6 +80,8 @@ function TextField({
 }
 
 export function AddCreditScreenView() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [loanAmount, setLoanAmount] = useState<string>(defaults.loanAmount);
   const [debtType, setDebtType] = useState<(typeof debtTypes)[number]>(defaults.debtType as (typeof debtTypes)[number]);
   const [loanName, setLoanName] = useState<string>(defaults.loanName);
@@ -88,6 +94,32 @@ export function AddCreditScreenView() {
   const [issueDate, setIssueDate] = useState<string>(defaults.issueDate);
   const [initialAmount, setInitialAmount] = useState<string>(defaults.initialAmount);
   const [principalRemaining, setPrincipalRemaining] = useState<string>(defaults.principalRemaining);
+  const [isSaving, setIsSaving] = useState(false);
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (isSaving) {
+      return;
+    }
+
+    setIsSaving(true);
+
+    try {
+      await saveCreditAsCategoryLimit({
+        bank,
+        debtType,
+        loanName,
+        monthlyPayment,
+        principalRemaining,
+      });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.creditLoad });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+      router.push("/credit-load");
+    } catch {
+      setIsSaving(false);
+    }
+  }
 
   return (
     <DesktopSidebarLayout>
@@ -102,12 +134,7 @@ export function AddCreditScreenView() {
             </header>
           </Reveal>
 
-          <form
-            className={styles.form}
-            onSubmit={(event) => {
-              event.preventDefault();
-            }}
-          >
+          <form className={styles.form} onSubmit={(event) => void handleSubmit(event)}>
             <Reveal delay={0.07}>
               <FormCard label={labels.loanAmount}>
                 <CurrencyField
@@ -243,8 +270,8 @@ export function AddCreditScreenView() {
               </Reveal>
 
               <Reveal delay={0.43}>
-                <button className={styles.saveButton} type="submit">
-                  <span>{actions.save}</span>
+                <button className={styles.saveButton} disabled={isSaving} type="submit">
+                  <span>{isSaving ? "Сохранение..." : actions.save}</span>
                   <Check size={24} strokeWidth={2} />
                 </button>
               </Reveal>

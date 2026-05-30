@@ -4,6 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 
 import { bankAccountsScreenData } from "@/shared/data/bank-accounts";
 
+import { loadBankAccountsScreenData } from "./backend-entity-loaders";
+import { tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
 
@@ -29,7 +31,17 @@ export type BankAccountsResponse = {
 
 export async function fetchBankAccounts(): Promise<BankAccountsResponse> {
   await mockDelay();
-  return bankAccountsScreenData as BankAccountsResponse;
+  return tryLoadScreenData(
+    loadBankAccountsScreenData,
+    () => ({
+      title: bankAccountsScreenData.title,
+      sections: bankAccountsScreenData.sections.map((section) => ({
+        id: section.id,
+        title: section.title,
+        accounts: section.accounts.map((account) => ({ ...account })),
+      })),
+    }),
+  ) as Promise<BankAccountsResponse>;
 }
 
 export function useBankAccountsQuery() {

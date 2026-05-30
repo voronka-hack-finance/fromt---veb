@@ -1,83 +1,179 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, ArrowUpRight, Plus } from "lucide-react";
+import { useMemo, useState } from "react";
+import {
+  ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
+  GraduationCap,
+  Plus,
+  Wallet,
+} from "lucide-react";
 
-import { useCreditLoadQuery, type CreditLoadResponse } from "@/shared/api/credit-load";
+import {
+  useCreditLoadQuery,
+  type CreditLoadPaymentIcon,
+  type CreditLoadResponse,
+  type CreditLoadUpcomingPayment,
+} from "@/shared/api/credit-load";
+import {
+  buildCalendarCells,
+  isSameDay,
+  monthNames,
+  weekdayNames,
+} from "@/shared/lib/date-format";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
+import { cn } from "@/shared/lib/cn";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
-import { ChartContainer } from "./chart-container";
 import styles from "./credit-load-screen.module.css";
 
-const assets = {
-  summaryBg: "/credit-load/summary-bg.svg",
-  bankDot: "/dashboard/balance/divider-dot-sber.svg",
-} as const;
+const paymentIconSources: Record<"mts" | "vk", string> = {
+  mts: "/subscriptions/mts-premium.png",
+  vk: "/subscriptions/vk-music.png",
+};
 
-function formatRubles(value: number) {
-  return `${formatCurrencyParts(Math.round(value)).whole}₽`;
+function formatPaymentAmount(value: number) {
+  const amount = formatCurrencyParts(Math.abs(value));
+  return `–${amount.whole} ₽`;
 }
 
-function LoanCard({
-  bank,
-  bankIcon,
-  id,
-  paidPercent,
-  perMonth,
-  rate,
-  remaining,
-  title,
-}: CreditLoadResponse["loans"][number]) {
+function PaymentIcon({ icon }: { icon: CreditLoadPaymentIcon }) {
+  if (icon === "education") {
+    return (
+      <span className={styles.paymentIconFallback} aria-hidden>
+        <GraduationCap size={16} strokeWidth={1.8} />
+      </span>
+    );
+  }
+
+  if (icon === "yandex") {
+    return (
+      <span aria-hidden className={styles.paymentIconBadge}>
+        Я+
+      </span>
+    );
+  }
+
+  if (icon === "generic") {
+    return (
+      <span className={styles.paymentIconFallback} aria-hidden>
+        <Wallet size={16} strokeWidth={1.8} />
+      </span>
+    );
+  }
+
   return (
-    <article className={styles.loanCard}>
-      <div className={styles.loanHeader}>
-        <div className={styles.loanMeta}>
-          <h3 className={styles.loanTitle}>{title}</h3>
-          <div className={styles.bankTag}>
-            <img alt="" aria-hidden className={styles.bankIcon} draggable={false} src={bankIcon} />
-            <div className={styles.bankInfo}>
-              <span>{bank}</span>
-              <img alt="" aria-hidden className={styles.bankDot} draggable={false} src={assets.bankDot} />
-              <span>{rate}</span>
-            </div>
-          </div>
+    <img
+      alt=""
+      aria-hidden
+      className={styles.paymentIconImage}
+      draggable={false}
+      src={paymentIconSources[icon]}
+    />
+  );
+}
+
+function PaymentCard({ payment }: { payment: CreditLoadUpcomingPayment }) {
+  return (
+    <article className={styles.paymentCard}>
+      <div className={styles.paymentRow}>
+        <div className={styles.paymentIconWrap}>
+          <PaymentIcon icon={payment.icon} />
         </div>
 
-        <Link
-          aria-label={`Подробнее: ${title}`}
-          className={styles.detailButton}
-          href={`/credit-load/${id}`}
-        >
-          <ArrowUpRight size={24} strokeWidth={1.8} />
-        </Link>
-      </div>
-
-      <div className={styles.loanBody}>
-        <div className={styles.progressBlock}>
-          <div className={styles.progressTrack}>
-            <div className={styles.progressFill} style={{ width: `${paidPercent}%` }} />
-          </div>
-          <p className={styles.progressLabel}>
-            <span>Выплачено</span>
-            <span>{paidPercent}%</span>
-          </p>
+        <div className={styles.paymentText}>
+          <p className={styles.paymentDate}>{payment.dateLabel}</p>
+          <p className={styles.paymentTitle}>{payment.title}</p>
         </div>
 
-        <div className={styles.loanStats}>
-          <div className={styles.loanStatBlock}>
-            <p className={styles.loanStatLabel}>В месяц</p>
-            <p className={styles.loanStatValue}>{formatRubles(perMonth)}</p>
-          </div>
-          <div className={`${styles.loanStatBlock} ${styles.loanStatBlockRight}`}>
-            <p className={styles.loanStatLabel}>Остаток</p>
-            <p className={styles.loanStatValue}>{formatRubles(remaining)}</p>
-          </div>
-        </div>
+        <p className={styles.paymentAmount}>{formatPaymentAmount(payment.amount)}</p>
       </div>
     </article>
+  );
+}
+
+function CreditLoadCalendar({
+  paymentDays,
+  selectedDate,
+  viewMonth,
+  viewYear,
+  onSelectDate,
+  onShiftMonth,
+}: {
+  paymentDays: number[];
+  selectedDate: Date;
+  viewMonth: number;
+  viewYear: number;
+  onSelectDate: (date: Date) => void;
+  onShiftMonth: (delta: number) => void;
+}) {
+  const cells = buildCalendarCells(viewYear, viewMonth);
+  const paymentDaySet = useMemo(() => new Set(paymentDays), [paymentDays]);
+
+  return (
+    <section className={styles.calendarCard}>
+      <div className={styles.calendarHeader}>
+        <p className={styles.calendarMonth}>
+          {monthNames[viewMonth]} {viewYear}
+        </p>
+        <div className={styles.calendarNav}>
+          <button
+            aria-label="Предыдущий месяц"
+            className={styles.calendarNavButton}
+            onClick={() => onShiftMonth(-1)}
+            type="button"
+          >
+            <ChevronLeft size={20} strokeWidth={1.8} />
+          </button>
+          <button
+            aria-label="Следующий месяц"
+            className={styles.calendarNavButton}
+            onClick={() => onShiftMonth(1)}
+            type="button"
+          >
+            <ChevronRight size={20} strokeWidth={1.8} />
+          </button>
+        </div>
+      </div>
+
+      <div className={styles.weekdays}>
+        {weekdayNames.map((weekday) => (
+          <span className={styles.weekday} key={weekday}>
+            {weekday}
+          </span>
+        ))}
+      </div>
+
+      <div className={styles.calendarGrid}>
+        {cells.map(({ date, inCurrentMonth }) => {
+          const selected = isSameDay(date, selectedDate);
+          const hasPayment =
+            inCurrentMonth &&
+            date.getMonth() === viewMonth &&
+            paymentDaySet.has(date.getDate());
+
+          return (
+            <button
+              className={cn(
+                styles.dayButton,
+                !inCurrentMonth && styles.dayOutside,
+                selected && styles.daySelected,
+              )}
+              key={date.toISOString()}
+              onClick={() => onSelectDate(date)}
+              type="button"
+            >
+              <span className={styles.dayLabel}>{date.getDate()}</span>
+              {hasPayment ? <span aria-hidden className={styles.dayDot} /> : null}
+            </button>
+          );
+        })}
+      </div>
+    </section>
   );
 }
 
@@ -85,13 +181,33 @@ export function CreditLoadScreenView() {
   const query = useCreditLoadQuery();
 
   return (
-    <QueryBoundary loadingLabel="Загрузка кредитной нагрузки..." query={query}>
+    <QueryBoundary loadingLabel="Загрузка нагрузки..." query={query}>
       {(screenData) => <CreditLoadScreenContent screenData={screenData} />}
     </QueryBoundary>
   );
 }
 
 function CreditLoadScreenContent({ screenData }: { screenData: CreditLoadResponse }) {
+  const initialSelectedDate = useMemo(
+    () =>
+      new Date(
+        screenData.calendar.year,
+        screenData.calendar.month,
+        screenData.calendar.selectedDay,
+      ),
+    [screenData.calendar.month, screenData.calendar.selectedDay, screenData.calendar.year],
+  );
+
+  const [selectedDate, setSelectedDate] = useState(initialSelectedDate);
+  const [viewYear, setViewYear] = useState(screenData.calendar.year);
+  const [viewMonth, setViewMonth] = useState(screenData.calendar.month);
+
+  const shiftMonth = (delta: number) => {
+    const next = new Date(viewYear, viewMonth + delta, 1);
+    setViewYear(next.getFullYear());
+    setViewMonth(next.getMonth());
+  };
+
   return (
     <DesktopSidebarLayout>
       <main className={styles.stage}>
@@ -102,59 +218,44 @@ function CreditLoadScreenContent({ screenData }: { screenData: CreditLoadRespons
                 <ArrowLeft size={24} strokeWidth={1.9} />
               </Link>
               <h1 className={styles.title}>{screenData.title}</h1>
+              <span aria-hidden className={styles.backButton} style={{ visibility: "hidden" }} />
             </header>
           </Reveal>
 
           <div className={styles.content}>
             <Reveal delay={0.07}>
-              <section className={styles.summaryCard}>
-                <img alt="" aria-hidden className={styles.summaryBg} draggable={false} src={assets.summaryBg} />
-                <div className={styles.summaryTop}>
-                  <div>
-                    <p className={styles.summaryLabel}>В месяц</p>
-                    <p className={styles.summaryValue}>{formatRubles(screenData.summary.perMonth)}</p>
-                  </div>
-                  <div className={styles.summaryRight}>
-                    <p className={styles.summaryLabel}>Общий долг</p>
-                    <p className={styles.summaryValue}>{formatRubles(screenData.summary.totalDebt)}</p>
-                  </div>
-                </div>
-
-                <div className={styles.nextPaymentPill}>
-                  <span>{screenData.summary.nextPaymentLabel}</span>
-                  <span>{screenData.summary.nextPaymentDate}</span>
-                </div>
-              </section>
+              <CreditLoadCalendar
+                onSelectDate={setSelectedDate}
+                onShiftMonth={shiftMonth}
+                paymentDays={screenData.calendar.paymentDays}
+                selectedDate={selectedDate}
+                viewMonth={viewMonth}
+                viewYear={viewYear}
+              />
             </Reveal>
 
             <Reveal delay={0.11}>
-              <section className={styles.indicatorCard}>
-                <div className={styles.indicatorHeader}>
-                  <h2 className={styles.indicatorTitle}>Показатель долговой нагрузки</h2>
-                  <span className={styles.indicatorBadge}>{screenData.debtIndicator.label}</span>
+              <section className={styles.paymentsSection}>
+                <div className={styles.sectionHeading}>
+                  <span className={styles.sectionLine} />
+                  <h2 className={styles.sectionTitle}>Ближайшие платежи</h2>
+                  <span className={styles.sectionLine} />
                 </div>
-                <ChartContainer percent={screenData.debtIndicator.percent} />
-              </section>
-            </Reveal>
 
-            <section className={styles.loansSection}>
-              <Reveal delay={0.15}>
-                <h2 className={styles.loansTitle}>Текущие кредиты</h2>
-              </Reveal>
-
-              {screenData.loans.map((loan, index) => (
-                <Reveal delay={0.18 + index * 0.04} key={loan.id}>
-                  <LoanCard {...loan} />
-                </Reveal>
-              ))}
-
-              <Reveal delay={0.3}>
                 <Link className={styles.addButton} href="/credit-load/add">
                   <span>Добавить кредит</span>
-                  <Plus size={24} strokeWidth={2} />
+                  <Plus size={20} strokeWidth={2} />
                 </Link>
-              </Reveal>
-            </section>
+
+                <div className={styles.paymentsList}>
+                  {screenData.upcomingPayments.map((payment, index) => (
+                    <Reveal delay={0.14 + index * 0.04} key={payment.id}>
+                      <PaymentCard payment={payment} />
+                    </Reveal>
+                  ))}
+                </div>
+              </section>
+            </Reveal>
           </div>
         </div>
       </main>

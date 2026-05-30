@@ -7,6 +7,8 @@ import {
   type CreditLoadLoanDetail,
 } from "@/shared/data/credit-load-loans";
 
+import { loadCreditLoadLoanDetailScreenData } from "./backend-entity-loaders";
+import { tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
 
@@ -17,13 +19,18 @@ export async function fetchCreditLoadLoan(
 ): Promise<CreditLoadLoanDetailResponse> {
   await mockDelay();
 
-  const loan = creditLoadLoanDetails[loanId];
+  return tryLoadScreenData(
+    () => loadCreditLoadLoanDetailScreenData(loanId),
+    () => {
+      const loan = creditLoadLoanDetails[loanId];
 
-  if (!loan) {
-    throw new Error(`Loan not found: ${loanId}`);
-  }
+      if (!loan) {
+        throw new Error(`Loan not found: ${loanId}`);
+      }
 
-  return loan;
+      return loan;
+    },
+  );
 }
 
 export function useCreditLoadLoanQuery(loanId: string) {

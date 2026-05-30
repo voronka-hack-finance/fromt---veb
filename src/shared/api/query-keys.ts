@@ -19,4 +19,5 @@ export const queryKeys = {
   totalBalance: ["total-balance"] as const,
   incomeBalance: ["income-balance"] as const,
   investmentsBalance: ["investments-balance"] as const,
+  notifications: ["notifications"] as const,
 } as const;

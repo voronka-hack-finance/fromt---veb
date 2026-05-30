@@ -83,6 +83,64 @@ export type AnalyticsPeriodQuery = {
   period_start?: string;
 };
 
+/** @see https://zanachka.avenir-team.ru/docs — Financial Health (OpenAPI v0.2.0) */
+export type HealthDataGapResponse = {
+  metric_key: string;
+  reason: string;
+};
+
+export type FinancialHealthScoreResponse = {
+  period: string;
+  financial_health_score: string;
+  financial_health_status: string;
+  credit_load_index: string;
+  credit_load_zone: string;
+  credit_load_index_partial: boolean;
+  top_risk_drivers: string[];
+  data_gaps: HealthDataGapResponse[];
+  calculated_at: string;
+};
+
+export type FinancialHealthQuery = {
+  period?: string;
+  refresh?: boolean;
+};
+
+export type FinancialHealthProfileResponse = {
+  period: string;
+  period_start: string;
+  period_end: string;
+  financial_health_score: string;
+  financial_health_status: string;
+  credit_load_index: string;
+  credit_load_zone: string;
+  credit_load_index_partial: boolean;
+  total_income: string;
+  total_expenses: string;
+  net_cashflow: string;
+  expense_to_income_ratio?: string | null;
+  savings_rate?: string | null;
+  score_components?: Record<string, string | null>;
+  weights_applied?: Record<string, string | null>;
+  data_gaps: HealthDataGapResponse[];
+  top_risk_drivers: string[];
+  calculated_at: string;
+};
+
+export type FinancialHealthHistoryItem = {
+  period: string;
+  financial_health_score?: string | null;
+  financial_health_status: string;
+  credit_load_index?: string | null;
+  credit_load_zone: string;
+  calculated_at: string;
+};
+
+export type FinancialHealthHistoryPageResponse = {
+  items: FinancialHealthHistoryItem[];
+  pagination: PaginationResponse;
+};
+
 export type GroupResponse = Schemas["GroupResponse"];
 export type GroupsPageResponse = Schemas["GroupsPageResponse"];
 export type GroupCreateRequest = Schemas["GroupCreateRequest"];
@@ -374,6 +432,20 @@ export async function fetchAvailableBalance(query: AnalyticsPeriodQuery = {}) {
     "/api/v1/analytics/available-balance",
     { query },
   );
+}
+
+export async function fetchFinancialHealthScore(query: FinancialHealthQuery = {}) {
+  return apiRequest<FinancialHealthScoreResponse>("/api/v1/health/score", { query });
+}
+
+export async function fetchFinancialHealthProfile(query: FinancialHealthQuery = {}) {
+  return apiRequest<FinancialHealthProfileResponse>("/api/v1/health/profile", { query });
+}
+
+export async function fetchFinancialHealthHistory(query: PaginationQuery = {}) {
+  return apiRequest<FinancialHealthHistoryPageResponse>("/api/v1/health/history", {
+    query,
+  });
 }
 
 export async function fetchExpectedIncomes(query: PaginationQuery = {}) {

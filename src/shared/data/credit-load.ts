@@ -1,45 +1,54 @@
+export type CreditLoadPaymentIcon = "education" | "yandex" | "vk" | "mts" | "generic";
+
+export type CreditLoadUpcomingPayment = {
+  id: string;
+  dateLabel: string;
+  title: string;
+  amount: number;
+  icon: CreditLoadPaymentIcon;
+  paymentDay: number;
+};
+
 export const creditLoadScreenData = {
-  title: "Кредитная нагрузка",
-  summary: {
-    perMonth: 60100,
-    totalDebt: 3927000,
-    nextPaymentLabel: "Ближайшее платёж",
-    nextPaymentDate: "14.06",
+  title: "Нагрузка",
+  calendar: {
+    year: 2026,
+    month: 5,
+    selectedDay: 1,
+    paymentDays: [2, 8, 13, 18],
   },
-  debtIndicator: {
-    percent: 38,
-    label: "Умеренная",
-  },
-  loans: [
+  upcomingPayments: [
     {
-      id: "mortgage",
-      title: "Ипотека",
-      bank: "Сбер",
-      rate: "8,5%",
-      bankIcon: "/dashboard/balance/icon-sber.svg",
-      paidPercent: 29,
-      perMonth: 60100,
-      remaining: 3200000,
+      id: "kubgu",
+      dateLabel: "2 июня",
+      title: "Оплата за обучение в КубГУ",
+      amount: 189600,
+      icon: "education",
+      paymentDay: 2,
     },
     {
-      id: "consumer",
-      title: "Потребительский кредит",
-      bank: "Т-БАНК",
-      rate: "8,5%",
-      bankIcon: "/dashboard/balance/icon-tbank.svg",
-      paidPercent: 47,
-      perMonth: 18200,
-      remaining: 640000,
+      id: "yandex-plus",
+      dateLabel: "8 июня",
+      title: "Яндекс.Плюс",
+      amount: 299,
+      icon: "yandex",
+      paymentDay: 8,
     },
     {
-      id: "auto",
-      title: "Автокредит",
-      bank: "Альфа банк",
-      rate: "12%",
-      bankIcon: "/credit-load/icon-alfa.svg",
-      paidPercent: 87,
-      perMonth: 27000,
-      remaining: 124500,
+      id: "vk-music",
+      dateLabel: "13 июня",
+      title: "ВК музыка",
+      amount: 299,
+      icon: "vk",
+      paymentDay: 13,
+    },
+    {
+      id: "mts-premium",
+      dateLabel: "18 июня",
+      title: "МТС премиум",
+      amount: 199,
+      icon: "mts",
+      paymentDay: 18,
     },
   ],
 } as const;

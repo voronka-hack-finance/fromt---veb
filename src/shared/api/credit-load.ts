@@ -2,38 +2,50 @@
 
 import { useQuery } from "@tanstack/react-query";
 
-import { creditLoadScreenData } from "@/shared/data/credit-load";
+import {
+  creditLoadScreenData,
+  type CreditLoadPaymentIcon,
+  type CreditLoadUpcomingPayment,
+} from "@/shared/data/credit-load";
 
+import { loadCreditLoadScreenData } from "./backend-entity-loaders";
+import { tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
 
 export type CreditLoadResponse = {
   title: string;
-  summary: {
-    perMonth: number;
-    totalDebt: number;
-    nextPaymentLabel: string;
-    nextPaymentDate: string;
+  calendar: {
+    year: number;
+    month: number;
+    selectedDay: number;
+    paymentDays: number[];
   };
-  debtIndicator: {
-    percent: number;
-    label: string;
-  };
-  loans: ReadonlyArray<{
-    id: string;
-    title: string;
-    bank: string;
-    rate: string;
-    bankIcon: string;
-    paidPercent: number;
-    perMonth: number;
-    remaining: number;
-  }>;
+  upcomingPayments: ReadonlyArray<CreditLoadUpcomingPayment>;
 };
+
+export type { CreditLoadPaymentIcon, CreditLoadUpcomingPayment };
+
+function toCreditLoadResponse(
+  data: typeof creditLoadScreenData,
+): CreditLoadResponse {
+  return {
+    calendar: {
+      month: data.calendar.month,
+      paymentDays: [...data.calendar.paymentDays],
+      selectedDay: data.calendar.selectedDay,
+      year: data.calendar.year,
+    },
+    title: data.title,
+    upcomingPayments: data.upcomingPayments.map((payment) => ({ ...payment })),
+  };
+}
 
 export async function fetchCreditLoad(): Promise<CreditLoadResponse> {
   await mockDelay();
-  return creditLoadScreenData as CreditLoadResponse;
+  return tryLoadScreenData(loadCreditLoadScreenData, () =>
+    toCreditLoadResponse(creditLoadScreenData),
+  );
 }
 
 export function useCreditLoadQuery() {

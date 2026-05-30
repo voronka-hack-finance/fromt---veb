@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import {
   ArrowLeft,
   Calendar,
@@ -12,7 +14,9 @@ import {
   X,
 } from "lucide-react";
 
+import { saveCategoryWithLimit } from "@/shared/api/category-mutations";
 import { useCategoriesQuery, type CategoriesResponse } from "@/shared/api/categories";
+import { queryKeys } from "@/shared/api/query-keys";
 import {
   createCategoryIconOptions,
   createCategoryScreenData,
@@ -33,6 +37,8 @@ export function CreateCategoryScreenView() {
 }
 
 function CreateCategoryScreenContent({ assets }: { assets: CategoriesResponse["assets"] }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const { sections, defaults, actions, title } = createCategoryScreenData;
   const [name, setName] = useState<string>(defaults.name);
   const [selectedIcon, setSelectedIcon] = useState<CategoryIconKey>(defaults.icon);
@@ -41,6 +47,35 @@ function CreateCategoryScreenContent({ assets }: { assets: CategoriesResponse["a
   const [frequency, setFrequency] = useState<(typeof sections.frequency.options)[number]>(
     defaults.frequency,
   );
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  async function handleSave() {
+    const trimmedName = name.trim();
+
+    if (!trimmedName || isSaving) {
+      return;
+    }
+
+    setIsSaving(true);
+    setErrorMessage(null);
+
+    try {
+      const category = await saveCategoryWithLimit({
+        description,
+        frequency,
+        iconKey: selectedIcon,
+        limit,
+        name: trimmedName,
+      });
+
+      await queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+      router.push(`/categories/${category.id}`);
+    } catch {
+      setErrorMessage("Не удалось сохранить категорию. Попробуйте ещё раз.");
+      setIsSaving(false);
+    }
+  }
 
   return (
     <main className={styles.createCategoryStage}>
@@ -177,10 +212,19 @@ function CreateCategoryScreenContent({ assets }: { assets: CategoriesResponse["a
           </section>
         </form>
 
+        {errorMessage ? (
+          <p style={{ color: "#cd5d58", margin: 0, padding: "0 4px" }}>{errorMessage}</p>
+        ) : null}
+
         <div className={styles.actions}>
-          <button className={styles.saveButton} type="button">
+          <button
+            className={styles.saveButton}
+            disabled={!name.trim() || isSaving}
+            onClick={() => void handleSave()}
+            type="button"
+          >
             <Save size={20} strokeWidth={1.8} />
-            <span>{actions.save}</span>
+            <span>{isSaving ? "Сохранение..." : actions.save}</span>
           </button>
           <button aria-label="Редактировать" className={styles.editButton} type="button">
             <Pencil size={20} strokeWidth={1.8} />

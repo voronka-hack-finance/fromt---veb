@@ -1,0 +1,200 @@
+.stage {
+  background: #e1e1e1;
+  min-height: 100vh;
+}
+
+.shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 100vh;
+  padding: 52px 16px 50px;
+  position: relative;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.backButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+  color: #2f2f2f;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 52px;
+  justify-content: center;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 52px;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background: rgba(248, 251, 249, 0.96);
+  transform: translateY(-1px);
+}
+
+.title {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 24px;
+  width: 100%;
+}
+
+.uploadSection {
+  align-items: center;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.uploadTitle {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+  text-align: center;
+}
+
+.uploadZone {
+  align-items: center;
+  aspect-ratio: 1;
+  background: transparent;
+  border: 1px dashed rgba(153, 153, 153, 0.4);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  justify-content: center;
+  padding: 24px;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+  width: 100%;
+}
+
+.uploadZone:hover,
+.uploadZone:focus-visible {
+  background: rgba(255, 255, 255, 0.35);
+  border-color: rgba(153, 153, 153, 0.65);
+}
+
+.uploadZoneHasFile {
+  background: rgba(255, 255, 255, 0.55);
+  border-style: solid;
+}
+
+.uploadIcon {
+  display: block;
+  flex-shrink: 0;
+  height: 26px;
+  width: 26px;
+}
+
+.uploadPlaceholder {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.3;
+  margin: 0;
+  text-align: center;
+}
+
+.fileName {
+  color: #383838;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.footer {
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.saveButton {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 24px;
+  color: #40a93d;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 16px;
+  justify-content: center;
+  line-height: 1.15;
+  padding: 16px;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+  width: 100%;
+}
+
+.saveButton:hover:not(:disabled),
+.saveButton:focus-visible:not(:disabled) {
+  background: rgba(255, 255, 255, 0.92);
+  transform: translateY(-1px);
+}
+
+.saveButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 360px) {
+  .shell {
+    padding-inline: 12px;
+  }
+
+  .backButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+}

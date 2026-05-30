@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowLeft, Search } from "lucide-react";
 
 import {
@@ -29,9 +30,9 @@ function matchesBank(bank: AddBankAccountOption, query: string) {
   return haystack.includes(query);
 }
 
-function BankCard({ bank }: { bank: AddBankAccountOption }) {
+function BankCard({ bank, onSelect }: { bank: AddBankAccountOption; onSelect: () => void }) {
   return (
-    <button className={styles.bankCard} type="button">
+    <button className={styles.bankCard} onClick={onSelect} type="button">
       <div className={styles.bankCardInner}>
         <div className={styles.bankLogoWrap}>
           <img alt="" aria-hidden className={styles.bankLogo} draggable={false} height={55} src={bank.logo} width={55} />
@@ -49,6 +50,7 @@ function BankCard({ bank }: { bank: AddBankAccountOption }) {
 }
 
 export function AddBankAccountScreenView() {
+  const router = useRouter();
   const [search, setSearch] = useState("");
 
   const filteredBanks = useMemo(() => {
@@ -85,7 +87,13 @@ export function AddBankAccountScreenView() {
           <Reveal delay={0.09}>
             <div className={styles.bankList}>
               {filteredBanks.length > 0 ? (
-                filteredBanks.map((bank) => <BankCard bank={bank} key={bank.id} />)
+                filteredBanks.map((bank) => (
+                  <BankCard
+                    bank={bank}
+                    key={bank.id}
+                    onSelect={() => router.push("/bank-accounts/new")}
+                  />
+                ))
               ) : (
                 <p className={styles.emptyState}>Банки не найдены. Попробуйте другой запрос.</p>
               )}

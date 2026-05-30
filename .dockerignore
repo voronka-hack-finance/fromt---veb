@@ -1,0 +1,13 @@
+.git
+.gitignore
+.next
+.env.production
+.env*.local
+node_modules
+coverage
+dist
+out
+tmp
+*.log
+DEPLOY.md
+figma-categories.png

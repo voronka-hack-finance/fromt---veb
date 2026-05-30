@@ -2,13 +2,17 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight, TrendingUp } from "lucide-react";
 
 import { useDashboardData } from "@/shared/api/dashboard-context";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 
 import styles from "./stat-cards.module.css";
+
+const assets = {
+  detailArrow: "/dashboard/stat-cards/detail-arrow.svg",
+  trendUp: "/dashboard/stat-cards/trend-up.png",
+} as const;
 
 export function InvestmentStatCard() {
   const { dashboard } = useDashboardData();
@@ -19,14 +23,14 @@ export function InvestmentStatCard() {
         <div className={styles.cardBody}>
           <div className={styles.muted}>Инвестиции</div>
           <div className={styles.trend}>
-            <TrendingUp size={32} strokeWidth={2.2} />
+            <img alt="" aria-hidden className={styles.trendIcon} draggable={false} src={assets.trendUp} />
             <span>{dashboard.investmentPercent.toLocaleString("ru-RU")} %</span>
           </div>
           <div className={styles.positivePill}>{dashboard.investmentGrowth}</div>
         </div>
         <div className={styles.detailButton}>
           Подробнее
-          <ArrowUpRight size={16} strokeWidth={2} />
+          <img alt="" aria-hidden className={styles.detailArrow} draggable={false} src={assets.detailArrow} />
         </div>
       </section>
     </Link>
@@ -57,9 +61,9 @@ export function IncomeStatCard() {
           </div>
           <div className={styles.level}>Мастер</div>
         </div>
-        <div className={styles.detailButton}>
+        <div className={cn(styles.detailButton, styles.detailButtonOnGreen)}>
           Подробнее
-          <ArrowUpRight size={16} strokeWidth={2} />
+          <img alt="" aria-hidden className={styles.detailArrow} draggable={false} src={assets.detailArrow} />
         </div>
       </section>
     </Link>

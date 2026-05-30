@@ -1,26 +1,34 @@
 .wrap {
   display: flex;
   flex-direction: column;
+  gap: 3px;
   height: 100%;
-  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.plot {
+  flex: 1 1 auto;
+  min-height: 0;
   position: relative;
   width: 100%;
 }
 
 .svg {
   display: block;
-  flex-shrink: 0;
-  height: auto;
+  height: 100%;
   overflow: visible;
   width: 100%;
 }
 
-.wrap_compact .svg {
+.wrap_compact .plot {
   height: 106px;
 }
 
-.wrap_wide .svg {
-  height: 133px;
+.wrap_wide .plot {
+  flex: 0 0 auto;
+  height: 158px;
+  min-height: 158px;
 }
 
 .gridLine {
@@ -32,8 +40,9 @@
 }
 
 .wrap_wide .gridLine {
-  stroke: rgba(255, 255, 255, 0.28);
+  stroke: rgba(255, 255, 255, 0.32);
   stroke-dasharray: 4 6;
+  stroke-width: 0.6;
 }
 
 .incomeLine,
@@ -61,15 +70,22 @@
   stroke: #ffffff;
 }
 
+.incomeArrow {
+  fill: #ffffff;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 .expenseLine {
   stroke: rgba(20, 20, 20, 0.85);
   stroke-dasharray: 5 4;
 }
 
 .wrap_wide .expenseLine {
-  opacity: 0.92;
-  stroke: #101010;
-  stroke-dasharray: 8 8;
+  opacity: 1;
+  stroke: #000000;
+  stroke-dasharray: 6 5;
+  stroke-width: 2.5;
 }
 
 .hitArea {
@@ -94,6 +110,49 @@
   stroke-width: 4;
 }
 
+.wrap_wide .point {
+  fill: #ffffff;
+  opacity: 0;
+}
+
+.wrap_wide .pointActive {
+  opacity: 1;
+  stroke: #111111;
+  stroke-width: 3.5;
+}
+
+.activeMarker {
+  align-items: center;
+  background: #111111;
+  border: 4px solid #ffffff;
+  border-radius: 15px;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, calc(-100% + 7px));
+  width: 32px;
+  z-index: 1;
+}
+
+.activeMarker::before {
+  border: 3px solid #52c852;
+  border-radius: 50%;
+  content: "";
+  height: 18px;
+  position: absolute;
+  width: 18px;
+}
+
+.activeMarkerCore {
+  background: #ffffff;
+  border-radius: 50%;
+  display: block;
+  height: 8px;
+  width: 8px;
+}
+
 .tooltip {
   align-items: center;
   background: #fff;
@@ -106,7 +165,6 @@
   justify-content: center;
   pointer-events: none;
   position: absolute;
-  transform: translateX(-50%);
   white-space: nowrap;
   z-index: 2;
 }
@@ -120,12 +178,14 @@
 }
 
 .wrap_wide .tooltip {
-  align-items: flex-start;
-  border-radius: 6px;
-  font-size: 12px;
+  align-items: center;
+  background: #fbfbfb;
+  border-radius: 4.5px;
+  box-shadow: none;
+  gap: 1px;
   min-height: 38px;
   min-width: 58px;
-  padding: 5px 8px;
+  padding: 5px 8px 7px;
 }
 
 .tooltipValue {
@@ -139,7 +199,9 @@
 }
 
 .wrap_wide .tooltipValue {
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
 }
 
 .tooltipLabel {
@@ -152,15 +214,15 @@
 
 .wrap_wide .tooltipLabel {
   color: #9b9b9b;
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 400;
   text-transform: none;
 }
 
 .wrap_wide .tooltip::after {
-  border-left: 6px solid transparent;
-  border-right: 6px solid transparent;
-  border-top: 8px solid #ffffff;
+  border-left: 5.5px solid transparent;
+  border-right: 5.5px solid transparent;
+  border-top: 8px solid #fbfbfb;
   content: "";
   left: 50%;
   position: absolute;
@@ -186,9 +248,11 @@
 }
 
 .wrap_wide .months {
-  color: rgba(255, 255, 255, 0.88);
+  color: #fbfbfb;
   display: grid;
-  font-size: 10px;
-  margin-top: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 0;
   text-align: center;
 }

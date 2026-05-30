@@ -28,7 +28,7 @@
 .titleGroup {
   align-items: center;
   display: flex;
-  gap: 24px;
+  gap: 16px;
 }
 
 .iconChipPrimary {
@@ -39,7 +39,7 @@
   display: inline-flex;
   flex-shrink: 0;
   justify-content: center;
-  padding: 14px;
+  padding: 12px;
 }
 
 .icon16 {
@@ -62,7 +62,7 @@
   align-items: center;
   display: flex;
   flex-shrink: 0;
-  gap: 8px;
+  gap: 6px;
 }
 
 .iconButton {
@@ -75,7 +75,7 @@
   display: inline-flex;
   flex-shrink: 0;
   justify-content: center;
-  padding: 12px;
+  padding: 10px;
   text-decoration: none;
   transition: transform 180ms ease;
 }
@@ -92,8 +92,9 @@
 }
 
 .summary {
-  align-items: flex-end;
+  align-items: flex-start;
   display: flex;
+  gap: 12px;
   width: 100%;
 }
 
@@ -105,8 +106,8 @@
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  justify-content: flex-end;
+  gap: 12px;
+  justify-content: flex-start;
   padding: 0;
   text-align: left;
   transition: opacity 180ms ease;
@@ -132,7 +133,7 @@
 .metricBlock {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
   width: 100%;
 }
 
@@ -151,7 +152,7 @@
   display: flex;
   font-family: var(--font-heading), sans-serif;
   font-weight: 400;
-  line-height: normal;
+  line-height: 1.15;
   max-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -222,11 +223,11 @@
 
 @media (max-width: 360px) {
   .incomeColumn {
-    width: 150px;
+    width: 168px;
   }
 
   .titleGroup {
-    gap: 16px;
+    gap: 12px;
   }
 
   .incomeValue,
@@ -247,18 +248,18 @@
     gap: 10px;
   }
 
-  .title {
-    white-space: normal;
-  }
-
   .summary {
     align-items: stretch;
     flex-direction: column;
-    gap: 18px;
+    gap: 16px;
   }
 
   .incomeColumn,
   .expenseColumn {
     width: 100%;
+  }
+
+  .title {
+    white-space: normal;
   }
 }

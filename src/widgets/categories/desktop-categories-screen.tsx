@@ -15,8 +15,7 @@ import { DesktopSidebar } from "@/shared/ui/desktop-sidebar/desktop-sidebar";
 
 import styles from "./desktop-categories-screen.module.css";
 
-const protectionAsset =
-  "https://www.figma.com/api/mcp/asset/82f4c4d9-de96-432b-a907-c065f7049b99";
+const protectionAsset = "/shared/protection-card.png";
 const funnelLeft = ["16 230 ₽", "136 430 ₽", "10 220 ₽", "34 320 ₽", "126 230 ₽"] as const;
 const funnelCenter = "323 430 ₽";
 const funnelRight = ["12 230 ₽", "116 430 ₽", "10 220 ₽", "34 320 ₽", "126 230 ₽"] as const;

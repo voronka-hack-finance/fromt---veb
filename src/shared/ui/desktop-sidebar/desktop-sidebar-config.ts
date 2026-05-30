@@ -35,7 +35,7 @@ export function isHomeSectionExpanded(pathname: string) {
 
 export function isHomeSubmenuItemActive(pathname: string, href: string) {
   if (href === "/budget") {
-    return pathname === "/" || pathname === "/budget";
+    return pathname === "/budget";
   }
 
   if (href === "/operations") {

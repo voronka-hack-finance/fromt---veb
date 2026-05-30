@@ -79,7 +79,7 @@
   display: grid;
   flex: 1;
   gap: 30px;
-  grid-template-columns: 250px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr);
   margin: 0 auto;
   max-width: 1820px;
   min-height: 0;
@@ -581,16 +581,16 @@
   background: transparent;
 }
 
-@media (max-width: 1480px) {
+@media (max-width: 1023px) {
   .contentGrid {
     grid-template-columns: 1fr;
   }
 }
 
-@media (max-width: 1320px) {
+@media (max-width: 1023px) {
   .shell {
     gap: 22px;
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: 280px minmax(0, 1fr);
     padding-inline: 28px;
   }
 
@@ -607,7 +607,7 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1023px) {
   .topBar {
     padding-inline: 28px;
   }

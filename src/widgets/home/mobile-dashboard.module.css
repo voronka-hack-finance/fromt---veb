@@ -86,19 +86,21 @@
   color: rgba(20, 53, 19, 0.76);
 }
 
-.metricsGrid {
+.metricsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.statsRow {
   align-items: stretch;
   display: grid;
   gap: 8px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.metricsGrid > * {
+.statsRow > * {
   min-width: 0;
-}
-
-.gridSpanWide {
-  grid-column: 1 / -1;
 }
 
 .cardLink {
@@ -119,117 +121,6 @@
   transform: translateY(-2px);
 }
 
-.statCard {
-  background: #fff;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  height: 100%;
-  min-height: 221px;
-  padding: 20px;
-}
-
-.statCardBody {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 12px;
-  min-height: 0;
-}
-
-.statCard .smallMuted {
-  color: #999;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.statTrend {
-  align-items: center;
-  color: #1f1f1f;
-  display: flex;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 24px;
-  font-weight: 700;
-  gap: 4px;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.positivePill {
-  background: #5fe274;
-  border-radius: 999px;
-  color: #1f1f1f;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  padding: 4px 8px;
-  text-align: center;
-  width: 100%;
-}
-
-.detailButton {
-  align-items: center;
-  background: #e1e1e1;
-  border-radius: 14px;
-  color: #1f1f1f;
-  display: inline-flex;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  gap: 4px;
-  justify-content: center;
-  margin-top: auto;
-  padding: 8px 8px 8px 12px;
-  width: 100%;
-}
-
-.greenCard {
-  background: #40a93d;
-  border-color: transparent;
-  color: #1f1f1f;
-}
-
-.greenCard .smallMutedOnGreen {
-  color: #1f1f1f;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-}
-
-.bigGreenValue {
-  color: #1f1f1f;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1;
-}
-
-.incomeProgressTrack {
-  background: #e9edf0;
-  border-radius: 6px;
-  height: 10px;
-  overflow: hidden;
-  width: 100%;
-}
-
-.incomeProgressFill {
-  background: #5fe274;
-  border-radius: 6px 0 0 6px;
-  height: 100%;
-  width: 42%;
-}
-
-.incomeLevel {
-  color: #1f1f1f;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-}
-
 @media (max-width: 399px) {
   .page {
     border-radius: 30px;
@@ -237,7 +128,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .desktopShell {
     display: block;
   }
@@ -256,15 +147,10 @@
     gap: 18px;
   }
 
-  .metricsGrid {
+  .statsRow {
     gap: 6px;
   }
 
-  .statCard {
-    gap: 18px;
-    min-height: 204px;
-    padding: 16px;
-  }
 }
 
 @media (max-width: 340px) {
@@ -276,15 +162,7 @@
     gap: 16px;
   }
 
-  .metricsGrid {
+  .statsRow {
     grid-template-columns: 1fr;
-  }
-
-  .gridSpanWide {
-    grid-column: auto;
-  }
-
-  .statCard {
-    min-height: 0;
   }
 }

@@ -10,7 +10,7 @@ import styles from "./desktop-app-header.module.css";
 export function DesktopAppHeader() {
   return (
     <header className={styles.topBar}>
-      <AppBrand size="lg" />
+      <AppBrand size="md" />
 
       <div className={styles.topBarActions}>
         <button aria-label="Уведомления" className={styles.iconButton} type="button">

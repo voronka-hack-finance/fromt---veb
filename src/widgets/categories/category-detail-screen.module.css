@@ -86,7 +86,7 @@
   display: grid;
   flex: 1;
   gap: 26px;
-  grid-template-columns: 232px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr);
   min-height: 0;
   padding: 30px 50px 50px;
 }
@@ -774,7 +774,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 1199px) {
+@media (max-width: 1023px) {
   .operationIcon {
     height: 32px;
     width: 32px;
@@ -812,7 +812,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .desktopOnly {
     display: block;
   }
@@ -822,7 +822,7 @@
   }
 }
 
-@media (max-width: 1500px) {
+@media (max-width: 1023px) {
   .desktopGrid {
     grid-template-columns: minmax(0, 1fr) 440px;
   }

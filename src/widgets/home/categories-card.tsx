@@ -232,7 +232,7 @@ export function CategoriesCard() {
           {activeMetric.percent} %
         </div>
         <p className={styles.summaryText} key={`text-${activeMetric.id}`}>
-          {activeMetric.label} — вы грамотно распределяете
+          Вы грамотно распределяете
           <br />
           финансы и делаете это лучше
           <br />

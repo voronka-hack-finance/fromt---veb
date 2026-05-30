@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { ArrowRight, CalendarDays, ChevronRight, CircleEllipsis } from "lucide-react";
+import { ArrowRight, CalendarDays, ChevronRight } from "lucide-react";
 
 const metricAssets = {
   incomeIcon: "/desktop/metrics/income-course.svg",
@@ -49,7 +49,7 @@ const recurringIcons = [
 ] as const;
 
 const investmentsAssets = {
-  ring: "https://www.figma.com/api/mcp/asset/0fcd61af-1b43-4af5-80d5-b38cae11eceb",
+  ring: "/home/investments-ring.png",
 } as const;
 
 function formatWholeCurrency(value: number) {
@@ -109,7 +109,7 @@ function CreditGauge({ label, ratio, score }: { label: string; ratio: number; sc
 }
 
 export function DesktopDashboard() {
-  const { bankAccounts, dashboard, desktopForecastPoints, forecastYearPoints } = useDashboardData();
+  const { dashboard, desktopForecastPoints, forecastYearPoints } = useDashboardData();
   const [forecastPeriod, setForecastPeriod] = useState<"year" | "week">("week");
   const [forecastActiveIndex, setForecastActiveIndex] = useState(4);
 
@@ -121,35 +121,16 @@ export function DesktopDashboard() {
     setForecastActiveIndex(nextPeriod === "week" ? 4 : 1);
   };
 
-  const savingsRate = Math.round(
-    (dashboard.totalBalance / (dashboard.receipts + dashboard.totalBalance)) * 100,
-  );
   const creditDisplayScore = Math.round(dashboard.creditScore / 10);
   const creditGaugeRatio = Math.min(1, creditDisplayScore / 100);
   const creditState =
     creditGaugeRatio >= 0.7 ? "Стабильно" : creditGaugeRatio >= 0.45 ? "Умеренно" : "Низкая";
 
   const breakdownItems = [
-    {
-      label: bankAccounts[1]?.label ?? "Сбережения",
-      amount: formatWholeCurrency(dashboard.receipts),
-      color: styles.legendGreen,
-    },
-    {
-      label: "Основной фонд",
-      amount: formatWholeCurrency(dashboard.totalBalance * 0.19),
-      color: styles.legendDark,
-    },
-    {
-      label: "Расходы",
-      amount: formatWholeCurrency(dashboard.expenses),
-      color: styles.legendRed,
-    },
-    {
-      label: "Резерв",
-      amount: formatWholeCurrency(dashboard.incomeRemainder),
-      color: styles.legendBlue,
-    },
+    { amount: "134 456 ₽", color: styles.legendGreen },
+    { amount: "125 856 ₽", color: styles.legendDark },
+    { amount: "125 856 ₽", color: styles.legendRed },
+    { amount: "125 856 ₽", color: styles.legendBlue },
   ];
 
   return (
@@ -167,37 +148,96 @@ export function DesktopDashboard() {
           </div>
 
           <div className={styles.dashboardGrid}>
-            <div className={styles.primaryColumn}>
-              <section className={styles.balanceCard}>
-                <div className={styles.balanceHeader}>
+            <section className={styles.balanceCard}>
+              <div className={styles.balanceContent}>
+                <div className={styles.balanceHeaderBlock}>
                   <div className={styles.balanceTitleWrap}>
-                    <GraphNewBoldIcon size={26} />
+                    <GraphNewBoldIcon className={styles.balanceIcon} size={32} />
                     <span className={styles.balanceTitle}>Всего средств</span>
                   </div>
+                  <strong className={styles.balanceValue}>
+                    {formatWholeCurrency(Math.floor(dashboard.totalBalance))}
+                  </strong>
+                </div>
 
-                  <div className={styles.healthBlock}>
-                    <span className={styles.healthLabel}>Финансовое состояние</span>
-                    <div className={styles.healthStats}>
-                      <span className={styles.healthValue}>{savingsRate}%</span>
-                      <span className={styles.healthPill}>Хорошо</span>
+                <div className={styles.healthBlock}>
+                  <div className={styles.healthLabel}>Финансовое состояние</div>
+                  <div className={styles.healthStats}>
+                    <div className={styles.healthPercent}>
+                      <span className={styles.healthValue}>{dashboard.forecastPercent}</span>
+                      <span className={styles.healthValueUnit}>%</span>
                     </div>
+                    <span className={styles.healthPill}>Хорошо</span>
                   </div>
                 </div>
+              </div>
 
-                <div className={styles.balanceValue}>{formatWholeCurrency(dashboard.totalBalance)}</div>
+              <div className={styles.legendRow}>
+                {breakdownItems.map((item) => (
+                  <div className={styles.legendItem} key={item.color}>
+                    <span className={`${styles.legendSwatch} ${item.color}`} />
+                    <span>{item.amount}</span>
+                  </div>
+                ))}
+                <ChevronRight aria-hidden className={styles.legendChevron} size={14} strokeWidth={2.2} />
+              </div>
+            </section>
 
-                <div className={styles.legendRow}>
-                  {breakdownItems.map((item) => (
-                    <div className={styles.legendItem} key={item.label}>
-                      <span className={`${styles.legendSwatch} ${item.color}`} />
-                      <span>{item.amount}</span>
-                    </div>
-                  ))}
-                  <CircleEllipsis size={15} strokeWidth={2} />
+            <Link className={styles.remainderCard} href="/income">
+              <div className={styles.remainderHeader}>
+                <span>Остаток доходов</span>
+                <ChevronRight size={18} strokeWidth={2} />
+              </div>
+              <div className={styles.remainderValue}>+ {formatWholeCurrency(dashboard.incomeRemainder)}</div>
+              <div className={styles.remainderTrack}>
+                <div
+                  className={styles.remainderFill}
+                  style={{
+                    width: `${Math.min(100, Math.round((dashboard.incomeRemainder / dashboard.receipts) * 100))}%`,
+                  }}
+                />
+              </div>
+              <div className={styles.remainderLevel}>Мастер</div>
+            </Link>
+
+            <section className={styles.calendarCard}>
+              <div className={styles.cardTitleRow}>
+                <div className={styles.cardTitleWrap}>
+                  <CalendarDays size={18} strokeWidth={1.8} />
+                  <h2>Календарь трат</h2>
                 </div>
-              </section>
+                <ChevronRight size={18} strokeWidth={2} />
+              </div>
 
-              <div className={styles.metricsRow}>
+              <div className={styles.calendarGroups}>
+                {calendarGroups.map((group) => (
+                  <div className={styles.calendarGroup} key={group.date}>
+                    <div className={styles.calendarGroupHeader}>
+                      <span>{group.date}</span>
+                      <div className={styles.calendarDivider} />
+                      <strong>{group.total}</strong>
+                    </div>
+
+                    <div className={styles.calendarList}>
+                      {group.items.map((item) => (
+                        <div className={styles.calendarItem} key={`${group.date}-${item.title}`}>
+                          <div className={styles.calendarItemMeta}>
+                            <div className={styles.calendarBadge}>{item.badge}</div>
+                            <div>
+                              <div className={styles.calendarCategory}>{item.category}</div>
+                              <div className={styles.calendarTitle}>{item.title}</div>
+                            </div>
+                          </div>
+                          <strong>{item.amount}</strong>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <div className={styles.metricsRow}>
                 <Link className={styles.metricCard} href="/income">
                   <div className={styles.metricHeader}>
                     <div className={styles.metricTitleWrap}>
@@ -247,9 +287,30 @@ export function DesktopDashboard() {
                   </div>
                   <div className={styles.metricValue}>{formatWholeCurrency(dashboard.expenses)}</div>
                 </Link>
-              </div>
+            </div>
 
-              <section className={styles.forecastCard}>
+            <Link className={styles.investmentsCard} href="/investments">
+              <div className={styles.investmentsHeader}>
+                <span>Инвестиции</span>
+                <ChevronRight size={18} strokeWidth={2} />
+              </div>
+              <div className={styles.investmentsBody}>
+                <div>
+                  <div className={styles.investmentsValue}>↑{formatPercent(dashboard.investmentPercent)}%</div>
+                  <div className={styles.investmentsPill}>{dashboard.investmentGrowth}</div>
+                </div>
+                <img
+                  alt=""
+                  aria-hidden
+                  className={styles.investmentsRingImage}
+                  draggable={false}
+                  src={investmentsAssets.ring}
+                />
+              </div>
+            </Link>
+
+            <section className={styles.forecastCard}>
+              <div className={styles.forecastInner}>
                 <div className={styles.forecastTop}>
                   <div className={styles.forecastHeading}>
                     <h2 className={styles.forecastTitle}>Прогнозы</h2>
@@ -305,107 +366,29 @@ export function DesktopDashboard() {
                     />
                   </div>
                 </div>
-              </section>
-            </div>
+              </div>
+            </section>
 
-            <div className={styles.secondaryColumn}>
-              <Link className={styles.remainderCard} href="/income">
-                <div className={styles.remainderHeader}>
-                  <span>Остаток доходов</span>
-                  <ChevronRight size={18} strokeWidth={2} />
-                </div>
-                <div className={styles.remainderValue}>+ {formatWholeCurrency(dashboard.incomeRemainder)}</div>
-                <div className={styles.remainderTrack}>
-                  <div
-                    className={styles.remainderFill}
-                    style={{
-                      width: `${Math.min(100, Math.round((dashboard.incomeRemainder / dashboard.receipts) * 100))}%`,
-                    }}
-                  />
-                </div>
-                <div className={styles.remainderLevel}>Мастер</div>
+            <section className={styles.creditCard}>
+              <div className={styles.creditTag}>Кредитная нагрузка</div>
+              <button aria-label="Дополнительные действия" className={styles.creditMenu} type="button">
+                <img
+                  alt=""
+                  aria-hidden
+                  className={styles.creditMenuIcon}
+                  draggable={false}
+                  src={creditAssets.menuDots}
+                />
+              </button>
+
+              <CreditGauge label={creditState} ratio={creditGaugeRatio} score={creditDisplayScore} />
+
+              <Link className={styles.creditButton} href="/total">
+                Подробнее
               </Link>
+            </section>
 
-              <Link className={styles.investmentsCard} href="/investments">
-                <div className={styles.investmentsHeader}>
-                  <span>Инвестиции</span>
-                  <ChevronRight size={18} strokeWidth={2} />
-                </div>
-                <div className={styles.investmentsBody}>
-                  <div>
-                    <div className={styles.investmentsValue}>↑{formatPercent(dashboard.investmentPercent)}%</div>
-                    <div className={styles.investmentsPill}>{dashboard.investmentGrowth}</div>
-                  </div>
-                  <img
-                    alt=""
-                    aria-hidden
-                    className={styles.investmentsRingImage}
-                    draggable={false}
-                    src={investmentsAssets.ring}
-                  />
-                </div>
-              </Link>
-
-              <section className={styles.creditCard}>
-                <div className={styles.creditHeader}>
-                  <div className={styles.creditTag}>Кредитная нагрузка</div>
-                  <button aria-label="Дополнительные действия" className={styles.creditMenu} type="button">
-                    <img
-                      alt=""
-                      aria-hidden
-                      className={styles.creditMenuIcon}
-                      draggable={false}
-                      src={creditAssets.menuDots}
-                    />
-                  </button>
-                </div>
-
-                <CreditGauge label={creditState} ratio={creditGaugeRatio} score={creditDisplayScore} />
-
-                <Link className={styles.creditButton} href="/total">
-                  Подробнее
-                </Link>
-              </section>
-            </div>
-
-            <div className={styles.tertiaryColumn}>
-              <section className={styles.calendarCard}>
-                <div className={styles.cardTitleRow}>
-                  <div className={styles.cardTitleWrap}>
-                    <CalendarDays size={22} strokeWidth={1.8} />
-                    <h2>Календарь трат</h2>
-                  </div>
-                  <ChevronRight size={18} strokeWidth={2} />
-                </div>
-
-                <div className={styles.calendarGroups}>
-                  {calendarGroups.map((group) => (
-                    <div className={styles.calendarGroup} key={group.date}>
-                      <div className={styles.calendarGroupHeader}>
-                        <span>{group.date}</span>
-                        <div className={styles.calendarDivider} />
-                        <strong>{group.total}</strong>
-                      </div>
-
-                      <div className={styles.calendarList}>
-                        {group.items.map((item) => (
-                          <div className={styles.calendarItem} key={`${group.date}-${item.title}`}>
-                            <div className={styles.calendarItemMeta}>
-                              <div className={styles.calendarBadge}>{item.badge}</div>
-                              <div>
-                                <div className={styles.calendarCategory}>{item.category}</div>
-                                <div className={styles.calendarTitle}>{item.title}</div>
-                              </div>
-                            </div>
-                            <strong>{item.amount}</strong>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
+            <div className={styles.tertiaryBottomStack}>
               <Link className={styles.recurringCard} href="/subscriptions">
                 <div className={styles.cardTitleRow}>
                   <h2>Постоянные расходы</h2>

@@ -74,7 +74,7 @@
 .shell {
   display: grid;
   gap: 26px;
-  grid-template-columns: 250px minmax(0, 1fr);
+  grid-template-columns: 280px minmax(0, 1fr);
   min-height: calc(100vh - 132px);
   padding: 22px 40px 32px;
 }
@@ -540,7 +540,7 @@
   color: #db4437;
 }
 
-@media (max-width: 1520px) {
+@media (max-width: 1023px) {
   .contentGrid {
     grid-template-columns: 1fr;
   }
@@ -552,7 +552,7 @@
   }
 }
 
-@media (max-width: 1320px) {
+@media (max-width: 1023px) {
   .cardsGrid,
   .rightColumn {
     grid-template-columns: 1fr;

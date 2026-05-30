@@ -12,7 +12,7 @@
   min-width: 0;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .wrapper {
     background:
       radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 18%),
@@ -30,8 +30,8 @@
     backdrop-filter: blur(12px);
     display: flex;
     justify-content: space-between;
-    min-height: 84px;
-    padding: 20px 28px;
+    min-height: 64px;
+    padding: 12px 24px;
   }
 
   .topBarActions {
@@ -68,12 +68,12 @@
   .shell {
     display: grid;
     flex: 1;
-    gap: 26px;
-    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 18px;
+    grid-template-columns: 280px minmax(0, 1fr);
     margin: 0 auto;
-    max-width: 1820px;
+    max-width: 1680px;
     min-height: 0;
-    padding: 16px 28px 20px;
+    padding: 12px 24px 16px;
     width: 100%;
   }
 

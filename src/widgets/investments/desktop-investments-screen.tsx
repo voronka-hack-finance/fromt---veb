@@ -14,8 +14,8 @@ import styles from "./desktop-investments-screen.module.css";
 import { InvestmentsAchievementsSection } from "./investments-achievements-section";
 import { InvestmentsTransfersChart } from "./investments-transfers-chart";
 
-const protectionAsset = "https://www.figma.com/api/mcp/asset/84ee048a-329e-4ec8-b00e-7f1f981c57fe";
-const accentAsset = "https://www.figma.com/api/mcp/asset/e1649c50-620a-4f8a-a07d-94f2edae7930";
+const protectionAsset = "/investments/protection-card.png";
+const accentAsset = "/investments/accent-card.png";
 
 const transferChartPoints = [
   { label: "Янв", value: 0 },

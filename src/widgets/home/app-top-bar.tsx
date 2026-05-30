@@ -1,6 +1,5 @@
 "use client";
 
-import { Bell } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import { useDashboardQuery } from "@/shared/api/dashboard";
@@ -9,6 +8,10 @@ import { cn } from "@/shared/lib/cn";
 import { UserAvatar } from "@/shared/ui/user-avatar/user-avatar";
 
 import styles from "./app-top-bar.module.css";
+
+const assets = {
+  notification: "/dashboard/nav/notification.svg",
+} as const;
 
 type AppTopBarProps = {
   lowercaseTitle?: boolean;
@@ -34,7 +37,7 @@ export function AppTopBar({ lowercaseTitle, notifications, title }: AppTopBarPro
           onClick={() => router.push("/operations")}
           type="button"
         >
-          <Bell size={22} strokeWidth={1.9} />
+          <img alt="" aria-hidden className={styles.icon} draggable={false} src={assets.notification} />
         </button>
         {resolvedNotifications !== undefined ? (
           <span className={styles.badge}>{resolvedNotifications}</span>

@@ -1,6 +1,6 @@
 .card {
   background: #232323;
-  border: none;
+  border: 1px solid #40a93d;
   border-radius: 36px;
   box-shadow: none;
   overflow: hidden;
@@ -24,9 +24,10 @@
 }
 
 .tag {
-  background: #fff;
+  background: transparent;
+  border: 1px solid #fff;
   border-radius: 100px;
-  color: #1f1f1f;
+  color: #fff;
   font-family: var(--font-heading), sans-serif;
   font-size: 12px;
   font-weight: 600;

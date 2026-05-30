@@ -446,7 +446,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .createCategoryStage {
     display: flex;
     justify-content: center;

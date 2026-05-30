@@ -1,0 +1,8 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="teacher">
+<path id="Vector" d="M6.7 1.68667L2.68667 4.30667C1.4 5.14667 1.4 7.02667 2.68667 7.86667L6.7 10.4867C7.42 10.96 8.60667 10.96 9.32667 10.4867L13.32 7.86667C14.6 7.02667 14.6 5.15333 13.32 4.31333L9.32667 1.69333C8.60667 1.21333 7.42 1.21333 6.7 1.68667Z" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M3.75333 8.72L3.74667 11.8467C3.74667 12.6933 4.4 13.6 5.2 13.8667L7.32667 14.5733C7.69333 14.6933 8.3 14.6933 8.67333 14.5733L10.8 13.8667C11.6 13.6 12.2533 12.6933 12.2533 11.8467V8.75333" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M14.2667 10V6" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" opacity="0" d="M0.400391 15.5996L0.400391 0.400391L15.5996 0.400391L15.5996 15.5996L0.400391 15.5996Z" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8"/>
+</g>
+</svg>

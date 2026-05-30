@@ -104,7 +104,7 @@
   width: 100%;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1023px) {
   .wrap {
     max-width: 100%;
     min-width: 0;

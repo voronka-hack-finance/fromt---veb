@@ -65,10 +65,10 @@
 }
 
 .chartCard {
-  background: #ebebeb;
-  border: none;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.86);
   border-radius: 28px;
-  box-shadow: none;
+  box-shadow: 0 24px 60px rgba(76, 80, 73, 0.08);
   overflow: visible;
   padding: 16px 16px 18px;
 }
@@ -76,9 +76,9 @@
 .amount {
   color: #232323;
   font-family: var(--font-heading), sans-serif;
-  font-size: 33px;
+  font-size: 31px;
   font-weight: 700;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.05em;
   line-height: 1;
   padding: 8px 4px 0;
 }
@@ -142,10 +142,10 @@
   display: inline-flex;
   flex-shrink: 0;
   font-family: var(--font-heading), sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
-  min-height: 28px;
-  padding: 0 10px;
+  min-height: 22px;
+  padding: 0 8px;
   white-space: nowrap;
   z-index: 2;
 }
@@ -232,17 +232,17 @@
 }
 
 .summaryHeadline > span:first-child {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .summaryPercentPill {
-  background: white;
-  border-radius: 999px;
-  color: #232323;
+  background: transparent;
+  border-radius: 0;
+  color: #ffbf1c;
   font-family: var(--font-heading), sans-serif;
-  font-size: 15px;
-  font-weight: 600;
-  padding: 2px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 0;
 }
 
 .summaryBottom {
@@ -257,26 +257,26 @@
 
 .summaryValueGroup span {
   color: #9b9b9b;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .summaryValueGroup strong {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.06em;
 }
 
 .summaryBadge {
   align-items: center;
-  background: #989898;
+  background: #ffbf1c;
   border-radius: 999px;
   color: #232323;
   display: inline-flex;
   font-family: var(--font-heading), sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
-  min-height: 40px;
-  padding: 6px 18px;
+  min-height: 28px;
+  padding: 4px 14px;
 }
 
 .scenarioSection {
@@ -405,15 +405,15 @@
 
 .scenarioTag {
   align-items: center;
-  background: #989898;
+  background: #ffbf1c;
   border-radius: 999px;
-  color: white;
+  color: #232323;
   display: inline-flex;
   font-family: var(--font-heading), sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  min-height: 28px;
-  padding: 4px 14px;
+  min-height: 24px;
+  padding: 3px 12px;
   width: fit-content;
 }
 
@@ -428,7 +428,7 @@
 .scenarioHeadline {
   color: #9b9b9b;
   font-family: var(--font-heading), sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.05em;
   line-height: 1.2;
@@ -442,13 +442,13 @@
 .scenarioMetric {
   background: #f4f4f4;
   border-radius: 16px;
-  padding: 10px 12px;
+  padding: 8px 10px;
 }
 
 .scenarioMetric p {
   color: #232323;
   font-family: var(--font-heading), sans-serif;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   line-height: 1.35;
   margin: 0;
@@ -562,7 +562,7 @@
   }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .desktopShell {
     display: block;
   }

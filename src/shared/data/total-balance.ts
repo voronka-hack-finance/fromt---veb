@@ -74,14 +74,14 @@ export const totalBalanceScreenData = {
     title: "Ваши счета и банки",
     addBank: {
       button: "Добавить",
-      image: "https://www.figma.com/api/mcp/asset/e45270f4-43fb-4e1f-b609-426418e8cb72",
+      image: "/total/add-bank.png",
       title: "Добавь еще банков, чтобы отслеживать свое финансовое состояние",
     },
     assistant: {
       button: "Подробнее",
       description:
         "Получайте советы: куда лучше потратить, что отложить и как снизить финансовые риски.",
-      image: "https://www.figma.com/api/mcp/asset/9553a608-b702-467e-8327-2d7410d2466c",
+      image: "/total/assistant-card.png",
       title: "Твой ИИ помощник",
     },
     banks: [
@@ -117,7 +117,7 @@ export const totalBalanceScreenData = {
     protection: {
       button: "Защитить",
       description: "Мы компенсируем украденные средства до 300 тыс. рублей",
-      image: "https://www.figma.com/api/mcp/asset/82f4c4d9-de96-432b-a907-c065f7049b99",
+      image: "/shared/protection-card.png",
       title: "Защитите деньги от мошенников",
     },
     topBanks: [

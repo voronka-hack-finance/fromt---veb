@@ -104,8 +104,8 @@
 
 .filterRow {
   display: flex;
-  gap: 6px;
-  margin-top: 14px;
+  gap: 4px;
+  margin-top: 10px;
   overflow-x: auto;
   padding: 0 16px;
   scrollbar-width: none;
@@ -118,18 +118,18 @@
 .filterButton,
 .valueChip {
   align-items: center;
-  background: #d9dbd8;
+  background: #e1e1df;
   border: none;
-  border-radius: 12px;
-  color: #242424;
+  border-radius: 10px;
+  color: #575757;
   display: inline-flex;
   flex: 0 0 auto;
   font-family: var(--font-heading), sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   gap: 6px;
-  min-height: 36px;
-  padding: 8px 12px;
+  min-height: 28px;
+  padding: 5px 10px;
   transition:
     transform 180ms ease,
     background-color 180ms ease;
@@ -137,20 +137,20 @@
 
 .filterButton {
   justify-content: center;
-  padding-inline: 10px;
+  padding-inline: 8px;
 }
 
 .filterButton:hover,
 .filterButton:focus-visible,
 .valueChip:hover,
 .valueChip:focus-visible {
-  background: #ced1cd;
+  background: #d6d6d3;
   transform: translateY(-1px);
 }
 
 .valueChipActive {
-  background: #63db69;
-  color: #1f1f1f;
+  background: #cfcfcd;
+  color: #212121;
 }
 
 .chartBlock {
@@ -275,12 +275,12 @@
 }
 
 .summaryHeadline span {
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .summaryHeadline strong {
   color: #5fe274;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 .summaryBottom {
@@ -295,11 +295,11 @@
 
 .summaryValueGroup span {
   color: #a6a6a6;
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .summaryValueGroup strong {
-  font-size: 24px;
+  font-size: 20px;
   letter-spacing: -0.06em;
 }
 
@@ -310,10 +310,10 @@
   color: #1a1a1a;
   display: inline-flex;
   font-family: var(--font-heading), sans-serif;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 700;
-  min-height: 40px;
-  padding: 6px 18px;
+  min-height: 28px;
+  padding: 4px 14px;
 }
 
 .scenarioSection {
@@ -426,11 +426,12 @@
 }
 
 .scenarioCardAmber {
-  opacity: 0.28;
+  opacity: 0.2;
 }
 
 .scenarioCardGood {
-  opacity: 0.28;
+  background: linear-gradient(180deg, rgba(205, 241, 210, 0.78), rgba(255, 255, 255, 0.94));
+  opacity: 0.24;
 }
 
 .scenarioCardFocus {
@@ -444,10 +445,10 @@
   color: white;
   display: inline-flex;
   font-family: var(--font-heading), sans-serif;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
-  min-height: 28px;
-  padding: 4px 14px;
+  min-height: 24px;
+  padding: 3px 12px;
   width: fit-content;
 }
 
@@ -458,32 +459,32 @@
 .scenarioHeadline {
   color: #2a2a2a;
   font-family: var(--font-heading), sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.05em;
   line-height: 1.2;
 }
 
 .scenarioMetric {
-  background: #d0d0d0;
-  border-radius: 16px;
+  background: #ffffff;
+  border-radius: 14px;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  padding: 10px 12px;
+  padding: 8px 10px;
 }
 
 .scenarioMetric span {
   color: #2d2d2d;
   font-family: var(--font-heading), sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   letter-spacing: -0.04em;
 }
 
 .scenarioMetric strong {
   color: #232323;
   font-family: var(--font-heading), sans-serif;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.3;

@@ -13,9 +13,8 @@ import styles from "./goals-screen.module.css";
 const assets = {
   sberIcon: "/dashboard/balance/icon-sber.svg",
   accountDot: "/dashboard/balance/divider-dot-sber.svg",
-  createIllustration:
-    "https://www.figma.com/api/mcp/asset/dc91a271-b8f8-4baa-98c3-fd3f7ba5a73e",
-  avatar: "https://www.figma.com/api/mcp/asset/b0fef317-3024-464c-89c0-26ce877dd73e",
+  createIllustration: "/goals/create-illustration.png",
+  avatar: "/goals/avatar.png",
 } as const;
 
 function GoalCard({

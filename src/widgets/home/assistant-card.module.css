@@ -5,11 +5,11 @@
   box-shadow: none;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 32px;
   isolation: isolate;
   min-height: 154px;
   overflow: hidden;
-  padding: 16px;
+  padding: 24px;
   position: relative;
   width: 100%;
 }
@@ -17,27 +17,27 @@
 .orbWrap {
   align-items: center;
   display: flex;
-  height: 266.739px;
+  height: 321.753px;
   justify-content: center;
-  left: 146px;
+  left: 194px;
   pointer-events: none;
   position: absolute;
-  top: -25px;
-  width: 286.983px;
+  top: -18px;
+  width: 293px;
   z-index: 0;
 }
 
 .orbRotated {
   flex-shrink: 0;
-  transform: rotate(153deg);
+  transform: rotate(74.79deg);
 }
 
 .orbFrame {
   border-radius: 24px;
-  height: 182.683px;
+  height: 229.976px;
   overflow: hidden;
   position: relative;
-  width: 229.007px;
+  width: 270.901px;
 }
 
 .orbImage {
@@ -50,25 +50,14 @@
   width: 363.98%;
 }
 
-.backdrop {
-  backdrop-filter: blur(2px);
-  background: rgba(217, 217, 217, 0.01);
-  height: 154px;
-  left: 0;
-  pointer-events: none;
-  position: absolute;
-  top: 0;
-  width: 100%;
-  z-index: 1;
-}
-
 .content {
   color: #1f1f1f;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  max-width: 257px;
   position: relative;
-  z-index: 2;
+  z-index: 1;
 }
 
 .title {
@@ -77,7 +66,6 @@
   font-weight: 700;
   line-height: normal;
   margin: 0;
-  white-space: nowrap;
 }
 
 .text {
@@ -86,76 +74,105 @@
   font-weight: 400;
   line-height: normal;
   margin: 0;
-  max-width: 58%;
-  white-space: nowrap;
 }
 
-.cta {
-  align-self: flex-start;
-  background: #e1e1e1;
-  border: none;
-  border-radius: 18px;
+.ctaRow {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+  position: relative;
+  z-index: 1;
+}
+
+.ctaPrimary {
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 76px;
   color: #1f1f1f;
   cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
   font-family: var(--font-heading), sans-serif;
   font-size: 12px;
   font-weight: 500;
+  height: 44px;
+  justify-content: center;
   line-height: normal;
-  padding: 8px;
-  position: relative;
+  padding: 10px;
   transition:
     transform 180ms ease,
     box-shadow 180ms ease;
   white-space: nowrap;
-  z-index: 2;
+  width: 148px;
 }
 
-.cta:hover,
-.cta:focus-visible {
+.ctaIcon {
+  align-items: center;
+  background: transparent;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 70px;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 12px;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible,
+.ctaIcon:hover,
+.ctaIcon:focus-visible {
   box-shadow: 0 10px 24px rgba(23, 23, 23, 0.12);
   transform: translateY(-1px);
 }
 
+.ctaIconImage {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
 @media (max-width: 360px) {
   .card {
-    min-height: 144px;
-    padding: 14px;
+    gap: 24px;
+    padding: 20px;
   }
 
   .orbWrap {
-    left: 110px;
-    top: -18px;
-    width: 220px;
+    left: 150px;
+    top: -14px;
+    width: 240px;
   }
 
-  .title {
-    white-space: normal;
+  .content {
+    max-width: 220px;
   }
 
-  .text {
-    font-size: 13px;
-    max-width: 62%;
-    white-space: normal;
+  .ctaPrimary {
+    width: 132px;
   }
 }
 
 @media (max-width: 340px) {
   .orbWrap {
-    left: 104px;
-    width: 196px;
+    left: 120px;
+    width: 200px;
   }
 
   .content {
-    gap: 10px;
-  }
-
-  .text {
-    font-size: 12px;
     max-width: 58%;
   }
 
-  .cta {
-    font-size: 11px;
-    padding: 7px 8px;
+  .ctaRow {
+    gap: 12px;
+  }
+
+  .ctaPrimary {
+    flex: 1;
+    width: auto;
   }
 }

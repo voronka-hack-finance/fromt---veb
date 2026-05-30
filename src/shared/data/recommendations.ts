@@ -1,23 +1,23 @@
 export const recommendationsAssets = {
   summaryPattern:
-    "https://www.figma.com/api/mcp/asset/0c9ba5c7-0c85-4acd-a56c-b5e70b794bf2",
+    "/recommendations/summary-pattern.svg",
   insightIcon:
-    "https://www.figma.com/api/mcp/asset/d42b0f69-e8c0-4603-b672-edaee2d3341b",
+    "/recommendations/insight-icon.svg",
   actionUnion:
-    "https://www.figma.com/api/mcp/asset/eb9085e0-42ee-4e49-bb62-b5c57bee9191",
+    "/recommendations/action-union.svg",
   actionArrow:
-    "https://www.figma.com/api/mcp/asset/c8525ce0-f625-440b-bdae-1b58f2a8a923",
+    "/recommendations/action-arrow.svg",
   agentImages: {
     pillowKeeper:
-      "https://www.figma.com/api/mcp/asset/d2e1cfc3-765d-4000-9d00-eefaca89f377",
+      "/recommendations/agents/pillow-keeper.png",
     expenseDetective:
-      "https://www.figma.com/api/mcp/asset/52597a7c-7cd8-4e4e-a07a-bc5335e6435d",
+      "/recommendations/agents/expense-detective.png",
     growthStrategist:
-      "https://www.figma.com/api/mcp/asset/1a38b65f-9939-40b0-97ef-ab5344f922eb",
+      "/recommendations/agents/growth-strategist.png",
     balancer:
-      "https://www.figma.com/api/mcp/asset/13479beb-ecfa-4794-829a-a846050b0c27",
+      "/recommendations/agents/balancer.png",
     habitTrainer:
-      "https://www.figma.com/api/mcp/asset/62fe70a6-aee7-494e-a6a3-aa1f8dd9bc90",
+      "/recommendations/agents/habit-trainer.png",
   },
 } as const;
 

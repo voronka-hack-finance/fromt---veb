@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import styles from "./assistant-card.module.css";
 
 const assets = {
+  ctaArrow: "/dashboard/assistant/cta-arrow.svg",
   orbTexture: "/dashboard/assistant/orb-texture.png",
 } as const;
 
@@ -21,25 +22,29 @@ export function AssistantCard() {
         </div>
       </div>
 
-      <div aria-hidden className={styles.backdrop} />
-
       <div className={styles.content}>
         <h2 className={styles.title}>Твой ИИ помощник</h2>
-        <p className={styles.text}>
-          Анализирует траты и помогает
-          <br />
-          управлять бюджетом
-        </p>
+        <p className={styles.text}>Анализирует траты и помогает управлять бюджетом</p>
       </div>
 
-      <button
-        aria-label="Открыть ИИ помощника"
-        className={styles.cta}
-        onClick={() => router.push("/recommendations")}
-        type="button"
-      >
-        Подробнее
-      </button>
+      <div className={styles.ctaRow}>
+        <button
+          aria-label="Открыть ИИ помощника"
+          className={styles.ctaPrimary}
+          onClick={() => router.push("/recommendations")}
+          type="button"
+        >
+          Подробнее
+        </button>
+        <button
+          aria-label="Открыть ИИ помощника"
+          className={styles.ctaIcon}
+          onClick={() => router.push("/recommendations")}
+          type="button"
+        >
+          <img alt="" aria-hidden className={styles.ctaIconImage} draggable={false} src={assets.ctaArrow} />
+        </button>
+      </div>
     </section>
   );
 }

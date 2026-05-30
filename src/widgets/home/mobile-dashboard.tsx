@@ -43,23 +43,25 @@ function MobileDashboardContent() {
                 <AssistantCard />
               </Reveal>
 
-              <div className={styles.metricsGrid}>
-                <Reveal delay={0.11} className={styles.gridSpanWide}>
-                  <OperationsCard />
-                </Reveal>
+              <Reveal delay={0.11}>
+                <OperationsCard />
+              </Reveal>
 
-                <Reveal delay={0.14}>
-                  <InvestmentStatCard />
-                </Reveal>
+              <div className={styles.metricsGroup}>
+                <div className={styles.statsRow}>
+                  <Reveal delay={0.14}>
+                    <InvestmentStatCard />
+                  </Reveal>
 
-                <Reveal delay={0.17}>
-                  <IncomeStatCard />
+                  <Reveal delay={0.17}>
+                    <IncomeStatCard />
+                  </Reveal>
+                </div>
+
+                <Reveal delay={0.19}>
+                  <RecurringExpensesCard />
                 </Reveal>
               </div>
-
-              <Reveal delay={0.19}>
-                <RecurringExpensesCard />
-              </Reveal>
 
               <Reveal delay={0.23}>
                 <ForecastCard />

@@ -1,5 +1,7 @@
 :root {
-  --mobile-nav-offset: 112px;
+  /* Desktop layout from 1024px — same grid as on large screens (laptop included). */
+  --layout-desktop-min: 1024px;
+  --mobile-nav-offset: 114px;
   --background: #dfe1db;
   --foreground: #171717;
   --surface: rgba(255, 255, 255, 0.8);

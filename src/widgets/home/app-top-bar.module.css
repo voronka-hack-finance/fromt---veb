@@ -3,7 +3,9 @@
   display: grid;
   gap: 12px;
   grid-template-columns: 52px 1fr 52px;
-  margin-bottom: 24px;
+  margin-bottom: 0;
+  padding-inline: 8px;
+  width: 100%;
 }
 
 .notificationWrap {
@@ -25,6 +27,12 @@
     transform 180ms ease,
     background-color 180ms ease;
   width: 52px;
+}
+
+.icon {
+  display: block;
+  height: 24px;
+  width: 24px;
 }
 
 .iconButton:hover,
@@ -50,13 +58,13 @@
 }
 
 .title {
-  color: #1c1b1b;
+  color: #010101;
   font-family: var(--font-heading), sans-serif;
-  font-size: 20px;
-  font-weight: 500;
+  font-size: 24px;
+  font-weight: 400;
   justify-self: center;
-  letter-spacing: -0.02em;
-  line-height: 1.25;
+  letter-spacing: 0;
+  line-height: 30px;
   margin: 0;
   text-align: center;
 }
@@ -78,7 +86,8 @@
   }
 
   .title {
-    font-size: 18px;
+    font-size: 22px;
+    line-height: 28px;
   }
 }
 
@@ -88,6 +97,7 @@
   }
 
   .title {
-    font-size: 17px;
+    font-size: 20px;
+    line-height: 26px;
   }
 }

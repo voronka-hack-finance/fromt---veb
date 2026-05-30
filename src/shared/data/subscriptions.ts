@@ -19,7 +19,7 @@ export const subscriptionsScreenData = {
       monthlyPrice: 299,
       totalSpent: 4186,
       status: "active",
-      icon: "https://www.figma.com/api/mcp/asset/7ad7a569-222a-4068-ae75-ccccbb2f14a9",
+      icon: "/subscriptions/vk-music.png",
     },
     {
       id: "yandex-plus",
@@ -37,7 +37,7 @@ export const subscriptionsScreenData = {
       monthlyPrice: 19999,
       totalSpent: 79996,
       status: "active",
-      icon: "https://www.figma.com/api/mcp/asset/4f21a7f1-29c2-4b8f-843f-1963b7fcff39",
+      icon: "/subscriptions/cloud-ai.png",
     },
     {
       id: "mts-premium",
@@ -46,7 +46,7 @@ export const subscriptionsScreenData = {
       monthlyPrice: 199,
       totalSpent: 2388,
       status: "paused",
-      icon: "https://www.figma.com/api/mcp/asset/8ac43e60-fcdf-4fbf-9835-c79472b648ef",
+      icon: "/subscriptions/mts-premium.png",
     },
   ],
 } as const;

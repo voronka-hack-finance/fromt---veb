@@ -14,8 +14,8 @@ import { FundsRunwaySection } from "./funds-runway-section";
 import { ReportActionButtons } from "./report-action-buttons";
 import styles from "./desktop-dashboard.module.css";
 
-const protectionAsset = "https://www.figma.com/api/mcp/asset/9424d8c3-b1b0-44fd-b957-947dca5f315b";
-const accentAsset = "https://www.figma.com/api/mcp/asset/9a6c4cd1-40f3-4c1f-b1a7-cffd3718ed23";
+const protectionAsset = "/home/protection-card.png";
+const accentAsset = "/home/accent-card.png";
 
 const calendarGroups = [
   {

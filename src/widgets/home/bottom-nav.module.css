@@ -92,7 +92,7 @@
   width: 134px;
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1024px) {
   .bottomNav {
     display: none;
   }

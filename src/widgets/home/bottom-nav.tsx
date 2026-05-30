@@ -28,14 +28,14 @@ const navItems = [
     id: "goals",
     href: "/goals",
     label: "Мои цели",
-    icon: "/dashboard/nav/clipboard.svg",
+    icon: "/dashboard/nav/clipboard-figma.svg",
     match: (path: string) => path.startsWith("/goals"),
   },
   {
     id: "categories",
     href: "/categories",
     label: "Категории",
-    icon: "/dashboard/nav/settings.svg",
+    icon: "/dashboard/nav/settings-figma.svg",
     match: (path: string) => path.startsWith("/categories"),
   },
 ] as const;

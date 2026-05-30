@@ -4,7 +4,7 @@ export const categoriesScreenData = {
     title: "Защитите деньги от мошенников",
     description: [
       "Мы защищаем вас от мошенников и блокируем подозрительные звонки.",
-      "Но средства всё же украдут — вернём до 300 тыс. ₽.",
+      "Но если средства всё же украдут — вернём до 300 тыс. ₽.",
     ],
     cta: "Подключить",
   },
@@ -56,7 +56,7 @@ export const categoriesScreenData = {
     },
     {
       id: "grill",
-      title: "Ресторан 'Гриль'",
+      title: "Ресторан Гриль",
       spent: 3600,
       total: 3800,
       tone: "light-darkbar",
@@ -65,4 +65,3 @@ export const categoriesScreenData = {
     },
   ] as const,
 };
-

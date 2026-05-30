@@ -11,6 +11,7 @@ import {
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
+import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./subscriptions-screen.module.css";
@@ -93,7 +94,8 @@ function SubscriptionsScreenContent({
   });
 
   return (
-    <main className={styles.stage}>
+    <DesktopSidebarLayout>
+      <main className={styles.stage}>
       <div className={styles.shell}>
         <Reveal delay={0.03}>
           <header className={styles.header}>
@@ -158,5 +160,6 @@ function SubscriptionsScreenContent({
         </div>
       </div>
     </main>
+    </DesktopSidebarLayout>
   );
 }

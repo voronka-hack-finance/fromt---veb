@@ -6,6 +6,7 @@ import {
   bankAccounts,
   categoryRadarMetrics,
   dashboardData,
+  desktopForecastPoints,
   forecastPoints,
   forecastYearPoints,
 } from "@/shared/data/dashboard";
@@ -18,6 +19,7 @@ export type DashboardResponse = {
   bankAccounts: BankAccount[];
   categoryRadarMetrics: typeof categoryRadarMetrics;
   dashboard: typeof dashboardData;
+  desktopForecastPoints: ForecastPoint[];
   forecastPoints: ForecastPoint[];
   forecastYearPoints: ForecastPoint[];
 };
@@ -29,6 +31,7 @@ export async function fetchDashboard(): Promise<DashboardResponse> {
     bankAccounts,
     categoryRadarMetrics,
     dashboard: dashboardData,
+    desktopForecastPoints,
     forecastPoints,
     forecastYearPoints,
   };

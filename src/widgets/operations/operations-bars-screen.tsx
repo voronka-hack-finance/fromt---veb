@@ -28,6 +28,7 @@ import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { operationsChartHref } from "@/shared/lib/operations-period";
 import { useOperationsPeriod } from "@/shared/lib/use-operations-period";
 import { QueryError, QueryLoading } from "@/shared/ui/query-state/query-state";
+import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./operations-bars-screen.module.css";
@@ -160,7 +161,8 @@ function OperationsBarsScreenContent({
   }, [activeBarIndex, activePeriod]);
 
   return (
-    <main className={styles.stage}>
+    <DesktopSidebarLayout>
+      <main className={styles.stage}>
       <div className={styles.shell}>
         <Reveal delay={0.03}>
           <header className={styles.header}>
@@ -305,5 +307,6 @@ function OperationsBarsScreenContent({
         </div>
       </div>
     </main>
+    </DesktopSidebarLayout>
   );
 }

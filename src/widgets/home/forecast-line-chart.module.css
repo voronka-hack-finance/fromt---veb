@@ -1,0 +1,194 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  position: relative;
+  width: 100%;
+}
+
+.svg {
+  display: block;
+  flex-shrink: 0;
+  height: auto;
+  overflow: visible;
+  width: 100%;
+}
+
+.wrap_compact .svg {
+  height: 106px;
+}
+
+.wrap_wide .svg {
+  height: 133px;
+}
+
+.gridLine {
+  stroke-width: 1;
+}
+
+.wrap_compact .gridLine {
+  stroke: rgba(255, 255, 255, 0.16);
+}
+
+.wrap_wide .gridLine {
+  stroke: rgba(255, 255, 255, 0.28);
+  stroke-dasharray: 4 6;
+}
+
+.incomeLine,
+.expenseLine {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.wrap_compact .incomeLine,
+.wrap_compact .expenseLine {
+  stroke-width: 2;
+}
+
+.wrap_wide .incomeLine,
+.wrap_wide .expenseLine {
+  stroke-width: 3;
+}
+
+.incomeLine {
+  stroke: rgba(255, 255, 255, 0.95);
+}
+
+.wrap_wide .incomeLine {
+  stroke: #ffffff;
+}
+
+.expenseLine {
+  stroke: rgba(20, 20, 20, 0.85);
+  stroke-dasharray: 5 4;
+}
+
+.wrap_wide .expenseLine {
+  opacity: 0.92;
+  stroke: #101010;
+  stroke-dasharray: 8 8;
+}
+
+.hitArea {
+  cursor: pointer;
+  fill: transparent;
+}
+
+.point {
+  fill: #fff;
+  pointer-events: none;
+  stroke: rgba(36, 136, 44, 0.35);
+  stroke-width: 0;
+}
+
+.pointActive {
+  stroke: #111111;
+  stroke-width: 3;
+}
+
+.wrap_compact .pointActive {
+  stroke: rgba(36, 136, 44, 0.35);
+  stroke-width: 4;
+}
+
+.tooltip {
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  color: #171717;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-heading), sans-serif;
+  gap: 2px;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.wrap_compact .tooltip {
+  font-size: 9px;
+  font-weight: 700;
+  height: 34px;
+  min-width: 72px;
+  width: 72px;
+}
+
+.wrap_wide .tooltip {
+  align-items: flex-start;
+  border-radius: 6px;
+  font-size: 12px;
+  min-height: 38px;
+  min-width: 58px;
+  padding: 5px 8px;
+}
+
+.tooltipValue {
+  color: #111111;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.wrap_compact .tooltipValue {
+  font-size: 9px;
+}
+
+.wrap_wide .tooltipValue {
+  font-size: 16px;
+}
+
+.tooltipLabel {
+  color: #8a8f85;
+  font-size: 7px;
+  font-weight: 600;
+  line-height: 1;
+  text-transform: lowercase;
+}
+
+.wrap_wide .tooltipLabel {
+  color: #9b9b9b;
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: none;
+}
+
+.wrap_wide .tooltip::after {
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #ffffff;
+  content: "";
+  left: 50%;
+  position: absolute;
+  top: calc(100% - 1px);
+  transform: translateX(-50%);
+}
+
+.months {
+  align-items: center;
+  color: #fbfbfb;
+  display: flex;
+  flex-shrink: 0;
+  font-family: var(--font-heading), sans-serif;
+  font-weight: 600;
+  justify-content: space-between;
+  line-height: normal;
+  white-space: nowrap;
+  width: 100%;
+}
+
+.wrap_compact .months {
+  font-size: 6.183px;
+}
+
+.wrap_wide .months {
+  color: rgba(255, 255, 255, 0.88);
+  display: grid;
+  font-size: 10px;
+  margin-top: 6px;
+  text-align: center;
+}

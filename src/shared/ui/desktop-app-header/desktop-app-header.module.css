@@ -1,0 +1,39 @@
+.topBar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.96);
+  display: flex;
+  justify-content: space-between;
+  min-height: 84px;
+  padding: 20px 50px;
+}
+
+.topBarActions {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+}
+
+.iconButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 14px;
+  color: #202020;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+  width: 40px;
+}
+
+.desktopAvatar {
+  background: #afffbc;
+  border-radius: 16px;
+  height: 56px;
+  padding: 4px;
+  width: 56px;
+}
+
+.desktopAvatar :global(img) {
+  border-radius: 12px;
+}

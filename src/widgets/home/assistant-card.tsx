@@ -35,7 +35,7 @@ export function AssistantCard() {
       <button
         aria-label="Открыть ИИ помощника"
         className={styles.cta}
-        onClick={() => router.push("/operations")}
+        onClick={() => router.push("/recommendations")}
         type="button"
       >
         Подробнее

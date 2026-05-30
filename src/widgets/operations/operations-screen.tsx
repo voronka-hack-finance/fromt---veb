@@ -18,6 +18,7 @@ import { useOperationsScreenQuery, type OperationsScreenResponse } from "@/share
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
+import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import { OperationsBreakdownCard } from "./operations-breakdown-card";
@@ -100,7 +101,8 @@ function OperationsScreenContent({
   const [selectedOperationId, setSelectedOperationId] = useState<string | null>(null);
 
   return (
-    <main className={styles.stage}>
+    <DesktopSidebarLayout>
+      <main className={styles.stage}>
       <div className={styles.shell}>
         <Reveal delay={0.03}>
           <header className={styles.header}>
@@ -184,5 +186,6 @@ function OperationsScreenContent({
         </div>
       </div>
     </main>
+    </DesktopSidebarLayout>
   );
 }

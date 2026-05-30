@@ -1,0 +1,83 @@
+.wrapper {
+  min-height: 100vh;
+}
+
+.topBar,
+.shell {
+  display: none;
+}
+
+.content {
+  min-height: 0;
+  min-width: 0;
+}
+
+@media (min-width: 1200px) {
+  .wrapper {
+    background:
+      radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 18%),
+      linear-gradient(180deg, #f7f8fc 0%, #eef1f8 100%);
+    color: #232323;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: hidden;
+  }
+
+  .topBar {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(12px);
+    display: flex;
+    justify-content: space-between;
+    min-height: 84px;
+    padding: 20px 28px;
+  }
+
+  .topBarActions {
+    align-items: center;
+    display: flex;
+    gap: 14px;
+  }
+
+  .iconButton {
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: 12px;
+    color: #232323;
+    display: inline-flex;
+    height: 36px;
+    justify-content: center;
+    padding: 0;
+    width: 36px;
+  }
+
+  .desktopAvatar {
+    background: #7fd98a;
+    border-radius: 16px;
+    height: 42px;
+    padding: 4px;
+    width: 42px;
+  }
+
+  .desktopAvatar :global(img) {
+    border-radius: 12px;
+  }
+
+  .shell {
+    display: grid;
+    flex: 1;
+    gap: 26px;
+    grid-template-columns: 250px minmax(0, 1fr);
+    margin: 0 auto;
+    max-width: 1820px;
+    min-height: 0;
+    padding: 16px 28px 20px;
+    width: 100%;
+  }
+
+  .content {
+    overflow: auto;
+  }
+}

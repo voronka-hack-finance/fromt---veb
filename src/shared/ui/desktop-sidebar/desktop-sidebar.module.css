@@ -1,0 +1,117 @@
+.sidebar {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(205, 209, 224, 0.9);
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  overflow: hidden;
+  padding: 20px 18px;
+}
+
+.sidebarGroups {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.sidebarGroupActive {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 6px 12px;
+}
+
+.sidebarGroupHeader {
+  align-items: center;
+  color: #40a93d;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  gap: 14px;
+  text-decoration: none;
+}
+
+.sidebarSubmenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-left: 38px;
+  margin-top: 10px;
+}
+
+.sidebarSubLink,
+.sidebarSubLinkActive {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 6px 12px 6px 0;
+  text-decoration: none;
+}
+
+.sidebarSubLink {
+  color: #858585;
+}
+
+.sidebarSubLinkActive {
+  color: #40a93d;
+  font-weight: 600;
+}
+
+.sidebarLink,
+.sidebarLinkActive {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 500;
+  gap: 14px;
+  justify-content: flex-start;
+  padding: 6px 12px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.sidebarLink {
+  color: #858585;
+}
+
+.sidebarLinkActive {
+  color: #40a93d;
+  font-weight: 600;
+}
+
+.sidebarSubLink:hover,
+.sidebarSubLink:focus-visible,
+.sidebarLink:hover,
+.sidebarLink:focus-visible,
+.sidebarLinkActive:hover,
+.sidebarLinkActive:focus-visible,
+.sidebarGroupHeader:hover,
+.sidebarGroupHeader:focus-visible {
+  color: #232323;
+}
+
+.sidebarFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sidebarGroups::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebarGroups::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.35);
+  border-radius: 999px;
+}
+
+.sidebarGroups::-webkit-scrollbar-track {
+  background: transparent;
+}

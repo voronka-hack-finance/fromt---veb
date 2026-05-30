@@ -1,0 +1,560 @@
+.desktopViewport {
+  background: linear-gradient(180deg, #f8f8fd 0%, #f2f3fb 100%);
+  color: #232323;
+  min-height: 100vh;
+}
+
+.topBar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.96);
+  display: flex;
+  justify-content: space-between;
+  min-height: 132px;
+  padding: 28px 50px 24px;
+}
+
+.brand {
+  align-items: center;
+  color: #101010;
+  display: inline-flex;
+  gap: 24px;
+  text-decoration: none;
+}
+
+.brandMark {
+  align-items: center;
+  background: linear-gradient(135deg, #66dc77 0%, #52c26d 100%);
+  border-radius: 15px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 30px;
+  height: 68px;
+  justify-content: center;
+  width: 68px;
+}
+
+.brandText {
+  font-family: var(--font-heading), sans-serif;
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: -0.06em;
+}
+
+.topBarActions {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+}
+
+.iconButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 14px;
+  color: #202020;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+  width: 40px;
+}
+
+.desktopAvatar {
+  background: #afffbc;
+  border-radius: 16px;
+  height: 56px;
+  padding: 4px;
+  width: 56px;
+}
+
+.desktopAvatar :global(img) {
+  border-radius: 12px;
+}
+
+.shell {
+  display: grid;
+  gap: 26px;
+  grid-template-columns: 250px minmax(0, 1fr);
+  min-height: calc(100vh - 132px);
+  padding: 22px 40px 32px;
+}
+
+.sidebar {
+  background: #ffffff;
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  padding: 18px 16px;
+}
+
+.sidebarGroups {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebarLink,
+.sidebarLinkActive {
+  align-items: center;
+  border-radius: 16px;
+  display: inline-flex;
+  font-size: 16px;
+  gap: 12px;
+  padding: 10px 8px;
+  text-decoration: none;
+}
+
+.sidebarLink {
+  color: #8f8f8f;
+}
+
+.sidebarLinkActive {
+  color: #50b848;
+}
+
+.sidebarFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content {
+  min-width: 0;
+}
+
+.pageTitle {
+  color: #232323;
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  margin: 8px 0 14px;
+}
+
+.contentGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr) 410px;
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-width: 0;
+}
+
+.cardsGrid {
+  display: grid;
+  gap: 18px 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.accountCard,
+.addBankCard {
+  background: #ffffff;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.topBanksCard {
+  background: #ffffff;
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+.accountCard {
+  min-height: 189px;
+  padding: 24px 24px 20px;
+}
+
+.accountTop {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.accountMeta {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.accountIcon {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.accountIconGreen {
+  background: rgba(95, 226, 116, 0.2);
+  border: 1px solid rgba(64, 169, 61, 0.5);
+  color: #3fa93d;
+}
+
+.accountIconYellow {
+  background: rgba(255, 221, 92, 0.2);
+  border: 1px solid rgba(255, 205, 59, 0.65);
+  color: #8e7300;
+}
+
+.accountIconRed {
+  background: rgba(255, 113, 109, 0.18);
+  border: 1px solid rgba(255, 113, 109, 0.45);
+  color: #e64d45;
+}
+
+.accountIconBlue {
+  background: rgba(0, 159, 223, 0.18);
+  border: 1px solid rgba(0, 159, 223, 0.45);
+  color: #1595d2;
+}
+
+.accountText {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.accountText span {
+  color: #656565;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.accountText strong {
+  color: #383838;
+  font-size: 36px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+
+.cardActions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.cardAction {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  color: #555;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  width: 24px;
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.accountBadge,
+.moreBadge {
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 8px;
+  display: inline-flex;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 10px;
+}
+
+.accountBadge span {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+}
+
+.badgeDot {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 8px;
+  font-weight: 800;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.badgeDotGreen {
+  background: rgba(95, 226, 116, 0.18);
+  color: #2f9e44;
+}
+
+.badgeDotYellow {
+  background: rgba(255, 221, 92, 0.28);
+  color: #8e7300;
+}
+
+.badgeDotRed {
+  background: rgba(255, 113, 109, 0.18);
+  color: #d9453d;
+}
+
+.badgeDotBlue {
+  background: rgba(0, 159, 223, 0.18);
+  color: #1595d2;
+}
+
+.moreBadge {
+  background: #fafafa;
+  color: #4d4d4d;
+  padding-inline: 10px;
+}
+
+.addBankCard {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  min-height: 158px;
+  padding: 0 18px 0 0;
+}
+
+.addBankImage {
+  display: block;
+  height: 177px;
+  margin-left: -6px;
+  object-fit: contain;
+  width: 211px;
+}
+
+.addBankContent {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  text-align: right;
+}
+
+.addBankContent p {
+  color: #383838;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.addBankContent span {
+  color: #50b848;
+  font-style: italic;
+}
+
+.addBankButton {
+  background: #50b848;
+  border: none;
+  border-radius: 13px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  min-height: 36px;
+  padding: 8px 28px;
+}
+
+.protectionCard {
+  background: #dcdcdc;
+  border-radius: 27px;
+  min-height: 217px;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.protectionImageWrap {
+  border-radius: 27px 27px 0 27px;
+  height: 246px;
+  left: -34px;
+  overflow: hidden;
+  pointer-events: none;
+  position: absolute;
+  top: -9px;
+  width: 248px;
+}
+
+.protectionImage {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.protectionContent {
+  left: 206px;
+  padding: 27px 16px 20px 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.protectionContent h2 {
+  color: #000000;
+  font-family: var(--font-body), sans-serif;
+  font-size: 21.5px;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.protectionContent p {
+  color: #787878;
+  font-size: 17px;
+  line-height: 1.1;
+  margin: 10px 0 0;
+  max-width: 184px;
+}
+
+.protectionButton {
+  align-items: center;
+  background: #000000;
+  border: none;
+  border-radius: 27px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 17px;
+  justify-content: center;
+  line-height: 1.1;
+  margin-top: 16px;
+  min-height: 42px;
+  min-width: 189px;
+  padding: 11px 53px;
+}
+
+.topBanksCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 24px 30px;
+}
+
+.topBanksHeader {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
+  justify-content: space-between;
+  min-height: 32px;
+}
+
+.topBanksTitle {
+  align-items: center;
+  display: inline-flex;
+  gap: 12px;
+}
+
+.topBanksTitle h2 {
+  color: #1f1f1f;
+  font-size: 24px;
+  margin: 0;
+}
+
+.topBanksHeaderButton {
+  align-items: center;
+  background: #f2f2f4;
+  border: none;
+  border-radius: 50%;
+  color: #232323;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.topBanksList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.topBankRow {
+  align-items: center;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 18px;
+}
+
+.topBankMeta {
+  align-items: center;
+  color: #1f1f1f;
+  display: flex;
+  gap: 12px;
+  min-width: 0;
+}
+
+.topBankMeta span,
+.topBankRow strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.bankBadge {
+  align-items: center;
+  border-radius: 10px;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 800;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.bankBadgeGreen {
+  background: rgba(86, 193, 101, 0.18);
+  color: #2f9e44;
+}
+
+.bankBadgeBlue {
+  background: rgba(30, 136, 229, 0.16);
+  color: #0077cc;
+}
+
+.bankBadgeYellow {
+  background: rgba(255, 206, 84, 0.28);
+  color: #7b5c00;
+}
+
+.bankBadgeRed {
+  background: rgba(255, 112, 103, 0.18);
+  color: #db4437;
+}
+
+@media (max-width: 1520px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .rightColumn {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1320px) {
+  .cardsGrid,
+  .rightColumn {
+    grid-template-columns: 1fr;
+  }
+}

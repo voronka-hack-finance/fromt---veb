@@ -1,0 +1,588 @@
+.desktopViewport {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 18%),
+    linear-gradient(180deg, #f7f8fc 0%, #eef1f8 100%);
+  color: #232323;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.topBar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-between;
+  min-height: 84px;
+  padding: 20px 28px;
+}
+
+.brand {
+  align-items: center;
+  display: inline-flex;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.brandMark {
+  align-items: center;
+  background: linear-gradient(135deg, #66dc77 0%, #52c26d 100%);
+  border-radius: 14px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 24px;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.brandText {
+  color: #171717;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 30px;
+  letter-spacing: -0.06em;
+}
+
+.topBarActions {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.iconButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: #232323;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  width: 36px;
+}
+
+.desktopAvatar {
+  background: #7fd98a;
+  border-radius: 16px;
+  height: 42px;
+  padding: 4px;
+  width: 42px;
+}
+
+.desktopAvatar :global(img) {
+  border-radius: 12px;
+}
+
+.shell {
+  display: grid;
+  flex: 1;
+  gap: 26px;
+  grid-template-columns: 250px minmax(0, 1fr);
+  margin: 0 auto;
+  max-width: 1820px;
+  min-height: 0;
+  padding: 16px 28px 20px;
+  width: 100%;
+}
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(205, 209, 224, 0.9);
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  overflow: hidden;
+  padding: 20px 18px;
+}
+
+.sidebarGroups {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.sidebarGroupActive {
+  background: #f7faf4;
+  border-radius: 22px;
+  padding: 12px 14px;
+}
+
+.sidebarGroupHeader {
+  align-items: center;
+  color: #4fb848;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 10px;
+}
+
+.sidebarSubmenu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 28px;
+  margin-top: 10px;
+}
+
+.sidebarSubLink,
+.sidebarSubLinkActive,
+.sidebarLink {
+  text-decoration: none;
+}
+
+.sidebarSubLink {
+  color: #8f96a2;
+  font-size: 12px;
+}
+
+.sidebarSubLinkActive {
+  color: #50b848;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.sidebarLink {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 18px;
+  color: #707784;
+  display: inline-flex;
+  font-size: 14px;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.sidebarFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.rightPanelActions {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+}
+
+.contentGrid {
+  display: grid;
+  flex: 1;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 547px);
+  min-height: 0;
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+  min-width: 0;
+}
+
+.rightColumn {
+  max-height: calc(100vh - 200px);
+  min-width: 0;
+}
+
+.metricCard,
+.calendarCard,
+.protectionCard {
+  background: rgba(255, 255, 255, 0.94);
+  border-radius: 20px;
+  box-shadow: 0 14px 30px rgba(32, 40, 62, 0.06);
+}
+
+.heroCard {
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 0;
+}
+
+.heroLabel {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.heroTitle {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.heroMain {
+  align-items: flex-end;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.heroValue {
+  flex-shrink: 0;
+  font-size: clamp(48px, 5vw, 66px);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 0.95;
+}
+
+.summaryRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.summaryTile,
+.addTile {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.96);
+  border: none;
+  border-radius: 14px;
+  display: flex;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 14px;
+}
+
+.summaryBadge {
+  align-items: center;
+  border-radius: 6px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  height: 22px;
+  justify-content: center;
+  min-width: 30px;
+  padding: 0 8px;
+}
+
+.summaryBadgeGreen {
+  background: #50b848;
+}
+
+.summaryBadgeBlack {
+  background: #101010;
+}
+
+.summaryValue {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.addTile {
+  justify-content: center;
+  min-height: 52px;
+  min-width: 52px;
+  padding: 0;
+  width: 52px;
+}
+
+.metricsRow {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr) 109px;
+}
+
+.metricCard {
+  min-height: 188px;
+  padding: 30px;
+}
+
+.metricLabel {
+  display: block;
+  font-size: 24px;
+}
+
+.metricValueGood {
+  color: #50b848;
+  display: block;
+  font-size: 40px;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.metricCaption {
+  display: block;
+  font-size: 16px;
+  line-height: 1.25;
+  margin-top: 10px;
+}
+
+.healthInline {
+  align-items: end;
+  display: flex;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.metricValue {
+  font-size: 64px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.95;
+}
+
+.healthBadge {
+  background: rgba(188, 22, 22, 0.78);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 5px 18px;
+}
+
+.accentCard {
+  background: rgba(64, 169, 61, 0.4);
+  border-radius: 20px;
+  min-height: 188px;
+  overflow: hidden;
+  position: relative;
+}
+
+.accentImage {
+  height: 165px;
+  left: -22px;
+  max-width: none;
+  object-fit: cover;
+  position: absolute;
+  top: 11px;
+  transform: rotate(89.49deg);
+  width: 134px;
+}
+
+.calendarCard {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  max-height: min(520px, calc(100vh - 280px));
+  min-height: 220px;
+  overflow: hidden;
+  padding: 27px 30px;
+}
+
+.calendarHeader,
+.calendarTitleWrap,
+.calendarGroupHeader,
+.calendarItem,
+.calendarItemMeta,
+.protectionCard {
+  align-items: center;
+  display: flex;
+}
+
+.calendarHeader {
+  flex-shrink: 0;
+  justify-content: space-between;
+}
+
+.calendarTitleWrap {
+  gap: 15px;
+}
+
+.calendarTitleWrap h2 {
+  font-size: 24px;
+  margin: 0;
+}
+
+.calendarGroups {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 22px;
+  margin-top: 15px;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+}
+
+.calendarGroups::-webkit-scrollbar {
+  width: 6px;
+}
+
+.calendarGroups::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.35);
+  border-radius: 999px;
+}
+
+.calendarGroups::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.calendarGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.calendarGroupHeader {
+  gap: 12px;
+}
+
+.calendarGroupHeader strong,
+.calendarGroupHeader span {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.calendarDivider {
+  background: rgba(35, 35, 35, 0.18);
+  flex: 1;
+  height: 1px;
+}
+
+.calendarList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.calendarItem {
+  background: #ebebeb;
+  border-radius: 24px;
+  justify-content: space-between;
+  padding: 11px 12px;
+}
+
+.calendarItemMeta {
+  gap: 9px;
+}
+
+.calendarBadge {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 999px;
+  color: #9b9b9b;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 700;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.calendarTextBlock span {
+  color: #9b9b9b;
+  display: block;
+  font-size: 13px;
+}
+
+.calendarTextBlock strong {
+  display: block;
+  font-size: 15px;
+  margin-top: 2px;
+}
+
+.calendarAmount {
+  font-size: 18px;
+}
+
+.protectionCard {
+  background: #dcdcdc;
+  border-radius: 27px;
+  flex-shrink: 0;
+  gap: 22px;
+  min-height: 217px;
+  overflow: hidden;
+}
+
+.protectionImage {
+  align-self: stretch;
+  object-fit: cover;
+  width: 246px;
+}
+
+.protectionContent {
+  padding: 20px 18px 20px 0;
+}
+
+.protectionContent h2 {
+  font-size: 24px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.protectionContent p {
+  color: #787878;
+  font-size: 20px;
+  line-height: 1.1;
+  margin: 16px 0 0;
+}
+
+.protectionButton {
+  background: #000000;
+  border: none;
+  border-radius: 999px;
+  color: #ffffff;
+  margin-top: 24px;
+  min-height: 40px;
+  padding: 0 36px;
+}
+
+.sidebarGroups::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebarGroups::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.28);
+  border-radius: 999px;
+}
+
+@media (max-width: 1599px) {
+  .heroMain {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1399px) {
+  .shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .metricsRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .accentCard {
+    min-height: 140px;
+  }
+}

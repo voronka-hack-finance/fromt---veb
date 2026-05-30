@@ -3,6 +3,14 @@
   padding: 0;
 }
 
+.desktopShell {
+  display: none;
+}
+
+.mobileShell {
+  display: block;
+}
+
 .shell {
   margin: 0 auto;
   max-width: 393px;
@@ -559,5 +567,15 @@
 
   .scenarioCard {
     width: 156px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .desktopShell {
+    display: block;
+  }
+
+  .mobileShell {
+    display: none;
   }
 }

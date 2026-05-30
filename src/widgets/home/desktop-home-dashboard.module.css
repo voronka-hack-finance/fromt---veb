@@ -1,0 +1,1078 @@
+.desktopViewport {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.95), transparent 18%),
+    linear-gradient(180deg, #f7f8fc 0%, #eef1f8 100%);
+  color: #232323;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.topBar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px);
+  display: flex;
+  justify-content: space-between;
+  min-height: 84px;
+  padding: 20px 28px;
+}
+
+.brand {
+  align-items: center;
+  display: inline-flex;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.brandMark {
+  align-items: center;
+  background: linear-gradient(135deg, #66dc77 0%, #52c26d 100%);
+  border-radius: 14px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 24px;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.brandText {
+  color: #171717;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 30px;
+  letter-spacing: -0.06em;
+}
+
+.topBarActions {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+}
+
+.iconButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: #232323;
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  width: 36px;
+}
+
+.desktopAvatar {
+  background: #7fd98a;
+  border-radius: 16px;
+  height: 42px;
+  padding: 4px;
+  width: 42px;
+}
+
+.desktopAvatar :global(img) {
+  border-radius: 12px;
+}
+
+.shell {
+  display: grid;
+  flex: 1;
+  gap: 26px;
+  grid-template-columns: 250px minmax(0, 1fr);
+  margin: 0 auto;
+  max-width: 1820px;
+  min-height: 0;
+  padding: 16px 28px 20px;
+  width: 100%;
+}
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(205, 209, 224, 0.9);
+  border-radius: 26px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  overflow: hidden;
+  padding: 20px 18px;
+}
+
+.sidebarFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sidebarGroups {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.sidebarGroupActive {
+  background: #f7faf4;
+  border-radius: 22px;
+  padding: 12px 14px;
+}
+
+.sidebarGroupHeader {
+  align-items: center;
+  color: #4fb848;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.sidebarSubmenu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 28px;
+  margin-top: 10px;
+}
+
+.sidebarSubLink {
+  color: #8f96a2;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.sidebarSubLink:hover,
+.sidebarSubLink:focus-visible,
+.sidebarLink:hover,
+.sidebarLink:focus-visible {
+  color: #232323;
+}
+
+.sidebarLink {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 18px;
+  color: #707784;
+  display: inline-flex;
+  font-size: 14px;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 12px 14px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.pageHeader {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.pageTitle {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  margin: 0;
+}
+
+.headerButtons {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.primaryAction,
+.secondaryAction {
+  align-items: center;
+  border: none;
+  border-radius: 999px;
+  display: inline-flex;
+  font-size: 14px;
+  gap: 8px;
+  padding: 11px 18px;
+}
+
+.primaryAction {
+  background: #4fb848;
+  color: #ffffff;
+}
+
+.secondaryAction {
+  background: #dee2eb;
+  color: #232323;
+}
+
+.dashboardGrid {
+  display: grid;
+  flex: 1;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1.7fr) minmax(280px, 0.9fr) minmax(360px, 1.05fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.primaryColumn,
+.secondaryColumn,
+.tertiaryColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+  min-width: 0;
+  overflow: auto;
+  padding-right: 6px;
+  scrollbar-gutter: stable;
+}
+
+.balanceCard,
+.metricCard,
+.forecastCard,
+.remainderCard,
+.investmentsCard,
+.creditCard,
+.calendarCard,
+.recurringCard {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(210, 214, 226, 0.9);
+  border-radius: 26px;
+  box-shadow: 0 14px 30px rgba(32, 40, 62, 0.06);
+}
+
+.balanceCard {
+  padding: 22px 24px 18px;
+}
+
+.balanceHeader {
+  display: flex;
+  gap: 18px;
+  justify-content: space-between;
+}
+
+.balanceTitleWrap {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.balanceTitle {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.healthBlock {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.healthLabel {
+  color: #43484f;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.healthStats {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.healthValue {
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+}
+
+.healthPill {
+  background: #7acc95;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 12px;
+  padding: 5px 10px;
+}
+
+.balanceValue {
+  font-size: clamp(40px, 4vw, 68px);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  margin-top: 10px;
+}
+
+.legendRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.legendItem {
+  align-items: center;
+  color: #34373b;
+  display: inline-flex;
+  font-size: 14px;
+  gap: 10px;
+}
+
+.legendSwatch {
+  border-radius: 5px;
+  height: 18px;
+  width: 34px;
+}
+
+.legendGreen {
+  background: #50b848;
+}
+
+.legendDark {
+  background: #232323;
+}
+
+.legendRed {
+  background: #ff3434;
+}
+
+.legendBlue {
+  background: #4f59ff;
+}
+
+.metricsRow {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.metricCard {
+  color: inherit;
+  padding: 22px 24px;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.metricCard:hover,
+.metricCard:focus-visible,
+.remainderCard:hover,
+.remainderCard:focus-visible,
+.investmentsCard:hover,
+.investmentsCard:focus-visible,
+.recurringCard:hover,
+.recurringCard:focus-visible,
+.assistantButton:hover,
+.assistantButton:focus-visible,
+.creditButton:hover,
+.creditButton:focus-visible {
+  box-shadow: 0 18px 36px rgba(32, 40, 62, 0.1);
+  transform: translateY(-2px);
+}
+
+.metricHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.metricTitleWrap {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+}
+
+.metricIconCircle {
+  align-items: center;
+  border: 1.7px solid rgba(155, 155, 155, 0.4);
+  border-radius: 50%;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 53px;
+  justify-content: center;
+  width: 53px;
+}
+
+.metricIcon {
+  display: block;
+  height: 29px;
+  width: 29px;
+}
+
+.metricChevron {
+  display: block;
+  flex-shrink: 0;
+  height: 24px;
+  width: 24px;
+}
+
+.metricTitle {
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+}
+
+.metricValue {
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.07em;
+  margin-top: 26px;
+}
+
+.forecastCard {
+  background: linear-gradient(135deg, #4fb848 0%, #58c250 100%);
+  border: none;
+  color: #ffffff;
+  overflow: hidden;
+  padding: 27px 32px 26px;
+  position: relative;
+}
+
+.forecastCard::after {
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.22), transparent 60%);
+  content: "";
+  height: 220px;
+  inset: auto -8% -44% auto;
+  position: absolute;
+  width: 220px;
+}
+
+.forecastTop {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.forecastHeading {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  row-gap: 10px;
+}
+
+.forecastTitle {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.forecastLegend {
+  display: flex;
+  gap: 17px;
+}
+
+.forecastLegendItem {
+  align-items: center;
+  color: rgba(255, 255, 255, 0.92);
+  display: inline-flex;
+  font-size: 12px;
+  gap: 6px;
+  line-height: 1;
+}
+
+.forecastDotLight,
+.forecastDotDark {
+  border-radius: 50%;
+  height: 8px;
+  width: 8px;
+}
+
+.forecastDotLight {
+  background: #ffffff;
+}
+
+.forecastDotDark {
+  background: #102d10;
+}
+
+.forecastRange {
+  align-items: center;
+  display: inline-flex;
+  font-size: 16px;
+  font-weight: 600;
+  gap: 10px;
+}
+
+.forecastRangeButton {
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  padding: 7px 12px;
+}
+
+.forecastRangeActive {
+  background: #ffffff;
+  border-radius: 999px;
+  color: #232323;
+}
+
+.forecastBody {
+  align-items: end;
+  display: grid;
+  gap: 34px;
+  grid-template-columns: 146px minmax(0, 1fr);
+  margin-top: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+.forecastScore {
+  align-items: flex-start;
+  display: flex;
+  line-height: 0.9;
+  margin-bottom: 18px;
+}
+
+.forecastScoreValue {
+  font-size: clamp(88px, 7vw, 122px);
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+.forecastScoreUnit {
+  font-size: 34px;
+  font-weight: 500;
+  margin-left: 4px;
+  margin-top: 8px;
+}
+
+.forecastChartWrap {
+  min-width: 0;
+  position: relative;
+  width: 100%;
+}
+
+.remainderCard {
+  background: #c4c4c4;
+  color: #ffffff;
+  padding: 22px 24px;
+  text-decoration: none;
+}
+
+.remainderHeader,
+.investmentsHeader,
+.cardTitleRow,
+.cardTitleWrap,
+.recurringBottom {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.remainderHeader,
+.investmentsHeader {
+  color: rgba(255, 255, 255, 0.94);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.remainderValue {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  margin-top: 18px;
+}
+
+.remainderTrack {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  height: 8px;
+  margin-top: 22px;
+  overflow: hidden;
+}
+
+.remainderFill {
+  background: #ffffff;
+  border-radius: 999px;
+  height: 100%;
+}
+
+.remainderLevel {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+.investmentsCard {
+  color: inherit;
+  overflow: hidden;
+  padding: 16px 24px 18px;
+  position: relative;
+  text-decoration: none;
+}
+
+.investmentsHeader {
+  color: #a1a7b0;
+}
+
+.investmentsBody {
+  align-items: flex-end;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-top: 18px;
+  min-height: 132px;
+}
+
+.investmentsValue {
+  font-size: 52px;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+.investmentsPill {
+  background: #62dd7e;
+  border-radius: 999px;
+  color: #111111;
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 10px;
+  padding: 6px 10px;
+}
+
+.investmentsRingImage {
+  align-self: flex-end;
+  display: block;
+  flex-shrink: 0;
+  height: 118px;
+  margin-bottom: -6px;
+  margin-right: 4px;
+  object-fit: contain;
+  width: 118px;
+}
+
+.creditCard {
+  background: #232323;
+  border: none;
+  border-radius: 24px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  overflow: hidden;
+  padding: 16px 23px 18px;
+  position: relative;
+}
+
+.creditHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.creditTag {
+  background: #9b9b9b;
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: normal;
+  padding: 4px 10px;
+  text-transform: uppercase;
+}
+
+.creditMenu {
+  align-items: center;
+  background: transparent;
+  border: none;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  padding: 0;
+}
+
+.creditMenuIcon {
+  display: block;
+  height: 7px;
+  width: 27px;
+}
+
+.creditGaugeWrap {
+  aspect-ratio: 288 / 168;
+  margin: 0 auto;
+  max-width: 287px;
+  position: relative;
+  width: 100%;
+}
+
+.creditGauge {
+  display: block;
+  height: 100%;
+  overflow: visible;
+  width: 100%;
+}
+
+.creditTrack,
+.creditProgress {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 26;
+}
+
+.creditTrack {
+  stroke: #e9edf0;
+}
+
+.creditProgress {
+  stroke: #50b848;
+}
+
+.creditNeedle {
+  stroke: #50b848;
+  stroke-linecap: round;
+  stroke-width: 3;
+}
+
+.creditCenter {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  left: 50%;
+  position: absolute;
+  top: 40%;
+  transform: translateX(-50%);
+  width: 77px;
+}
+
+.creditSmiley {
+  display: block;
+  height: 40px;
+  width: 40px;
+}
+
+.creditValue {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.creditLabel {
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.creditButton {
+  align-items: center;
+  background: #c4c4c4;
+  border-radius: 14px;
+  color: #232323;
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  justify-content: center;
+  margin-top: 8px;
+  min-height: 46px;
+  padding: 14px 10px;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.calendarCard {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: 20px;
+}
+
+.cardTitleWrap {
+  gap: 12px;
+  justify-content: flex-start;
+}
+
+.cardTitleRow h2,
+.cardTitleWrap h2,
+.recurringCard h2,
+.assistantCard h2 {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  margin: 0;
+}
+
+.calendarGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 18px;
+  max-height: 488px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.calendarGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calendarGroupHeader {
+  align-items: center;
+  display: flex;
+  font-size: 22px;
+  font-weight: 700;
+  gap: 12px;
+}
+
+.calendarDivider {
+  background: rgba(35, 35, 35, 0.2);
+  flex: 1;
+  height: 1px;
+}
+
+.calendarList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.calendarItem {
+  align-items: center;
+  background: #efefef;
+  border-radius: 22px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.calendarItem strong {
+  flex-shrink: 0;
+  font-size: 16px;
+}
+
+.calendarItemMeta {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.calendarBadge {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 999px;
+  color: #7d8086;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.calendarCategory {
+  color: #9297a0;
+  font-size: 12px;
+}
+
+.calendarTitle {
+  color: #232323;
+  font-size: 14px;
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recurringCard {
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 18px 20px;
+  text-decoration: none;
+}
+
+.recurringBottom {
+  gap: 16px;
+}
+
+.recurringMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.recurringMeta span {
+  color: #8f96a2;
+  font-size: 15px;
+}
+
+.recurringIcons {
+  display: flex;
+}
+
+.recurringIcons img {
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  height: 28px;
+  margin-left: -8px;
+  width: 28px;
+}
+
+.recurringIcons img:first-child {
+  margin-left: 0;
+}
+
+.recurringCard strong {
+  flex-shrink: 0;
+  font-size: 26px;
+  letter-spacing: -0.04em;
+}
+
+.assistantCard {
+  background: linear-gradient(135deg, rgba(79, 184, 72, 0.36) 0%, rgba(204, 231, 208, 0.9) 100%);
+  border-radius: 28px;
+  min-height: 220px;
+  overflow: hidden;
+  padding: 22px 22px 20px;
+  position: relative;
+}
+
+.assistantOrbWrap {
+  align-items: center;
+  bottom: -72px;
+  display: flex;
+  height: 340px;
+  justify-content: center;
+  pointer-events: none;
+  position: absolute;
+  right: -72px;
+  width: 360px;
+  z-index: 0;
+}
+
+.assistantOrbRotated {
+  flex-shrink: 0;
+  transform: rotate(153deg);
+}
+
+.assistantOrbFrame {
+  border-radius: 24px;
+  height: 232px;
+  overflow: hidden;
+  position: relative;
+  width: 292px;
+}
+
+.assistantOrbImage {
+  height: 255.33%;
+  left: -161.25%;
+  max-width: none;
+  pointer-events: none;
+  position: absolute;
+  top: -77.87%;
+  width: 363.98%;
+}
+
+.assistantContent {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 238px;
+  position: relative;
+  z-index: 1;
+}
+
+.assistantCard p {
+  color: rgba(31, 31, 31, 0.86);
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 10px 0 0;
+}
+
+.assistantButton {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 18px;
+  color: #1f1f1f;
+  display: inline-flex;
+  gap: 8px;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 16px;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+  width: fit-content;
+}
+
+.sidebarGroups::-webkit-scrollbar,
+.primaryColumn::-webkit-scrollbar,
+.secondaryColumn::-webkit-scrollbar,
+.tertiaryColumn::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebarGroups::-webkit-scrollbar-thumb,
+.primaryColumn::-webkit-scrollbar-thumb,
+.secondaryColumn::-webkit-scrollbar-thumb,
+.tertiaryColumn::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.28);
+  border-radius: 999px;
+}
+
+.sidebarGroups::-webkit-scrollbar-track,
+.primaryColumn::-webkit-scrollbar-track,
+.secondaryColumn::-webkit-scrollbar-track,
+.tertiaryColumn::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (max-width: 1599px) {
+  .dashboardGrid {
+    grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.85fr) minmax(320px, 1fr);
+  }
+
+  .pageHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 1399px) {
+  .shell {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .dashboardGrid {
+    grid-template-columns: minmax(0, 1.2fr) minmax(250px, 0.85fr);
+  }
+
+  .tertiaryColumn {
+    display: grid;
+    gap: 20px;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 1.1fr) repeat(2, minmax(0, 0.9fr));
+  }
+}

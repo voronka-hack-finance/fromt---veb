@@ -14,6 +14,102 @@ type RadarMetric = {
 const clamp = (value: number, min: number, max: number) =>
   Math.min(Math.max(value, min), max);
 
+type ChartPadding = {
+  bottom: number;
+  left: number;
+  right: number;
+  top: number;
+};
+
+function resolveChartPadding(
+  padding: number | ChartPadding,
+): ChartPadding {
+  if (typeof padding === "number") {
+    return { top: padding, right: padding, bottom: padding, left: padding };
+  }
+
+  return padding;
+}
+
+function buildScaledCoordinates(
+  values: number[],
+  width: number,
+  height: number,
+  padding: ChartPadding,
+  minValue: number,
+  maxValue: number,
+) {
+  const span = Math.max(maxValue - minValue, 1);
+  const stepX = values.length > 1 ? (width - padding.left - padding.right) / (values.length - 1) : 0;
+  const usableHeight = height - padding.top - padding.bottom;
+
+  return values.map((value, index) => ({
+    x: padding.left + stepX * index,
+    y: height - padding.bottom - ((value - minValue) / span) * usableHeight,
+  }));
+}
+
+function buildSmoothLinePath(coordinates: CartesianPoint[]) {
+  return coordinates.reduce((path, point, index) => {
+    if (index === 0) {
+      return `M ${point.x} ${point.y}`;
+    }
+
+    const previous = coordinates[index - 1];
+    const controlX = (previous.x + point.x) / 2;
+
+    return `${path} C ${controlX} ${previous.y}, ${controlX} ${point.y}, ${point.x} ${point.y}`;
+  }, "");
+}
+
+export function buildDualLineChartPaths(
+  incomeValues: number[],
+  expenseValues: number[],
+  width: number,
+  height: number,
+  padding: number | ChartPadding,
+) {
+  if (incomeValues.length === 0 || expenseValues.length === 0) {
+    return {
+      income: { linePath: "", coordinates: [] as CartesianPoint[] },
+      expense: { linePath: "", coordinates: [] as CartesianPoint[] },
+    };
+  }
+
+  const resolvedPadding = resolveChartPadding(padding);
+  const allValues = [...incomeValues, ...expenseValues];
+  const minValue = Math.min(...allValues);
+  const maxValue = Math.max(...allValues);
+
+  const incomeCoordinates = buildScaledCoordinates(
+    incomeValues,
+    width,
+    height,
+    resolvedPadding,
+    minValue,
+    maxValue,
+  );
+  const expenseCoordinates = buildScaledCoordinates(
+    expenseValues,
+    width,
+    height,
+    resolvedPadding,
+    minValue,
+    maxValue,
+  );
+
+  return {
+    income: {
+      linePath: buildSmoothLinePath(incomeCoordinates),
+      coordinates: incomeCoordinates,
+    },
+    expense: {
+      linePath: buildSmoothLinePath(expenseCoordinates),
+      coordinates: expenseCoordinates,
+    },
+  };
+}
+
 export function buildLineChartPaths(
   points: LineChartPoint[],
   width: number,

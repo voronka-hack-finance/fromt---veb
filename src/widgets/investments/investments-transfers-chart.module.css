@@ -1,0 +1,112 @@
+.wrap {
+  flex: 1;
+  max-width: 360px;
+  min-width: 240px;
+}
+
+.plot {
+  position: relative;
+  width: 100%;
+}
+
+.tooltip {
+  align-items: flex-start;
+  background: #4fb848;
+  border-radius: 10px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-heading), sans-serif;
+  gap: 2px;
+  justify-content: center;
+  min-height: 40px;
+  min-width: 72px;
+  padding: 6px 8px;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform: translate(-50%, 0);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.tooltipValue {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tooltipLabel {
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.92;
+}
+
+.columns {
+  display: grid;
+  gap: 0;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  width: 100%;
+}
+
+.column {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.track {
+  align-items: flex-end;
+  display: flex;
+  height: 112px;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.gridLine {
+  border-left: 1px dashed rgba(35, 35, 35, 0.22);
+  bottom: 0;
+  left: 50%;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+}
+
+.bar {
+  background: #50b848;
+  border-radius: 999px;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  width: 13px;
+  z-index: 1;
+}
+
+.barActive {
+  opacity: 1;
+}
+
+.bar:not(.barActive) {
+  opacity: 0.88;
+}
+
+.month {
+  color: #232323;
+  font-size: 8px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .wrap {
+    max-width: 100%;
+    min-width: 0;
+  }
+}

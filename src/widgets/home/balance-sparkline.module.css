@@ -1,0 +1,107 @@
+.wrap {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 6px;
+  max-width: min(480px, 52%);
+  min-width: 280px;
+  position: relative;
+}
+
+.plot {
+  position: relative;
+  width: 100%;
+}
+
+.svg {
+  display: block;
+  height: auto;
+  overflow: visible;
+  width: 100%;
+}
+
+.gridLine {
+  stroke: rgba(35, 35, 35, 0.1);
+  stroke-dasharray: 3 5;
+  stroke-width: 1;
+}
+
+.spendLine,
+.balanceLine {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2.5;
+}
+
+.spendLine {
+  stroke: #232323;
+  stroke-dasharray: 5 5;
+}
+
+.balanceLine {
+  stroke: #5ccf5d;
+}
+
+.hitArea {
+  cursor: pointer;
+  fill: transparent;
+}
+
+.marker {
+  fill: #5ccf5d;
+  pointer-events: none;
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.tooltip {
+  align-items: flex-start;
+  background: #4fb848;
+  border-radius: 10px;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-heading), sans-serif;
+  gap: 2px;
+  justify-content: center;
+  min-height: 40px;
+  min-width: 72px;
+  padding: 6px 8px;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 2;
+}
+
+.tooltipValue {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.tooltipLabel {
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  opacity: 0.92;
+}
+
+.months {
+  color: rgba(35, 35, 35, 0.42);
+  display: grid;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  text-align: center;
+  width: 100%;
+}
+
+@media (max-width: 1200px) {
+  .wrap {
+    max-width: 100%;
+    min-width: 0;
+  }
+}

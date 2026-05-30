@@ -9,6 +9,7 @@ export const queryKeys = {
   categories: ["categories"] as const,
   goals: ["goals"] as const,
   subscriptions: ["subscriptions"] as const,
+  recommendations: ["recommendations"] as const,
   totalBalance: ["total-balance"] as const,
   incomeBalance: ["income-balance"] as const,
   investmentsBalance: ["investments-balance"] as const,

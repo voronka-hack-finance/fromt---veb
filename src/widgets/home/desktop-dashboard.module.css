@@ -1,0 +1,619 @@
+.desktopViewport {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.92), transparent 18%),
+    linear-gradient(180deg, #f4f4fa 0%, #ececf4 100%);
+  color: #232323;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.topBar {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: space-between;
+  min-height: 110px;
+  padding: 24px 42px 20px;
+}
+
+.brand {
+  align-items: center;
+  display: inline-flex;
+  gap: 20px;
+  text-decoration: none;
+}
+
+.brandMark {
+  align-items: center;
+  background: linear-gradient(135deg, #68e177 0%, #4fb848 100%);
+  border-radius: 16px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 28px;
+  height: 58px;
+  justify-content: center;
+  width: 58px;
+}
+
+.brandText {
+  color: #171717;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 30px;
+  letter-spacing: -0.05em;
+}
+
+.topBarActions {
+  align-items: center;
+  display: flex;
+  gap: 22px;
+}
+
+.iconButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 12px;
+  color: #232323;
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  padding: 0;
+  width: 40px;
+}
+
+.desktopAvatar {
+  background: #9ef0a9;
+  border-radius: 16px;
+  height: 56px;
+  padding: 6px;
+  width: 56px;
+}
+
+.desktopAvatar :global(img) {
+  border-radius: 12px;
+}
+
+.shell {
+  display: grid;
+  flex: 1;
+  gap: 30px;
+  grid-template-columns: 250px minmax(0, 1fr);
+  margin: 0 auto;
+  max-width: 1820px;
+  min-height: 0;
+  padding: 18px 42px 32px;
+  width: 100%;
+}
+
+.sidebar {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 0;
+  padding: 16px;
+}
+
+.sidebarGroups {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 0;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.sidebarGroupActive {
+  background: #f8f8f8;
+  border-radius: 18px;
+  padding: 12px;
+}
+
+.sidebarGroupHeader {
+  align-items: center;
+  color: #40a93d;
+  display: flex;
+  font-size: 16px;
+  font-weight: 700;
+  gap: 12px;
+}
+
+.sidebarSubmenu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.sidebarSubLink {
+  color: #888888;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.sidebarSubLink:first-child {
+  color: #50b848;
+  font-weight: 600;
+}
+
+.sidebarLink {
+  align-items: center;
+  background: transparent;
+  border: none;
+  border-radius: 16px;
+  color: #858585;
+  display: inline-flex;
+  font-size: 16px;
+  gap: 12px;
+  justify-content: flex-start;
+  padding: 10px 12px;
+  text-align: left;
+  text-decoration: none;
+}
+
+.sidebarSubLink:hover,
+.sidebarSubLink:focus-visible,
+.sidebarLink:hover,
+.sidebarLink:focus-visible {
+  color: #232323;
+}
+
+.sidebarFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.content {
+  min-height: 0;
+  overflow: auto;
+  padding-right: 6px;
+}
+
+.contentGrid {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 547px);
+}
+
+.leftColumn,
+.rightColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+  min-width: 0;
+}
+
+.rightColumn {
+  max-height: calc(100vh - 200px);
+  min-width: 0;
+}
+
+.heroSection {
+  width: 100%;
+}
+
+.heroMain {
+  align-items: flex-end;
+  display: flex;
+  gap: 28px;
+  justify-content: space-between;
+  min-width: 0;
+  width: 100%;
+}
+
+.rightPanelActions {
+  align-self: stretch;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  max-width: 100%;
+  min-width: 0;
+  width: 100%;
+}
+
+.heroCopy {
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.heroLabel {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.heroValue {
+  font-size: clamp(48px, 5vw, 66px);
+  letter-spacing: -0.07em;
+  line-height: 0.95;
+  margin: 14px 0 0;
+}
+
+.headerButtons {
+  flex-shrink: 0;
+}
+
+.summaryRow {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.summaryTile,
+.addTile {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.94);
+  border: none;
+  border-radius: 14px;
+  display: flex;
+  gap: 12px;
+  min-height: 52px;
+  padding: 10px 14px;
+}
+
+.summaryBadge {
+  align-items: center;
+  border-radius: 6px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  height: 22px;
+  justify-content: center;
+  min-width: 30px;
+  padding: 0 8px;
+}
+
+.summaryBadgeGreen {
+  background: #50b848;
+}
+
+.summaryBadgeBlack {
+  background: #101010;
+}
+
+.summaryBadgeRed {
+  background: #ff2323;
+}
+
+.summaryBadgeBlue {
+  background: #4d4dff;
+}
+
+.summaryValue {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.addTile {
+  justify-content: center;
+  padding: 0;
+}
+
+.insightsRow {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) 110px;
+}
+
+.runwayCard,
+.healthCard,
+.calendarCard,
+.protectionCard {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 15px;
+}
+
+.runwayCard,
+.healthCard {
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100px;
+  padding: 20px 22px;
+  text-decoration: none;
+}
+
+.cardEyebrow {
+  color: #232323;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.runwayMonths {
+  color: #4fb848;
+  font-size: 28px;
+  letter-spacing: -0.05em;
+  margin-top: 8px;
+}
+
+.cardCaption {
+  color: #4c4c4c;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.healthStats {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.healthValue {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -0.07em;
+  line-height: 1;
+}
+
+.healthPill {
+  background: #86d39a;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 14px;
+  padding: 5px 14px;
+}
+
+.accentCard {
+  align-items: center;
+  background: linear-gradient(180deg, rgba(97, 203, 98, 0.52) 0%, rgba(80, 184, 72, 0.38) 100%);
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  min-height: 100px;
+  overflow: hidden;
+  position: relative;
+}
+
+.accentImage {
+  height: 138px;
+  inset: -14px auto auto -18px;
+  max-width: none;
+  object-fit: cover;
+  position: absolute;
+  width: 156px;
+}
+
+.calendarCard {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  max-height: min(520px, calc(100vh - 280px));
+  min-height: 220px;
+  overflow: hidden;
+  padding: 16px;
+}
+
+.calendarHeader,
+.calendarTitleWrap,
+.calendarGroupHeader,
+.calendarItem,
+.calendarItemMeta,
+.protectionCard {
+  align-items: center;
+  display: flex;
+}
+
+.calendarHeader {
+  flex-shrink: 0;
+  justify-content: space-between;
+}
+
+.calendarTitleWrap {
+  gap: 10px;
+}
+
+.calendarTitleWrap h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.calendarGroups {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 14px;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 4px;
+}
+
+.calendarGroups::-webkit-scrollbar {
+  width: 6px;
+}
+
+.calendarGroups::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.35);
+  border-radius: 999px;
+}
+
+.calendarGroups::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.calendarGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.calendarGroupHeader {
+  gap: 10px;
+}
+
+.calendarGroupHeader strong,
+.calendarGroupHeader span {
+  font-size: 14px;
+}
+
+.calendarDivider {
+  background: rgba(35, 35, 35, 0.18);
+  flex: 1;
+  height: 1px;
+}
+
+.calendarList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendarItem {
+  background: #ececec;
+  border-radius: 20px;
+  justify-content: space-between;
+  padding: 10px 12px;
+}
+
+.calendarItemMeta {
+  gap: 10px;
+  min-width: 0;
+}
+
+.calendarBadge {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 999px;
+  color: #8b8b8b;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.calendarTextBlock {
+  min-width: 0;
+}
+
+.calendarTextBlock span {
+  color: #9b9b9b;
+  display: block;
+  font-size: 11px;
+}
+
+.calendarTextBlock strong {
+  display: block;
+  font-size: 13px;
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendarAmount {
+  flex-shrink: 0;
+  font-size: 14px;
+}
+
+.protectionCard {
+  background: #dcdcdc;
+  flex-shrink: 0;
+  gap: 22px;
+  min-height: 116px;
+  overflow: hidden;
+  padding-right: 18px;
+}
+
+.protectionImage {
+  align-self: stretch;
+  max-width: 48%;
+  object-fit: cover;
+  width: 260px;
+}
+
+.protectionContent {
+  padding: 18px 0;
+}
+
+.protectionContent h2 {
+  font-size: 18px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.protectionContent p {
+  color: #6e6e6e;
+  font-size: 14px;
+  line-height: 1.25;
+  margin: 12px 0 0;
+}
+
+.protectionButton {
+  background: #000000;
+  border: none;
+  border-radius: 999px;
+  color: #ffffff;
+  margin-top: 18px;
+  min-height: 38px;
+  padding: 0 26px;
+}
+
+.sidebarGroups::-webkit-scrollbar,
+.content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebarGroups::-webkit-scrollbar-thumb,
+.content::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.28);
+  border-radius: 999px;
+}
+
+.sidebarGroups::-webkit-scrollbar-track,
+.content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (max-width: 1480px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 1320px) {
+  .shell {
+    gap: 22px;
+    grid-template-columns: 220px minmax(0, 1fr);
+    padding-inline: 28px;
+  }
+
+  .summaryRow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .insightsRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .accentCard {
+    min-height: 120px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .topBar {
+    padding-inline: 28px;
+  }
+
+  .heroMain {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

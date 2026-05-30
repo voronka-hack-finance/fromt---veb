@@ -1,13 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { useDashboardData } from "@/shared/api/dashboard-context";
-import { buildLineChartPaths } from "@/shared/lib/charts";
 import { cn } from "@/shared/lib/cn";
-import { formatCurrencyParts } from "@/shared/lib/formatters";
 
+import { ForecastLineChart } from "./forecast-line-chart";
 import styles from "./forecast-card.module.css";
 
 const assets = {
@@ -15,29 +13,12 @@ const assets = {
   legendIncomeDot: "/dashboard/forecast/legend-income-dot.svg",
 } as const;
 
-const chartWidth = 185;
-const chartHeight = 106;
-const chartPadding = 10;
-
 export function ForecastCard() {
   const { dashboard, forecastPoints, forecastYearPoints } = useDashboardData();
   const [period, setPeriod] = useState<"year" | "week">("week");
   const [activeIndex, setActiveIndex] = useState(4);
 
   const points = period === "week" ? forecastPoints : forecastYearPoints;
-
-  const incomePaths = useMemo(
-    () => buildLineChartPaths(points.map((point) => ({ value: point.balance })), chartWidth, chartHeight, chartPadding),
-    [points],
-  );
-
-  const expensePaths = useMemo(
-    () => buildLineChartPaths(points.map((point) => ({ value: point.spend })), chartWidth, chartHeight, chartPadding),
-    [points],
-  );
-
-  const activePoint = points[activeIndex];
-  const activeCoordinate = incomePaths.coordinates[activeIndex];
 
   const handlePeriodChange = (nextPeriod: "year" | "week") => {
     setPeriod(nextPeriod);
@@ -88,90 +69,13 @@ export function ForecastCard() {
       </div>
 
       <div className={styles.chartArea}>
-        <svg
-          aria-label="Прогноз доходов и расходов"
-          className={styles.chart}
-          role="img"
-          viewBox={`0 0 ${chartWidth} ${chartHeight}`}
-        >
-          {points.map((point, index) => {
-            const x =
-              chartPadding + ((chartWidth - chartPadding * 2) / Math.max(points.length - 1, 1)) * index;
-
-            return (
-              <line
-                className={styles.chartGrid}
-                key={`grid-${point.month}`}
-                x1={x}
-                x2={x}
-                y1={6}
-                y2={chartHeight - 8}
-              />
-            );
-          })}
-
-          <motion.path
-            animate={{ opacity: 1, pathLength: 1 }}
-            className={styles.chartLineIncome}
-            d={incomePaths.linePath}
-            initial={{ opacity: 0.2, pathLength: 0 }}
-            key={`income-${period}`}
-            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          />
-          <motion.path
-            animate={{ opacity: 1, pathLength: 1 }}
-            className={styles.chartLineExpense}
-            d={expensePaths.linePath}
-            initial={{ opacity: 0.2, pathLength: 0 }}
-            key={`expense-${period}`}
-            transition={{ duration: 0.95, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          />
-
-          {incomePaths.coordinates.map((point, index) => {
-            const isActive = index === activeIndex;
-
-            return (
-              <g key={points[index]?.month ?? index}>
-                <circle
-                  className={styles.chartHitArea}
-                  cx={point.x}
-                  cy={point.y}
-                  onClick={() => setActiveIndex(index)}
-                  r={12}
-                />
-                <motion.circle
-                  className={cn(styles.chartPoint, isActive && styles.chartPointActive)}
-                  cx={point.x}
-                  cy={point.y}
-                  animate={{ opacity: 1, r: isActive ? 4.5 : 3, scale: 1 }}
-                  initial={{ opacity: 0, r: 0, scale: 0.5 }}
-                  transition={{ duration: 0.3, delay: index * 0.04 }}
-                />
-              </g>
-            );
-          })}
-
-          {activePoint && activeCoordinate ? (
-            <foreignObject height="40" width="72" x={activeCoordinate.x - 36} y={activeCoordinate.y - 48}>
-              <motion.div
-                animate={{ opacity: 1, y: 0 }}
-                className={styles.chartTooltip}
-                initial={{ opacity: 0, y: 6 }}
-                key={`${period}-${activePoint.month}`}
-                transition={{ duration: 0.2 }}
-              >
-                <span>{formatCurrencyParts(activePoint.balance).whole.replace(/\s/g, " ")}</span>
-                <span>Баланс</span>
-              </motion.div>
-            </foreignObject>
-          ) : null}
-        </svg>
-
-        <div className={styles.months}>
-          {points.map((point) => (
-            <span key={point.month}>{point.month}</span>
-          ))}
-        </div>
+        <ForecastLineChart
+          activeIndex={activeIndex}
+          animateKey={period}
+          onActiveIndexChange={setActiveIndex}
+          points={points}
+          variant="compact"
+        />
       </div>
     </section>
   );

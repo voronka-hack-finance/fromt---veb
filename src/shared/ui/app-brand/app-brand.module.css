@@ -1,0 +1,54 @@
+.brand {
+  align-items: center;
+  display: inline-flex;
+  gap: 16px;
+  text-decoration: none;
+}
+
+.mark {
+  align-items: center;
+  background: linear-gradient(145deg, #6ee07c 0%, #49bc63 100%);
+  border-radius: 28%;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 42px;
+  justify-content: center;
+  transform: rotate(-3.86deg);
+  width: 42px;
+}
+
+.coin {
+  display: block;
+  height: 30px;
+  object-fit: contain;
+  width: 30px;
+}
+
+.text {
+  color: #171717;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+  line-height: 1;
+}
+
+.brandLg {
+  gap: 20px;
+}
+
+.markLg {
+  border-radius: 26%;
+  height: 68px;
+  width: 68px;
+}
+
+.markLg .coin {
+  height: 48px;
+  width: 48px;
+}
+
+.textLg {
+  font-size: 40px;
+  letter-spacing: -0.04em;
+}

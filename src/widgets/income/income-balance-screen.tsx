@@ -12,6 +12,7 @@ import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { useCenteredHorizontalScroll } from "@/shared/lib/use-centered-horizontal-scroll";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
+import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import styles from "./income-balance-screen.module.css";
@@ -84,7 +85,8 @@ function IncomeBalanceScreenContent({ screenData }: { screenData: IncomeBalanceR
   const activeCoordinate = trendPath.coordinates[activeChartIndex];
 
   return (
-    <main className={styles.stage}>
+    <DesktopSidebarLayout>
+      <main className={styles.stage}>
       <div className={styles.shell}>
         <Reveal delay={0.03}>
           <header className={styles.header}>
@@ -304,5 +306,6 @@ function IncomeBalanceScreenContent({ screenData }: { screenData: IncomeBalanceR
         </div>
       </div>
     </main>
+    </DesktopSidebarLayout>
   );
 }

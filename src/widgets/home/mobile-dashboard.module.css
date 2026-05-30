@@ -4,6 +4,14 @@
   padding: 0;
 }
 
+.desktopShell {
+  display: none;
+}
+
+.mobileShell {
+  display: block;
+}
+
 .phoneFrame {
   margin: 0 auto;
   max-width: 390px;
@@ -226,6 +234,16 @@
   .page {
     border-radius: 30px;
     padding-inline: 12px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .desktopShell {
+    display: block;
+  }
+
+  .mobileShell {
+    display: none;
   }
 }
 

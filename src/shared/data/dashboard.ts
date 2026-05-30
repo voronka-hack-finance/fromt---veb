@@ -14,6 +14,18 @@ export const forecastPoints: ForecastPoint[] = [
   { month: "Июн", balance: 8800, spend: 4900 },
 ];
 
+export const desktopForecastPoints: ForecastPoint[] = [
+  { month: "Янв", balance: 3400, spend: 9000 },
+  { month: "Февр", balance: 6100, spend: 8200 },
+  { month: "Март", balance: 4700, spend: 9900 },
+  { month: "Апр", balance: 3600, spend: 8300 },
+  { month: "Май", balance: 9250, spend: 8400 },
+  { month: "Июнь", balance: 9300, spend: 8400 },
+  { month: "Июль", balance: 11800, spend: 6500 },
+  { month: "Авг", balance: 10300, spend: 7200 },
+  { month: "Сент", balance: 13700, spend: 10300 },
+];
+
 export const forecastYearPoints: ForecastPoint[] = [
   { month: "Q1", balance: 18300, spend: 11600 },
   { month: "Q2", balance: 23650, spend: 14800 },

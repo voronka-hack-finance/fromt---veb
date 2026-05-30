@@ -1,0 +1,294 @@
+.stage {
+  background: #e1e1e1;
+  min-height: 100vh;
+}
+
+.shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 100vh;
+  padding: 16px 16px 40px;
+  position: relative;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  min-height: 52px;
+}
+
+.backButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: none;
+  border-radius: 50%;
+  color: #2f2f2f;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 52px;
+  justify-content: center;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 52px;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background: rgba(248, 251, 249, 0.96);
+  transform: translateY(-1px);
+}
+
+.title {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  min-height: 24px;
+  width: 100%;
+}
+
+.sectionTitle {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.addButton {
+  align-items: center;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 24px;
+  justify-content: center;
+  padding: 0;
+  width: 24px;
+}
+
+.addIcon {
+  display: block;
+  height: 14px;
+  width: 14px;
+}
+
+.cardsRow {
+  display: flex;
+  gap: 10px;
+  margin: 0 -16px;
+  overflow-x: auto;
+  padding: 0 16px;
+  scrollbar-width: none;
+  width: calc(100% + 32px);
+}
+
+.cardsRow::-webkit-scrollbar {
+  display: none;
+}
+
+.accountCard {
+  background: #fff;
+  border: none;
+  border-radius: 24px;
+  box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.25);
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  flex: 0 0 160px;
+  flex-direction: column;
+  gap: 26px;
+  min-height: 138px;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+  text-align: left;
+  text-decoration: none;
+  width: 160px;
+}
+
+.cardTop {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  min-height: 34px;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.cardTopEnd {
+  justify-content: flex-end;
+}
+
+.debitCardWrap {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  width: 30px;
+}
+
+.miniCard {
+  height: 19px;
+  position: relative;
+  width: 30px;
+}
+
+.miniCardShape {
+  background:
+    radial-gradient(circle at 20% 20%, rgba(64, 169, 61, 0.35), rgba(64, 169, 61, 0.01) 70%),
+    rgba(7, 7, 7, 0.7);
+  border-radius: 5.4px;
+  box-shadow:
+    inset 0.36px 0.29px 0.29px rgba(255, 255, 255, 0.25),
+    inset -0.14px -0.14px 0.22px rgba(0, 0, 0, 0.36);
+  height: 30px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  width: 19px;
+}
+
+.miniCardChip {
+  height: 8px;
+  left: 3px;
+  position: absolute;
+  top: 5px;
+  transform: rotate(90deg);
+  transform-origin: center;
+  width: 12px;
+  z-index: 1;
+}
+
+.miniCardContactless {
+  height: 8px;
+  position: absolute;
+  right: 3px;
+  top: 5px;
+  transform: rotate(90deg);
+  width: 6px;
+  z-index: 1;
+}
+
+.miniCardBrandLeft,
+.miniCardBrandRight {
+  border-radius: 2px;
+  height: 4px;
+  position: absolute;
+  top: 3px;
+  width: 4px;
+  z-index: 1;
+}
+
+.miniCardBrandLeft {
+  background: rgba(95, 226, 116, 0.48);
+  right: 7px;
+}
+
+.miniCardBrandRight {
+  background: rgba(64, 169, 61, 0.7);
+  right: 2px;
+}
+
+.cardLast4 {
+  color: #999;
+  font-family: var(--font-body), sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 0;
+  text-align: center;
+  width: 100%;
+}
+
+.bankIcon {
+  display: block;
+  flex-shrink: 0;
+  height: 24px;
+  object-fit: contain;
+  width: 24px;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.amount {
+  color: rgba(0, 0, 0, 0.8);
+  font-family: var(--font-body), sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.amountCompact {
+  font-size: 20px;
+}
+
+.accountLabel {
+  align-items: center;
+  display: inline-flex;
+  gap: 2px;
+}
+
+.accountLabelText {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.accountDot {
+  display: block;
+  flex-shrink: 0;
+  height: 2px;
+  width: 5px;
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    max-width: 390px;
+    padding-top: 16px;
+  }
+}

@@ -91,7 +91,7 @@ export function BalanceCard() {
           <button
             aria-label="Еще счета"
             className={styles.moreChip}
-            onClick={() => router.push("/total")}
+            onClick={() => router.push("/bank-accounts")}
             type="button"
           >
             <img alt="" aria-hidden className={styles.bankIcon} draggable={false} src={assets.iconMore} />

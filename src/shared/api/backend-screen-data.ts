@@ -82,6 +82,15 @@ type RecommendationAgent = {
   insightRest: string;
 };
 
+type RecommendationChat = {
+  id: string;
+  title: string;
+  preview: string;
+  timestamp: string;
+  imageKey: keyof typeof recommendationsAssets.agentImages;
+  imageVariant: "a" | "b" | "c" | "d" | "e";
+};
+
 type SubscriptionItem = {
   id: string;
   name: string;
@@ -297,6 +306,18 @@ function getBankLabel(account: AccountResponse) {
   return account.bank_source || account.display_name || "Счет";
 }
 
+function getBankShortLabel(account: AccountResponse) {
+  const bankId = getBankId(account);
+
+  if (bankId === "sber") return "Сбер";
+  if (bankId === "tbank") return "Т-Банк";
+  if (bankId === "alfa") return "Альфа";
+  if (bankId === "vtb") return "ВТБ";
+  if (bankId === "gpb") return "Газпром";
+
+  return getBankLabel(account).slice(0, 8);
+}
+
 function getBankTone(bankId: string) {
   if (bankId === "tbank") return "warn";
   if (bankId === "alfa") return "danger";
@@ -508,7 +529,13 @@ function buildCategoryDetails(
       string,
       {
         amount: number;
-        items: Array<{ amount: number; label: string; title: string }>;
+        items: Array<{
+          amount: number;
+          bank?: string;
+          bankId?: string;
+          label: string;
+          title: string;
+        }>;
       }
     >();
 
@@ -521,9 +548,17 @@ function buildCategoryDetails(
         items: [],
       };
 
+      const account = transaction.account_id
+        ? accountsById.get(transaction.account_id)
+        : undefined;
+      const bankId = account ? getBankId(account) : undefined;
+      const bankLabel = account ? getBankShortLabel(account) : undefined;
+
       group.amount += nextAmount;
       group.items.push({
         amount: nextAmount,
+        bank: bankLabel,
+        bankId,
         label: transaction.category_name || backendCategory.name,
         title: transaction.description || backendCategory.name,
       });
@@ -853,6 +888,68 @@ function buildRecommendations(
   });
 }
 
+function resolveAgentVisualByTitle(title: string, index: number) {
+  const matchedAgent = recommendationsScreenData.agents.find((agent) => agent.title === title);
+  if (matchedAgent) {
+    return {
+      imageKey: matchedAgent.imageKey,
+      imageVariant: matchedAgent.imageVariant as RecommendationChat["imageVariant"],
+    };
+  }
+
+  const fallbackAgent =
+    recommendationsScreenData.agents[index % recommendationsScreenData.agents.length]!;
+
+  return {
+    imageKey: fallbackAgent.imageKey,
+    imageVariant: fallbackAgent.imageVariant as RecommendationChat["imageVariant"],
+  };
+}
+
+function formatChatTimestamp(date: Date) {
+  const now = new Date();
+  const isSameDay = date.toDateString() === now.toDateString();
+
+  if (isSameDay) {
+    return date.toLocaleTimeString("ru-RU", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+
+  const weekAgo = new Date(now);
+  weekAgo.setDate(weekAgo.getDate() - 7);
+
+  if (date >= weekAgo) {
+    return date
+      .toLocaleDateString("ru-RU", { weekday: "short" })
+      .replace(".", "");
+  }
+
+  return formatDate(date, { day: "2-digit", month: "2-digit", year: "numeric" });
+}
+
+function buildChats(chats: ChatResponse[]) {
+  if (!chats.length) {
+    return recommendationsScreenData.chats;
+  }
+
+  return chats.map((chat, index) => {
+    const visual = resolveAgentVisualByTitle(chat.title, index);
+    const fallbackChat =
+      recommendationsScreenData.chats[index % recommendationsScreenData.chats.length]!;
+
+    return {
+      id: chat.id,
+      imageKey: visual.imageKey,
+      imageVariant: visual.imageVariant,
+      preview: fallbackChat.preview,
+      timestamp: formatChatTimestamp(new Date(chat.updated_at)),
+      title: chat.title,
+    } satisfies RecommendationChat;
+  });
+}
+
 function buildCategoryBankStats(accounts: AccountResponse[]) {
   const grouped = new Map<
     string,
@@ -1166,16 +1263,14 @@ export async function loadRecommendationsScreenData() {
   ]);
 
   const agents = buildRecommendations(recommendationsResponse.items);
+  const chats = buildChats(chatsResponse.items);
 
   return {
     assets: recommendationsAssets,
     screen: {
       ...recommendationsScreenData,
       agents,
-      chatsPlaceholder:
-        chatsResponse.items.length > 0
-          ? `Чатов: ${chatsResponse.items.length}`
-          : recommendationsScreenData.chatsPlaceholder,
+      chats,
       summary: {
         ...recommendationsScreenData.summary,
         agentsCount: agents.length,

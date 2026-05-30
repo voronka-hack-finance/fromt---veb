@@ -2,14 +2,23 @@
   min-height: 100vh;
 }
 
-.topBar,
+.topBar {
+  display: none;
+}
+
 .shell {
+  display: block;
+  min-height: 100vh;
+}
+
+.sidebarSlot {
   display: none;
 }
 
 .content {
   min-height: 0;
   min-width: 0;
+  width: 100%;
 }
 
 @media (min-width: 1024px) {
@@ -75,6 +84,11 @@
     min-height: 0;
     padding: 12px 24px 16px;
     width: 100%;
+  }
+
+  .sidebarSlot {
+    display: block;
+    min-height: 0;
   }
 
   .content {

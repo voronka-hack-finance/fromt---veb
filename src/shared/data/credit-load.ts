@@ -1,0 +1,45 @@
+export const creditLoadScreenData = {
+  title: "Кредитная нагрузка",
+  summary: {
+    perMonth: 60100,
+    totalDebt: 3927000,
+    nextPaymentLabel: "Ближайшее платёж",
+    nextPaymentDate: "14.06",
+  },
+  debtIndicator: {
+    percent: 38,
+    label: "Умеренная",
+  },
+  loans: [
+    {
+      id: "mortgage",
+      title: "Ипотека",
+      bank: "Сбер",
+      rate: "8,5%",
+      bankIcon: "/dashboard/balance/icon-sber.svg",
+      paidPercent: 29,
+      perMonth: 60100,
+      remaining: 3200000,
+    },
+    {
+      id: "consumer",
+      title: "Потребительский кредит",
+      bank: "Т-БАНК",
+      rate: "8,5%",
+      bankIcon: "/dashboard/balance/icon-tbank.svg",
+      paidPercent: 47,
+      perMonth: 18200,
+      remaining: 640000,
+    },
+    {
+      id: "auto",
+      title: "Автокредит",
+      bank: "Альфа банк",
+      rate: "12%",
+      bankIcon: "/credit-load/icon-alfa.svg",
+      paidPercent: 87,
+      perMonth: 27000,
+      remaining: 124500,
+    },
+  ],
+} as const;

@@ -8,11 +8,8 @@ import {
   Building2,
   Edit3,
   GraduationCap,
-  PieChart,
   Share2,
   ShoppingBag,
-  TrendingDown,
-  BarChart3,
   Wifi,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
@@ -25,12 +22,12 @@ import {
 } from "@/shared/api/operations";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
-import { operationsChartHref } from "@/shared/lib/operations-period";
 import { useOperationsPeriod } from "@/shared/lib/use-operations-period";
 import { QueryError, QueryLoading } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
+import { OperationsChartCardHeader } from "./operations-chart-card-header";
 import styles from "./operations-bars-screen.module.css";
 
 function formatSignedAmount(value: number) {
@@ -186,36 +183,16 @@ function OperationsBarsScreenContent({
         <div className={styles.content}>
           <Reveal delay={0.08}>
             <section className={styles.chartCard}>
-              <div className={styles.cardTop}>
-                <div className={styles.periodToggle}>
-                  {operationsBarsData.periodTabs.map((tab) => (
-                    <button
-                      className={cn(
-                        styles.periodButton,
-                        tab === activePeriod && styles.periodButtonActive,
-                      )}
-                      key={tab}
-                      onClick={() => handlePeriodChange(tab)}
-                      type="button"
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
+              <div className={styles.cardInner}>
+              <OperationsChartCardHeader
+                activePeriod={activePeriod}
+                activeView="bars"
+                onPeriodChange={handlePeriodChange}
+                periodTabs={operationsBarsData.periodTabs}
+              />
 
-                <div className={styles.viewControls}>
-                  <Link className={styles.viewButton} href={operationsChartHref("/operations", activePeriod)}>
-                    <PieChart size={18} strokeWidth={2} />
-                  </Link>
-                  <Link className={styles.viewButton} href={operationsChartHref("/operations/trends", activePeriod)}>
-                    <TrendingDown size={18} strokeWidth={2} />
-                  </Link>
-                  <button className={[styles.viewButton, styles.viewButtonActive].join(" ")} type="button">
-                    <BarChart3 size={18} strokeWidth={2} />
-                  </button>
-                </div>
-              </div>
-
+              <div className={styles.chartSection}>
+                <div className={styles.chartBlock}>
               <div
                 aria-label="График расходов по периодам"
                 className={styles.barsScroll}
@@ -257,6 +234,9 @@ function OperationsBarsScreenContent({
                   );
                 })}
                 </div>
+              </div>
+                </div>
+              </div>
               </div>
             </section>
           </Reveal>

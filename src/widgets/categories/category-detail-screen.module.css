@@ -482,13 +482,17 @@
 }
 
 .mobileLimitChart {
-  height: 170px;
+  background:
+    radial-gradient(circle at center, #e1e1e1 0 58%, transparent 59%),
+    conic-gradient(#58bd4f 0 var(--progress-angle), transparent var(--progress-angle) 360deg),
+    repeating-conic-gradient(from var(--progress-angle), #d8d8d8 0 7deg, transparent 7deg 14deg);
+  flex-shrink: 0;
+  height: 270px;
   margin: 0 auto;
-  width: 170px;
+  width: 270px;
 }
 
-.limitChart,
-.mobileLimitChart {
+.limitChart {
   background:
     radial-gradient(circle at center, #ffffff 0 53%, transparent 54%),
     conic-gradient(#50b848 0 var(--progress-angle), transparent var(--progress-angle) 360deg),
@@ -653,23 +657,9 @@
   max-width: 390px;
   min-height: 0;
   overflow: hidden;
-  padding: 60px 16px var(--mobile-nav-offset);
+  padding: 16px 16px var(--mobile-nav-offset);
   position: relative;
   width: 100%;
-}
-
-.mobileShell > :first-child {
-  flex-shrink: 0;
-}
-
-.mobileShell::before {
-  background:
-    radial-gradient(circle at 82% 18%, rgba(110, 227, 113, 0.14), transparent 22%),
-    radial-gradient(circle at 50% 88%, rgba(255, 255, 255, 0.92), transparent 30%);
-  content: "";
-  inset: 0;
-  pointer-events: none;
-  position: absolute;
 }
 
 .mobileContent {
@@ -678,110 +668,223 @@
   flex-direction: column;
   gap: 16px;
   min-height: 0;
-  overflow: hidden;
-  position: relative;
-  z-index: 1;
-}
-
-.backLink,
-.mobileHero,
-.mobileLimitCard {
-  flex-shrink: 0;
-}
-
-.mobileScrollBody {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 16px;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.mobileHistoryCard,
-.mobileBanksCard {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  min-height: 0;
-  overflow: hidden;
-}
-
-.mobileHistoryCard .mobileGroups,
-.mobileBanksCard .banksList {
-  flex: 1;
-  margin-top: 18px;
-  min-height: 0;
+  overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-right: 4px;
+  position: relative;
+  z-index: 1;
   -webkit-overflow-scrolling: touch;
 }
 
-.backLink {
+.mobileHeader {
   align-items: center;
-  color: #40a93d;
+  display: grid;
+  flex-shrink: 0;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  padding: 0 8px;
+}
+
+.mobileBackButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border-radius: 100px;
+  color: #1c1b1b;
   display: inline-flex;
-  gap: 8px;
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
+  height: 52px;
+  justify-content: center;
+  width: 52px;
 }
 
-.mobileHero,
-.mobileLimitCard,
-.mobileCard {
-  border: 1px solid rgba(153, 153, 153, 0.18);
+.mobileTitle {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  grid-column: 2;
+  margin: 0;
+  text-align: center;
 }
 
-.mobileHero {
+.mobileLimitStats {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 18px;
+  flex-shrink: 0;
+  gap: 21px;
+  padding: 0 8px;
+  width: 100%;
 }
 
-.mobileHeroMain {
+.mobileLimitRow {
   align-items: center;
   display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.mobileLimitRow > span {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.mobileLimitValue {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.mobileLimitValue strong {
+  font-weight: 500;
+}
+
+.mobileLimitValue em {
+  color: #999;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.mobilePeriodValue {
+  color: #1f1f1f;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  gap: 4px;
+  letter-spacing: -0.04em;
+  margin: 0;
+}
+
+.mobileSpentValue {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.mobileSpentValue strong {
+  color: #d85752;
+  font-weight: 600;
+}
+
+.mobileTransactions {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 24px;
+  padding: 0 8px;
+  width: 100%;
+}
+
+.mobileTransactionGroup {
+  display: flex;
+  flex-direction: column;
   gap: 16px;
 }
 
-.mobileHeroText {
+.mobileGroupHeader {
+  align-items: center;
+  color: #1f1f1f;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  gap: 12px;
 }
 
-.mobileLimitCard {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  padding: 18px;
-}
-
-.mobileLimitInfo .limitBlock > span {
-  font-size: 16px;
-}
-
-.mobileLimitInfo .limitBlock strong {
-  font-size: 24px;
-}
-
-.mobileCardHeader h3 {
-  font-size: 20px;
-}
-
-.mobileGroupHeader span,
 .mobileGroupHeader strong {
-  font-size: 18px;
+  font-size: 16px;
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.mobileGroupDivider {
+  background: rgba(153, 153, 153, 0.35);
+  flex: 1;
+  height: 1px;
+  min-width: 0;
+}
+
+.mobileOperationsList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobileOperationCard {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 28px;
+  display: flex;
+  gap: 12px;
+  padding: 14px 18px 16px 12px;
+}
+
+.mobileOperationIcon {
+  align-items: center;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 100px;
+  color: #606060;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.mobileOperationAside {
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 6px;
+}
+
+.mobileBankChip {
+  align-items: center;
+  background: #e1e1e1;
+  border-radius: 8px;
+  color: #1f1f1f;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 8px;
+  gap: 4px;
+  padding: 4px 8px;
+}
+
+.mobileBankIcon {
+  height: 12px;
+  width: 12px;
+}
+
+.mobileBankMark {
+  align-items: center;
+  display: inline-flex;
+  font-size: 8px;
+  font-weight: 700;
+  height: 12px;
+  justify-content: center;
+  width: 12px;
 }
 
 .mobileOperationAmount {
+  color: #d85752;
+  font-family: var(--font-heading), sans-serif;
   font-size: 16px;
+  font-weight: 400;
+  white-space: nowrap;
 }
 
-.mobileOperationAmount,
+.mobileOperationCard .operationText span {
+  font-size: 10px;
+}
+
+.mobileOperationCard .operationText strong {
+  font-size: 12px;
+  font-weight: 400;
+}
+
 .bankRow strong {
   white-space: nowrap;
 }
@@ -808,19 +911,16 @@
 
 @media (max-width: 360px) {
   .mobileShell {
-    padding: 52px 12px var(--mobile-nav-offset);
+    padding: 12px 12px var(--mobile-nav-offset);
   }
 
-  .mobileHeroMain {
-    align-items: flex-start;
+  .mobileLimitChart {
+    height: 240px;
+    width: 240px;
   }
 
-  .mobileHeroText h2 {
-    font-size: 24px;
-  }
-
-  .limitBlock strong {
-    font-size: 22px;
+  .mobileLimitRow > span {
+    font-size: 18px;
   }
 }
 

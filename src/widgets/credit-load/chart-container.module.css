@@ -1,0 +1,58 @@
+.chartContainer {
+  color: #000;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 32px;
+  height: 197px;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.chartArtboard {
+  flex-shrink: 0;
+  height: 270px;
+  position: relative;
+  width: 270px;
+}
+
+.chartGauge {
+  display: block;
+  height: 270px;
+  object-fit: contain;
+  width: 270px;
+}
+
+.needleWrap {
+  align-items: center;
+  display: flex;
+  height: 64px;
+  justify-content: center;
+  left: 66px;
+  pointer-events: none;
+  position: absolute;
+  top: 8px;
+  width: 35px;
+}
+
+.needle {
+  background: rgba(153, 153, 153, 0.4);
+  border-radius: 1px;
+  display: block;
+  flex-shrink: 0;
+  height: 2px;
+  transform: rotate(61.33deg);
+  width: 73px;
+}
+
+.value {
+  font-weight: 500;
+  left: 50%;
+  line-height: 1;
+  margin: 0;
+  position: absolute;
+  top: 101px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}

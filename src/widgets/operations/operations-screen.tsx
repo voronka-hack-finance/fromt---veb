@@ -12,10 +12,9 @@ import {
   ShoppingBag,
   Wifi,
 } from "lucide-react";
-import { useState } from "react";
 
 import { useOperationsScreenQuery, type OperationsScreenResponse } from "@/shared/api/operations";
-import { cn } from "@/shared/lib/cn";
+import { operationDetailIds } from "@/shared/data/operation-details";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
@@ -98,8 +97,6 @@ function OperationsScreenContent({
 }: {
   operationsScreenData: OperationsScreenResponse;
 }) {
-  const [selectedOperationId, setSelectedOperationId] = useState<string | null>(null);
-
   return (
     <DesktopSidebarLayout>
       <main className={styles.stage}>
@@ -137,24 +134,10 @@ function OperationsScreenContent({
               </div>
 
               <div className={styles.operationsList}>
-                {operationsScreenData.operations.map((operation, index) => (
-                  <motion.button
-                    className={cn(
-                      styles.operationCard,
-                      selectedOperationId === operation.id && styles.operationCardActive,
-                    )}
-                    initial={{ opacity: 0, y: 18 }}
-                    key={operation.id}
-                    onClick={() =>
-                      setSelectedOperationId((current) =>
-                        current === operation.id ? null : operation.id,
-                      )
-                    }
-                    type="button"
-                    viewport={{ once: true }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: 0.04 * index }}
-                  >
+                {operationsScreenData.operations.map((operation, index) => {
+                  const hasDetail = operationDetailIds.includes(operation.id);
+                  const cardClassName = styles.operationCard;
+                  const cardContent = (
                     <div className={styles.operationRow}>
                       <OperationIcon icon={operation.icon} tone={operation.iconTone} />
 
@@ -174,8 +157,38 @@ function OperationsScreenContent({
                         </strong>
                       </div>
                     </div>
-                  </motion.button>
-                ))}
+                  );
+
+                  if (hasDetail) {
+                    return (
+                      <motion.div
+                        initial={{ opacity: 0, y: 18 }}
+                        key={operation.id}
+                        viewport={{ once: true }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.45, delay: 0.04 * index }}
+                      >
+                        <Link className={cardClassName} href={`/operations/${operation.id}`}>
+                          {cardContent}
+                        </Link>
+                      </motion.div>
+                    );
+                  }
+
+                  return (
+                    <motion.button
+                      className={cardClassName}
+                      initial={{ opacity: 0, y: 18 }}
+                      key={operation.id}
+                      type="button"
+                      viewport={{ once: true }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.45, delay: 0.04 * index }}
+                    >
+                      {cardContent}
+                    </motion.button>
+                  );
+                })}
               </div>
 
               <Link className={styles.categoriesLink} href="/categories">

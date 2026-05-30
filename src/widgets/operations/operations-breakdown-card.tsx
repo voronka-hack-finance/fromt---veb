@@ -1,8 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowUpDown, BarChart3, ChevronLeft, ChevronRight, PieChart } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 import {
@@ -11,10 +10,10 @@ import {
 } from "@/shared/api/operations";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
-import { operationsChartHref } from "@/shared/lib/operations-period";
 import { useOperationsPeriod } from "@/shared/lib/use-operations-period";
 import { QueryLoading } from "@/shared/ui/query-state/query-state";
 
+import { OperationsChartCardHeader } from "./operations-chart-card-header";
 import styles from "./operations-breakdown-card.module.css";
 
 type Period = OperationsScreenResponse["periodTabs"][number];
@@ -77,7 +76,7 @@ function OperationsBreakdownCardContent({
   operationsScreenData: OperationsScreenResponse;
 }) {
   const [activePeriod, setActivePeriod] = useOperationsPeriod(operationsScreenData.activePeriod);
-  const [activeBreakdownId, setActiveBreakdownId] = useState<string>("transfers");
+  const [activeBreakdownId, setActiveBreakdownId] = useState<string | null>(null);
   const navigator = operationsScreenData.periodNavigator[activePeriod];
   const [navigatorIndex, setNavigatorIndex] = useState(navigator.defaultIndex);
 
@@ -101,7 +100,7 @@ function OperationsBreakdownCardContent({
   const handlePeriodChange = (period: Period) => {
     const nextNavigator = operationsScreenData.periodNavigator[period];
     setActivePeriod(period);
-    setActiveBreakdownId("transfers");
+    setActiveBreakdownId(null);
     setNavigatorIndex(nextNavigator.defaultIndex);
   };
 
@@ -110,38 +109,18 @@ function OperationsBreakdownCardContent({
   }, [activePeriod, operationsScreenData.periodNavigator]);
 
   const selectBreakdown = (id: string) => {
-    setActiveBreakdownId(id);
+    setActiveBreakdownId((current) => (current === id ? null : id));
   };
 
   return (
     <section className={styles.card}>
       <div className={styles.cardInner}>
-        <div className={styles.cardTop}>
-          <div className={styles.periodToggle}>
-            {operationsScreenData.periodTabs.map((tab) => (
-              <button
-                className={cn(styles.periodButton, tab === activePeriod && styles.periodButtonActive)}
-                key={tab}
-                onClick={() => handlePeriodChange(tab)}
-                type="button"
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
-
-          <div className={styles.viewControls}>
-            <button aria-label="Круговая диаграмма" className={cn(styles.viewButton, styles.viewButtonActive)} type="button">
-              <PieChart size={24} strokeWidth={1.8} />
-            </button>
-            <Link aria-label="Тренды" className={styles.viewButton} href={operationsChartHref("/operations/trends", activePeriod)}>
-              <ArrowUpDown size={24} strokeWidth={1.8} />
-            </Link>
-            <Link aria-label="Столбцы" className={styles.viewButton} href={operationsChartHref("/operations/bars", activePeriod)}>
-              <BarChart3 size={24} strokeWidth={1.8} />
-            </Link>
-          </div>
-        </div>
+        <OperationsChartCardHeader
+          activePeriod={activePeriod}
+          activeView="pie"
+          onPeriodChange={handlePeriodChange}
+          periodTabs={operationsScreenData.periodTabs}
+        />
 
         <div className={styles.chartSection}>
           <div className={styles.monthSwitcher}>
@@ -169,8 +148,9 @@ function OperationsBreakdownCardContent({
           </div>
 
           <div className={styles.chartBlock}>
-            <div className={styles.gaugeStage}>
-              <div aria-hidden className={styles.gaugeArcs}>
+            <div className={styles.gaugeChartWrap}>
+              <div className={styles.gaugeStage}>
+                <div aria-hidden className={styles.gaugeArcs}>
                 {(["transfers", "hotels", "groceries"] as const).map((id) => {
                   const isActive = activeBreakdownId === id;
 
@@ -178,7 +158,7 @@ function OperationsBreakdownCardContent({
                     <motion.button
                       aria-label={`${breakdown.find((item) => item.id === id)?.label ?? id}`}
                       animate={{
-                        opacity: isActive ? 1 : activeBreakdownId ? 0.42 : 1,
+                        opacity: 1,
                         scale: isActive ? 1.02 : 1,
                       }}
                       className={cn(styles.arcSegment, arcClass[id])}
@@ -195,9 +175,9 @@ function OperationsBreakdownCardContent({
               </div>
 
               <motion.div
-                animate={{ opacity: 1, scale: 1 }}
+                animate={{ opacity: 1 }}
                 className={styles.gaugeCenter}
-                initial={{ opacity: 0, scale: 0.92 }}
+                initial={{ opacity: 0 }}
                 key={`${activePeriod}-${navigatorIndex}-${totalAmount}`}
                 transition={{ duration: 0.28 }}
               >
@@ -213,9 +193,9 @@ function OperationsBreakdownCardContent({
                   <motion.button
                     aria-label={`${item.label}: ${item.percent}%`}
                     aria-pressed={isActive}
-                    animate={{ opacity: 1, scale: isActive ? 1.08 : 1 }}
+                    animate={{ opacity: 1 }}
                     className={cn(styles.percentBubble, positionClass, isActive && styles.percentBubbleActive)}
-                    initial={{ opacity: 0, scale: 0.6 }}
+                    initial={{ opacity: 0 }}
                     key={item.id}
                     onClick={() => selectBreakdown(item.id)}
                     transition={{ duration: 0.28, delay: item.id === "transfers" ? 0.18 : item.id === "hotels" ? 0.24 : 0.3 }}
@@ -225,6 +205,7 @@ function OperationsBreakdownCardContent({
                   </motion.button>
                 );
               })}
+              </div>
             </div>
 
             <div className={styles.legendGrid}>
@@ -239,6 +220,7 @@ function OperationsBreakdownCardContent({
                     animate={{ opacity: 1, y: 0 }}
                     className={cn(
                       styles.legendItem,
+                      id === "groceries" && styles.legendItemGroceries,
                       id === "hotels" && styles.legendItemWide,
                       isActive && styles.legendItemActive,
                     )}

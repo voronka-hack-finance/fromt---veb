@@ -386,7 +386,9 @@
   background: rgba(255, 255, 255, 0.82);
   border: none;
   border-radius: 28px;
+  color: inherit;
   cursor: pointer;
+  display: block;
   overflow: hidden;
   padding: 14px 18px 16px 12px;
   text-align: left;

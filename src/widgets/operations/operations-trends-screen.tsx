@@ -4,14 +4,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import {
   ArrowLeft,
+  ArrowUpDown,
   Building2,
   Edit3,
   GraduationCap,
-  PieChart,
   Share2,
   ShoppingBag,
-  TrendingDown,
-  BarChart3,
   Wifi,
   BanknoteArrowDown,
 } from "lucide-react";
@@ -31,12 +29,12 @@ import {
   TREND_CHART,
   valueToBarHeight,
 } from "@/shared/lib/operations-chart-layout";
-import { operationsChartHref } from "@/shared/lib/operations-period";
 import { useOperationsPeriod } from "@/shared/lib/use-operations-period";
 import { QueryError, QueryLoading } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
+import { OperationsChartCardHeader } from "./operations-chart-card-header";
 import styles from "./operations-trends-screen.module.css";
 
 const SCALE_LABEL_TOPS = [0, 65.28, 128.15] as const;
@@ -170,8 +168,8 @@ function OperationsTrendsScreenContent({
   );
 
   const barBottom = TREND_CHART.barAreaTop + TREND_CHART.barAreaHeight;
-  const tooltipLeft = clamp(activePoint.x - 65, 6, TREND_CHART.width - 136);
-  const tooltipTop = clamp(activePoint.y - 42, 8, TREND_CHART.barAreaTop - 4);
+  const tooltipLeft = clamp(activePoint.x, 72, TREND_CHART.width - 72);
+  const tooltipTop = clamp(activePoint.y, 44, TREND_CHART.barAreaTop + TREND_CHART.barAreaHeight);
 
   const handlePeriodChange = (period: typeof activePeriod) => {
     const nextData = operationsTrendsData.byPeriod[period];
@@ -209,38 +207,17 @@ function OperationsTrendsScreenContent({
         <div className={styles.content}>
           <Reveal delay={0.08}>
             <section className={styles.chartCard}>
-              <div className={styles.cardTop}>
-                <div className={styles.periodToggle}>
-                  {operationsTrendsData.periodTabs.map((tab) => (
-                    <button
-                      className={cn(
-                        styles.periodButton,
-                        tab === activePeriod && styles.periodButtonActive,
-                      )}
-                      key={tab}
-                      onClick={() => handlePeriodChange(tab)}
-                      type="button"
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
+              <div className={styles.cardInner}>
+              <OperationsChartCardHeader
+                activePeriod={activePeriod}
+                activeView="trends"
+                onPeriodChange={handlePeriodChange}
+                periodTabs={operationsTrendsData.periodTabs}
+              />
 
-                <div className={styles.viewControls}>
-                  <Link className={styles.viewButton} href={operationsChartHref("/operations", activePeriod)}>
-                    <PieChart size={18} strokeWidth={2} />
-                  </Link>
-                  <button className={[styles.viewButton, styles.viewButtonActive].join(" ")} type="button">
-                    <TrendingDown size={18} strokeWidth={2} />
-                  </button>
-                  <Link className={styles.viewButton} href={operationsChartHref("/operations/bars", activePeriod)}>
-                    <BarChart3 size={18} strokeWidth={2} />
-                  </Link>
-                </div>
-              </div>
-
-              <div className={styles.chartBody}>
-                <div className={styles.graphArea}>
+              <div className={styles.chartSection}>
+                <div className={styles.chartBlock}>
+                  <div className={styles.graphArea}>
                   {periodData.spendScale.map((label, index) => (
                     <span className={styles.scaleLabel} key={label} style={{ top: `${SCALE_LABEL_TOPS[index]}px` }}>
                       {formatCurrencyParts(label).whole} ₽
@@ -316,15 +293,15 @@ function OperationsTrendsScreenContent({
                   </svg>
 
                   <motion.div
-                    animate={{ opacity: 1, y: 0 }}
+                    animate={{ opacity: 1 }}
                     className={styles.insightBubble}
-                    initial={{ opacity: 0, y: 6 }}
+                    initial={{ opacity: 0 }}
                     key={`${activePeriod}-${activeBar?.day}`}
                     style={{ left: `${tooltipLeft}px`, top: `${tooltipTop}px` }}
                     transition={{ duration: 0.22 }}
                   >
                     <div className={styles.bubbleIcon}>
-                      <TrendingDown size={12} strokeWidth={2.4} />
+                      <ArrowUpDown size={12} strokeWidth={2.4} />
                     </div>
                     <div className={styles.bubbleText}>
                       <strong>{formatCurrencyParts(activeBar?.value ?? 0).whole} ₽</strong>
@@ -337,10 +314,12 @@ function OperationsTrendsScreenContent({
                   </motion.div>
                 </div>
 
-                <div className={styles.chartFooter}>
-                  <strong>{periodData.insight.percent}%</strong>
-                  <p>{periodData.insight.text}</p>
+                  <div className={styles.chartFooter}>
+                    <strong>{periodData.insight.percent}%</strong>
+                    <p>{periodData.insight.text}</p>
+                  </div>
                 </div>
+              </div>
               </div>
             </section>
           </Reveal>

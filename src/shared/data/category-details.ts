@@ -6,6 +6,8 @@ type Category = {
 
 type DetailItem = {
   amount: number;
+  bank?: string;
+  bankId?: string;
   label: string;
   title: string;
 };
@@ -114,33 +116,18 @@ const detailByCategoryId: Partial<Record<Category["id"], CategoryDetailData>> = 
     banks: bankStats,
     groups: [
       {
-        date: "31 мая",
+        date: "Вчера",
         items: [
-          { amount: 420, label: "Кофейни", title: "Кофемания" },
-          { amount: 180, label: "Кофейни", title: "Кофемания" },
+          { amount: 821, bank: "Сбер", bankId: "sber", label: "Рестораны", title: "Кофемания" },
+          { amount: 121, bank: "Сбер", bankId: "sber", label: "Рестораны", title: "Кофемания" },
+          { amount: 379, bank: "Сбер", bankId: "sber", label: "Рестораны", title: "Кофемания" },
         ],
-        total: 600,
-      },
-      {
-        date: "18 мая",
-        items: [
-          { amount: 360, label: "Кофейни", title: "Кофемания" },
-          { amount: 220, label: "Кофейни", title: "Кофемания" },
-        ],
-        total: 580,
-      },
-      {
-        date: "13 апреля",
-        items: [
-          { amount: 500, label: "Кофейни", title: "Кофемания" },
-          { amount: 320, label: "Кофейни", title: "Кофемания" },
-        ],
-        total: 820,
+        total: 1521,
       },
     ],
     limit: {
-      periodEnd: "01.06.2026",
-      periodStart: "01.05.2026",
+      periodEnd: "1.07.2026",
+      periodStart: "1.05.2026",
       spent: 3000,
       total: 4000,
     },

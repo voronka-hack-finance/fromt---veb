@@ -39,6 +39,33 @@ export {
   type SubscriptionsResponse,
 } from "./subscriptions";
 export {
+  fetchBankAccounts,
+  useBankAccountsQuery,
+  type BankAccountsResponse,
+  type BankAccountItem,
+  type BankAccountsSection,
+} from "./bank-accounts";
+export {
+  fetchBankAccountDetail,
+  useBankAccountDetailQuery,
+  type BankAccountDetailResponse,
+} from "./bank-account-detail";
+export {
+  fetchCreditLoad,
+  useCreditLoadQuery,
+  type CreditLoadResponse,
+} from "./credit-load";
+export {
+  fetchCreditLoadLoan,
+  useCreditLoadLoanQuery,
+  type CreditLoadLoanDetailResponse,
+} from "./credit-load-loan";
+export {
+  fetchOperationDetail,
+  useOperationDetailQuery,
+  type OperationDetailResponse,
+} from "./operation-detail";
+export {
   fetchOperationsBars,
   fetchOperationsScreen,
   fetchOperationsTrends,
@@ -54,3 +81,8 @@ export {
   useTotalBalanceQuery,
   type TotalBalanceResponse,
 } from "./total-balance";
+export {
+  fetchAgentChat,
+  useAgentChatQuery,
+  type AgentChatResponse,
+} from "./agent-chat";

@@ -175,31 +175,37 @@
   display: flex;
   flex-direction: column;
   gap: 32px;
+  padding-top: 8px;
   width: 100%;
 }
 
 .agentCard {
+  align-items: flex-start;
   background: rgba(95, 226, 116, 0.1);
   border: 1px solid rgba(153, 153, 153, 0.4);
   border-radius: 24px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  overflow: hidden;
+  isolation: isolate;
+  overflow: visible;
   padding: 24px;
   position: relative;
+  text-align: left;
   width: 100%;
 }
 
 .agentImageWrap {
   pointer-events: none;
   position: absolute;
+  z-index: 4;
 }
 
 .agentImageWrapA {
   height: 207px;
-  right: -24px;
-  top: -24px;
+  right: -28px;
+  top: -28px;
   width: 207px;
 }
 
@@ -262,14 +268,17 @@
 
 .agentImage {
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   width: 100%;
 }
 
 .agentHeader {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
   gap: 4px;
+  max-width: 58%;
   position: relative;
   z-index: 1;
 }
@@ -279,7 +288,7 @@
   font-family: var(--font-heading), sans-serif;
   font-size: 16px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 22.5px;
   margin: 0;
 }
 
@@ -288,15 +297,18 @@
   font-family: var(--font-heading), sans-serif;
   font-size: 12px;
   font-weight: 300;
-  line-height: 1.5;
+  line-height: 18px;
   margin: 0;
 }
 
 .insightCard {
+  align-self: stretch;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
   gap: 0;
   padding: 16px;
   position: relative;
@@ -305,6 +317,7 @@
 
 .insightTop {
   align-items: flex-start;
+  align-self: stretch;
   display: flex;
   gap: 8px;
   width: 100%;
@@ -332,9 +345,9 @@
   font-family: var(--font-heading), sans-serif;
   font-size: 12px;
   font-weight: 400;
-  line-height: 1.49;
+  line-height: 17.88px;
   margin: 0;
-  min-height: 52px;
+  min-width: 0;
 }
 
 .insightRest {
@@ -342,76 +355,85 @@
   font-family: var(--font-heading), sans-serif;
   font-size: 12px;
   font-weight: 400;
-  line-height: 1.49;
+  line-height: 17.88px;
   margin: 0;
   max-width: 278px;
 }
 
 .actionRow {
   align-items: center;
-  display: flex;
-  gap: 22px;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  flex-shrink: 0;
+  grid-template-columns: minmax(0, 1fr) 52px;
+  isolation: isolate;
   min-height: 52px;
+  padding: 0;
   position: relative;
-  z-index: 1;
+  text-decoration: none;
+  transition: transform 180ms ease;
+  width: 100%;
+  z-index: 3;
 }
 
 .actionUnion {
   height: 52px;
-  left: 0;
+  inset: 0;
+  margin: 0 !important;
+  object-fit: fill;
   pointer-events: none;
   position: absolute;
-  top: 0;
-  width: 299px;
+  width: 100%;
+  z-index: 0;
 }
 
 .chatButton {
   align-items: center;
   background: transparent;
-  border: 1px solid rgba(153, 153, 153, 0.4);
-  border-radius: 76px;
+  border: none;
+  box-sizing: border-box;
   color: #1f1f1f;
-  cursor: pointer;
   display: inline-flex;
-  flex-shrink: 0;
+  flex: 1;
   font-family: var(--font-heading), sans-serif;
   font-size: 14px;
   font-weight: 500;
   height: 52px;
   justify-content: center;
   line-height: normal;
-  padding: 10px;
-  transition:
-    transform 180ms ease,
-    background-color 180ms ease;
-  width: 225px;
-}
-
-.chatButton:hover,
-.chatButton:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-1px);
+  min-width: 0;
+  padding: 10px 16px 10px 10px;
+  transition: opacity 180ms ease;
+  z-index: 1;
 }
 
 .arrowButton {
   align-items: center;
   background: transparent;
-  border: 1px solid rgba(153, 153, 153, 0.4);
-  border-radius: 70px;
-  cursor: pointer;
+  border: none;
   display: inline-flex;
   flex-shrink: 0;
+  height: 52px;
   justify-content: center;
-  padding: 16px;
-  transition:
-    transform 180ms ease,
-    background-color 180ms ease;
+  padding: 0;
+  transition: opacity 180ms ease;
+  width: 52px;
+  z-index: 2;
 }
 
-.arrowButton:hover,
-.arrowButton:focus-visible {
-  background: rgba(255, 255, 255, 0.12);
+.actionRow:hover,
+.actionRow:focus-visible {
   transform: translateY(-1px);
+}
+
+.actionRow:hover .chatButton,
+.actionRow:focus-visible .chatButton,
+.actionRow:hover .arrowButton,
+.actionRow:focus-visible .arrowButton {
+  opacity: 0.92;
 }
 
 .arrowIcon {
@@ -434,6 +456,157 @@
   text-align: center;
 }
 
+.chatsList {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.chatCard {
+  align-items: flex-start;
+  background: #f2f1f0;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 16px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  text-align: left;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 100%;
+}
+
+.chatCard:hover,
+.chatCard:focus-visible {
+  background: rgba(255, 255, 255, 0.72);
+  transform: translateY(-1px);
+}
+
+.chatAvatar {
+  background: rgba(95, 226, 116, 0.2);
+  border-radius: 9px;
+  flex-shrink: 0;
+  height: 60px;
+  overflow: hidden;
+  position: relative;
+  width: 60px;
+}
+
+.chatImageCenter {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+}
+
+.chatImageRotatedA {
+  transform: rotate(-9.37deg);
+}
+
+.chatImageRotatedB {
+  transform: rotate(1.08deg);
+}
+
+.chatImageRotatedC {
+  transform: rotate(-9.37deg);
+}
+
+.chatImageRotatedD {
+  transform: rotate(10.23deg);
+}
+
+.chatImageRotatedE {
+  transform: rotate(-14.94deg);
+}
+
+.chatImageFrameA,
+.chatImageFrameD {
+  height: 68px;
+  position: relative;
+  width: 68px;
+}
+
+.chatImageFrameB {
+  height: 61px;
+  position: relative;
+  width: 61px;
+}
+
+.chatImageFrameC {
+  height: 63px;
+  position: relative;
+  width: 63px;
+}
+
+.chatImageFrameE {
+  height: 53px;
+  position: relative;
+  width: 53px;
+}
+
+.chatImage {
+  height: 100%;
+  object-fit: cover;
+  width: 100%;
+}
+
+.chatContent {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  padding-top: 3.5px;
+}
+
+.chatHeader {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.chatTitle {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.25;
+  margin: 0;
+  min-width: 0;
+}
+
+.chatTimestamp {
+  color: #999999;
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.5;
+}
+
+.chatPreview {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: #999999;
+  display: -webkit-box;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.408px;
+  line-height: 14px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 @media (max-width: 360px) {
   .shell {
     padding-top: 4px;
@@ -443,11 +616,7 @@
     padding-top: 28px;
   }
 
-  .chatButton {
-    width: min(225px, calc(100% - 74px));
-  }
-
-  .actionUnion {
-    width: min(299px, 100%);
+  .agentHeader {
+    max-width: 52%;
   }
 }

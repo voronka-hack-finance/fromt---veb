@@ -6,25 +6,80 @@ import {
   ArrowLeft,
   ChevronRight,
   CircleDollarSign,
+  Coffee,
   Pencil,
-  Settings2,
-  Star,
   Trash2,
 } from "lucide-react";
 
 import { useCategoriesQuery, type CategoriesResponse } from "@/shared/api/categories";
-import { getCategoryDetailData } from "@/shared/data/category-details";
+import { getCategoryDetailData, type CategoryDetailData } from "@/shared/data/category-details";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { DesktopAppHeader } from "@/shared/ui/desktop-app-header/desktop-app-header";
 import { DesktopSidebar } from "@/shared/ui/desktop-sidebar/desktop-sidebar";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
-import { AppTopBar } from "@/widgets/home/app-top-bar";
-
 import styles from "./category-detail-screen.module.css";
+
+const bankIcons = {
+  sber: "/dashboard/balance/icon-sber.svg",
+} as const;
 
 function formatAmount(value: number) {
   return `${formatCurrencyParts(value).whole} ₽`;
 }
+
+function formatExpenseAmount(value: number) {
+  const amount = formatCurrencyParts(Math.abs(value));
+  return `−${amount.whole} ₽`;
+}
+
+function CategoryOperationIcon({
+  categoryIcon,
+  iconSrc,
+}: {
+  categoryIcon: string;
+  iconSrc: string;
+}) {
+  if (categoryIcon === "coffee") {
+    return (
+      <div className={styles.mobileOperationIcon}>
+        <Coffee size={16} strokeWidth={1.9} />
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.mobileOperationIcon}>
+      <img alt="" aria-hidden className={styles.operationIconImage} draggable={false} src={iconSrc} />
+    </div>
+  );
+}
+
+function CategoryBankChip({
+  bank,
+  bankId,
+}: {
+  bank?: string;
+  bankId?: DetailItem["bankId"];
+}) {
+  if (!bank) {
+    return null;
+  }
+
+  const bankIcon = bankId && bankId in bankIcons ? bankIcons[bankId as keyof typeof bankIcons] : null;
+
+  return (
+    <div className={styles.mobileBankChip}>
+      {bankIcon ? (
+        <img alt="" aria-hidden className={styles.mobileBankIcon} draggable={false} src={bankIcon} />
+      ) : (
+        <span className={styles.mobileBankMark}>{bank.slice(0, 1)}</span>
+      )}
+      <span>{bank}</span>
+    </div>
+  );
+}
+
+type DetailItem = CategoryDetailData["groups"][number]["items"][number];
 
 function DesktopCategoryDetailContent({
   categoryId,
@@ -177,126 +232,74 @@ function MobileCategoryDetailContent({
   const category = data.screen.categories.find((item) => item.id === categoryId) ?? data.screen.categories[0];
   const details = data.detailsById?.[category.id] ?? getCategoryDetailData(category);
   const progress = details.limit.spent / details.limit.total;
+  const spentPercent = Math.round(progress * 100);
   const chartStyle = { "--progress-angle": `${progress * 360}deg` } as CSSProperties;
+  const categoryIconSrc = data.assets.icons[category.icon];
 
   return (
     <main className={styles.mobileViewport}>
       <div className={styles.mobileShell}>
-        <AppTopBar title={category.title} />
-
         <div className={styles.mobileContent}>
-          <Link className={styles.backLink} href="/categories">
-            <ArrowLeft size={16} strokeWidth={1.9} />
-            <span>Назад к категориям</span>
-          </Link>
+          <header className={styles.mobileHeader}>
+            <Link aria-label="Назад" className={styles.mobileBackButton} href="/categories">
+              <ArrowLeft size={24} strokeWidth={2} />
+            </Link>
+            <h1 className={styles.mobileTitle}>{category.title}</h1>
+          </header>
 
-          <section className={styles.mobileHero}>
-            <div className={styles.mobileHeroMain}>
-              <div className={styles.mobileHeroIcon}>
-                <img alt="" aria-hidden className={styles.categoryHeroImage} draggable={false} src={data.assets.icons[category.icon]} />
-              </div>
+          <div className={styles.mobileLimitChart} style={chartStyle} />
 
-              <div className={styles.mobileHeroText}>
-                <span className={styles.overline}>Название категории</span>
-                <h2>{category.title}</h2>
-              </div>
+          <section className={styles.mobileLimitStats}>
+            <div className={styles.mobileLimitRow}>
+              <span>Лимит</span>
+              <p className={styles.mobileLimitValue}>
+                <strong>{formatAmount(details.limit.spent)}</strong>
+                <em> / {formatAmount(details.limit.total)}</em>
+              </p>
             </div>
-
-            <div className={styles.mobileActionRow}>
-              <button aria-label="Редактировать категорию" className={styles.actionButtonPrimary} type="button">
-                <Pencil size={18} strokeWidth={2} />
-              </button>
-              <button aria-label="Удалить категорию" className={styles.actionButtonDanger} type="button">
-                <Trash2 size={18} strokeWidth={2} />
-              </button>
+            <div className={styles.mobileLimitRow}>
+              <span>Период</span>
+              <p className={styles.mobilePeriodValue}>
+                <span>{details.limit.periodStart}</span>
+                <span>–</span>
+                <span>{details.limit.periodEnd}</span>
+              </p>
+            </div>
+            <div className={styles.mobileLimitRow}>
+              <span>Потрачено</span>
+              <p className={styles.mobileSpentValue}>
+                <strong>{spentPercent}%</strong> от лимита
+              </p>
             </div>
           </section>
 
-          <section className={styles.mobileLimitCard}>
-            <div className={styles.mobileLimitChart} style={chartStyle} />
-            <div className={styles.mobileLimitInfo}>
-              <div className={styles.limitBlock}>
-                <span>Лимит</span>
-                <strong>
-                  {formatAmount(details.limit.spent)}
-                  <em>/{formatAmount(details.limit.total)}</em>
-                </strong>
-              </div>
-              <div className={styles.limitBlock}>
-                <span>Период</span>
-                <div className={styles.periodColumn}>
-                  <span>{details.limit.periodStart}</span>
-                  <span>{details.limit.periodEnd}</span>
+          <section className={styles.mobileTransactions}>
+            {details.groups.map((group) => (
+              <div className={styles.mobileTransactionGroup} key={group.date}>
+                <div className={styles.mobileGroupHeader}>
+                  <span>{group.date}</span>
+                  <span className={styles.mobileGroupDivider} />
+                  <strong>{formatExpenseAmount(group.total)}</strong>
+                </div>
+
+                <div className={styles.mobileOperationsList}>
+                  {group.items.map((item, index) => (
+                    <article className={styles.mobileOperationCard} key={`${group.date}-${index}`}>
+                      <CategoryOperationIcon categoryIcon={category.icon} iconSrc={categoryIconSrc} />
+                      <div className={styles.operationText}>
+                        <span>{item.label}</span>
+                        <strong>{item.title}</strong>
+                      </div>
+                      <div className={styles.mobileOperationAside}>
+                        <CategoryBankChip bank={item.bank} bankId={item.bankId} />
+                        <span className={styles.mobileOperationAmount}>{formatExpenseAmount(item.amount)}</span>
+                      </div>
+                    </article>
+                  ))}
                 </div>
               </div>
-              <div className={styles.limitBlock}>
-                <span>Потрачено</span>
-                <strong>{Math.round(progress * 100)}% от лимита</strong>
-              </div>
-            </div>
+            ))}
           </section>
-
-          <div className={styles.mobileScrollBody}>
-            <section className={[styles.mobileCard, styles.mobileHistoryCard].join(" ")}>
-              <div className={styles.mobileCardHeader}>
-                <h3>История трат</h3>
-              </div>
-
-              <div className={styles.mobileGroups}>
-                {details.groups.map((group) => (
-                  <div className={styles.mobileGroup} key={group.date}>
-                    <div className={styles.mobileGroupHeader}>
-                      <span>{group.date}</span>
-                      <strong>{formatAmount(group.total)}</strong>
-                    </div>
-
-                    {group.items.map((item, index) => (
-                      <article className={styles.mobileOperationRow} key={`${group.date}-${index}`}>
-                        <div className={styles.mobileOperationMeta}>
-                          <div className={styles.operationIcon}>
-                            <img
-                              alt=""
-                              aria-hidden
-                              className={styles.operationIconImage}
-                              draggable={false}
-                              src={data.assets.icons[category.icon]}
-                            />
-                          </div>
-
-                          <div className={styles.operationText}>
-                            <span>{item.label}</span>
-                            <strong>{item.title}</strong>
-                          </div>
-                        </div>
-
-                        <span className={styles.mobileOperationAmount}>{formatAmount(item.amount)}</span>
-                      </article>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className={[styles.mobileCard, styles.mobileBanksCard].join(" ")}>
-              <div className={styles.mobileCardHeader}>
-                <h3>Топ банков по тратам</h3>
-              </div>
-
-              <div className={styles.banksList}>
-                {details.banks.map((bank) => (
-                  <article className={styles.bankRow} key={bank.name}>
-                    <div className={styles.bankMeta}>
-                      <div className={[styles.bankBadge, styles[`bankBadge${bank.tone[0].toUpperCase()}${bank.tone.slice(1)}`]].join(" ")}>
-                        {bank.badge}
-                      </div>
-                      <span>{bank.name}</span>
-                    </div>
-                    <strong>{formatAmount(bank.amount)}</strong>
-                  </article>
-                ))}
-              </div>
-            </section>
-          </div>
         </div>
       </div>
     </main>

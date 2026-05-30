@@ -26,7 +26,9 @@ export function DesktopSidebarLayout({ children }: { children: React.ReactNode }
       </header>
 
       <div className={styles.shell}>
-        <DesktopSidebar />
+        <div className={styles.sidebarSlot}>
+          <DesktopSidebar />
+        </div>
         <div className={styles.content}>{children}</div>
       </div>
     </div>

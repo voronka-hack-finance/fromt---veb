@@ -1,0 +1,170 @@
+.stage {
+  background: #e1e1e1;
+  min-height: 100vh;
+}
+
+.shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 100vh;
+  padding: 52px 16px 32px;
+  position: relative;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+.backButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+  color: #2f2f2f;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 52px;
+  justify-content: center;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 52px;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background: rgba(248, 251, 249, 0.96);
+  transform: translateY(-1px);
+}
+
+.title {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.detailsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.card {
+  backdrop-filter: blur(5px);
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: visible;
+  padding: 16px;
+  position: relative;
+}
+
+.cardTitle {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  margin: 0;
+  padding: 4px 8px 2px;
+}
+
+.fieldWrap {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 32px;
+  display: flex;
+  min-height: 56px;
+  padding: 16px 24px 16px 20px;
+}
+
+.fieldInput {
+  background: transparent;
+  border: none;
+  color: #1f1f1f;
+  flex: 1;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  min-width: 0;
+  outline: none;
+  padding-bottom: 2px;
+}
+
+.fieldInput::placeholder {
+  color: #bdbdbd;
+}
+
+.fieldSuffix {
+  color: #999;
+  flex-shrink: 0;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: right;
+}
+
+.saveButton {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 24px;
+  color: #40a93d;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 16px;
+  justify-content: center;
+  line-height: 1.15;
+  padding: 16px;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 100%;
+}
+
+.saveButton:hover,
+.saveButton:focus-visible {
+  background: rgba(255, 255, 255, 0.92);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 360px) {
+  .shell {
+    padding-inline: 12px;
+  }
+
+  .backButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+}

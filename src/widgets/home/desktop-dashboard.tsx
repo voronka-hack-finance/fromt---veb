@@ -385,7 +385,7 @@ export function DesktopDashboard() {
 
               <CreditGauge label={creditState} ratio={creditGaugeRatio} score={creditDisplayScore} />
 
-              <Link className={styles.creditButton} href="/total">
+              <Link className={styles.creditButton} href="/credit-load">
                 Подробнее
               </Link>
             </section>

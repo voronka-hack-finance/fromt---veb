@@ -25,6 +25,14 @@ export type RecommendationsResponse = {
     };
     chatCta: string;
     chatsPlaceholder: string;
+    chats: ReadonlyArray<{
+      id: string;
+      title: string;
+      preview: string;
+      timestamp: string;
+      imageKey: keyof typeof recommendationsAssets.agentImages;
+      imageVariant: "a" | "b" | "c" | "d" | "e";
+    }>;
     agents: ReadonlyArray<{
       id: string;
       title: string;

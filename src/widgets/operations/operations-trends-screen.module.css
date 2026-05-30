@@ -52,9 +52,7 @@
 }
 
 .iconButton,
-.actionButton,
-.viewButton,
-.periodButton {
+.actionButton {
   align-items: center;
   border: none;
   cursor: pointer;
@@ -64,8 +62,6 @@
 
 .iconButton,
 .actionButton,
-.viewButton,
-.periodButton,
 .operationCard {
   transition:
     transform 180ms ease,
@@ -84,11 +80,7 @@
 .iconButton:hover,
 .iconButton:focus-visible,
 .actionButton:hover,
-.actionButton:focus-visible,
-.viewButton:hover,
-.viewButton:focus-visible,
-.periodButton:hover,
-.periodButton:focus-visible {
+.actionButton:focus-visible {
   transform: translateY(-1px);
 }
 
@@ -109,66 +101,41 @@
 .content {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 16px;
   margin-top: 16px;
 }
 
 .chartCard {
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(153, 153, 153, 0.18);
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
   border-radius: 32px;
-  overflow: hidden;
+  overflow: visible;
   padding: 8px 8px 16px;
+  width: 100%;
 }
 
-.cardTop {
+.cardInner {
   align-items: center;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 339px;
+  width: 100%;
 }
 
-.periodToggle {
-  background: #f7f9fb;
-  border: 1px solid rgba(153, 153, 153, 0.3);
-  border-radius: 40px;
-  display: flex;
-  gap: 4px;
-  padding: 4px;
-}
-
-.periodButton {
-  background: transparent;
-  border-radius: 40px;
-  color: #1f1f1f;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 10px;
-  min-height: 42px;
-  min-width: 72px;
-}
-
-.periodButtonActive {
-  background: #1f1f1f;
-  color: white;
-}
-
-.viewControls {
+.chartSection {
   align-items: center;
   display: flex;
-  gap: 8px;
+  flex-direction: column;
+  width: 100%;
 }
 
-.viewButton {
-  background: transparent;
-  color: #8a8a8a;
-  padding: 0;
-}
-
-.viewButtonActive {
-  color: #151515;
-}
-
-.chartBody {
-  margin-top: 24px;
+.chartBlock {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   width: 100%;
 }
 
@@ -176,6 +143,7 @@
   height: 172px;
   margin: 0 auto;
   max-width: 321px;
+  overflow: visible;
   position: relative;
   width: 100%;
 }
@@ -194,6 +162,7 @@
 .chartSvg {
   display: block;
   height: 172px;
+  overflow: visible;
   width: 100%;
 }
 
@@ -242,7 +211,9 @@
   gap: 3px;
   min-height: 35px;
   padding: 3px 12px 3px 6px;
+  pointer-events: none;
   position: absolute;
+  transform: translate(-50%, calc(-100% - 8px));
   z-index: 2;
 }
 
@@ -289,8 +260,7 @@
   align-items: flex-start;
   display: flex;
   gap: 16px;
-  margin: 16px auto 0;
-  max-width: 321px;
+  max-width: 314px;
   width: 100%;
 }
 
@@ -336,14 +306,6 @@
     font-size: 18px;
   }
 
-  .cardTop {
-    gap: 10px;
-  }
-
-  .periodButton {
-    min-width: 64px;
-  }
-
   .graphArea,
   .chartFooter {
     max-width: 100%;
@@ -363,20 +325,6 @@
   .headerActions {
     gap: 10px;
     padding: 10px 12px;
-  }
-
-  .cardTop {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .periodToggle,
-  .viewControls {
-    width: 100%;
-  }
-
-  .viewControls {
-    justify-content: flex-end;
   }
 
   .chartFooter {

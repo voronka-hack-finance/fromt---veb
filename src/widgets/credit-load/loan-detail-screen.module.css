@@ -1,0 +1,213 @@
+.stage {
+  background: #e1e1e1;
+  min-height: 100%;
+}
+
+.shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 100%;
+  padding: 52px 16px 32px;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+  padding-top: 8px;
+}
+
+.iconButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  border-radius: 50%;
+  color: #2f2f2f;
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  justify-self: start;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 52px;
+}
+
+.iconButton:last-of-type {
+  justify-self: end;
+}
+
+.iconButton:hover,
+.iconButton:focus-visible {
+  background: rgba(248, 251, 249, 0.96);
+  transform: translateY(-1px);
+}
+
+.title {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.15;
+  margin: 0;
+  text-align: center;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 24px;
+}
+
+.bankRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.bankLabel {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.bankLogo {
+  display: block;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.progressTrack {
+  background: rgba(153, 153, 153, 0.4);
+  border-radius: 17px;
+  height: 20px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progressFill {
+  background: #5fe274;
+  border-radius: 6px 0 0 6px;
+  height: 100%;
+}
+
+.paidRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.paidLabel {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.paidValue {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.divider {
+  background: rgba(153, 153, 153, 0.4);
+  height: 1px;
+  width: 100%;
+}
+
+.detailRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.detailLabel {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.detailValue {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.remainingBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.remainingLabel {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.remainingValue {
+  color: #40a93d;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2;
+  margin: 0;
+}
+
+@media (max-width: 360px) {
+  .shell {
+    padding-inline: 12px;
+  }
+
+  .iconButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+}

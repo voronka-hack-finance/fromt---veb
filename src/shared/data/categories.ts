@@ -12,7 +12,7 @@ export const categoriesScreenData = {
     {
       id: "coffee",
       title: "Кофемания",
-      spent: 2000,
+      spent: 3000,
       total: 4000,
       tone: "dark",
       icon: "coffee",

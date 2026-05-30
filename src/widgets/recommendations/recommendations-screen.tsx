@@ -8,6 +8,7 @@ import {
   useRecommendationsQuery,
   type RecommendationsResponse,
 } from "@/shared/api/recommendations";
+import { resolveAgentIdFromChatId } from "@/shared/data/agent-chat";
 import { cn } from "@/shared/lib/cn";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
@@ -17,6 +18,7 @@ import styles from "./recommendations-screen.module.css";
 
 type TabId = RecommendationsResponse["screen"]["tabs"][number]["id"];
 type Agent = RecommendationsResponse["screen"]["agents"][number];
+type Chat = RecommendationsResponse["screen"]["chats"][number];
 
 const imageWrapClassMap = {
   a: styles.agentImageWrapA,
@@ -38,6 +40,54 @@ const imageFrameClassMap = {
   c: styles.agentImageFrameC,
   d: styles.agentImageFrameD,
 } as const;
+
+const chatImageRotatedClassMap = {
+  a: styles.chatImageRotatedA,
+  b: styles.chatImageRotatedB,
+  c: styles.chatImageRotatedC,
+  d: styles.chatImageRotatedD,
+  e: styles.chatImageRotatedE,
+} as const;
+
+const chatImageFrameClassMap = {
+  a: styles.chatImageFrameA,
+  b: styles.chatImageFrameB,
+  c: styles.chatImageFrameC,
+  d: styles.chatImageFrameD,
+  e: styles.chatImageFrameE,
+} as const;
+
+function ChatCard({
+  chat,
+  assets,
+}: {
+  chat: Chat;
+  assets: RecommendationsResponse["assets"];
+}) {
+  const agentImage = assets.agentImages[chat.imageKey];
+
+  return (
+    <Link className={styles.chatCard} href={`/recommendations/${resolveAgentIdFromChatId(chat.id) ?? "pillow-keeper"}/chat`}>
+      <div className={styles.chatAvatar}>
+        <div className={styles.chatImageCenter}>
+          <div className={chatImageRotatedClassMap[chat.imageVariant]}>
+            <div className={chatImageFrameClassMap[chat.imageVariant]}>
+              <img alt="" aria-hidden className={styles.chatImage} draggable={false} src={agentImage} />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.chatContent}>
+        <div className={styles.chatHeader}>
+          <h2 className={styles.chatTitle}>{chat.title}</h2>
+          <span className={styles.chatTimestamp}>{chat.timestamp}</span>
+        </div>
+        <p className={styles.chatPreview}>{chat.preview}</p>
+      </div>
+    </Link>
+  );
+}
 
 function AgentCard({
   agent,
@@ -76,15 +126,13 @@ function AgentCard({
         <p className={styles.insightRest}>{agent.insightRest}</p>
       </div>
 
-      <div className={styles.actionRow}>
+      <Link className={styles.actionRow} href={`/recommendations/${agent.id}/chat`}>
         <img alt="" aria-hidden className={styles.actionUnion} draggable={false} src={assets.actionUnion} />
-        <button className={styles.chatButton} type="button">
-          {chatCta}
-        </button>
-        <button aria-label="Открыть чат" className={styles.arrowButton} type="button">
-          <img alt="" aria-hidden className={styles.arrowIcon} draggable={false} src={assets.actionArrow} />
-        </button>
-      </div>
+        <span className={styles.chatButton}>{chatCta}</span>
+        <span aria-hidden className={styles.arrowButton}>
+          <img alt="" className={styles.arrowIcon} draggable={false} src={assets.actionArrow} />
+        </span>
+      </Link>
     </article>
   );
 }
@@ -163,6 +211,14 @@ function RecommendationsScreenContent({ data }: { data: RecommendationsResponse 
                     ))}
                   </div>
                 </>
+              ) : screen.chats.length > 0 ? (
+                <div className={styles.chatsList}>
+                  {screen.chats.map((chat, index) => (
+                    <Reveal delay={0.09 + index * 0.03} key={chat.id}>
+                      <ChatCard assets={assets} chat={chat} />
+                    </Reveal>
+                  ))}
+                </div>
               ) : (
                 <Reveal delay={0.09}>
                   <p className={styles.chatsPlaceholder}>{screen.chatsPlaceholder}</p>

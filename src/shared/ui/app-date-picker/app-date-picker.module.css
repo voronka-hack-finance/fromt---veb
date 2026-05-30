@@ -1,0 +1,238 @@
+.row {
+  align-items: stretch;
+  display: flex;
+  gap: 12px;
+  position: relative;
+  width: 100%;
+  z-index: 1;
+}
+
+.rowOpen {
+  z-index: 40;
+}
+
+.fieldWrap {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 32px;
+  display: flex;
+  flex: 1;
+  min-height: 56px;
+  min-width: 0;
+  padding: 16px 24px 16px 20px;
+  position: relative;
+}
+
+.input {
+  background: transparent;
+  border: none;
+  color: #1f1f1f;
+  flex: 1;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: normal;
+  min-width: 0;
+  outline: none;
+  padding-bottom: 2px;
+}
+
+.input::placeholder {
+  color: #bdbdbd;
+}
+
+.calendarButton {
+  align-items: center;
+  aspect-ratio: 1;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 50%;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 52px;
+  justify-content: center;
+  position: relative;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease,
+    border-color 180ms ease;
+  width: 52px;
+}
+
+.calendarButton:hover,
+.calendarButton:focus-visible {
+  background: rgba(255, 255, 255, 0.45);
+  transform: translateY(-1px);
+}
+
+.calendarButtonActive {
+  background: rgba(64, 169, 61, 0.12);
+  border-color: rgba(64, 169, 61, 0.45);
+}
+
+.popover {
+  backdrop-filter: blur(8px);
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(31, 39, 26, 0.12);
+  left: 0;
+  margin-top: 8px;
+  padding: 12px;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 30;
+}
+
+.header {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.monthLabel {
+  color: #1f1f1f;
+  flex: 1;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0;
+}
+
+.navGroup {
+  align-items: center;
+  display: flex;
+  gap: 4px;
+}
+
+.navButton {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 50%;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+  width: 32px;
+}
+
+.navButton:hover,
+.navButton:focus-visible {
+  background: rgba(64, 169, 61, 0.08);
+  transform: translateY(-1px);
+}
+
+.weekdays {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-bottom: 4px;
+}
+
+.weekday {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: normal;
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  gap: 4px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.dayButton {
+  align-items: center;
+  aspect-ratio: 1;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  justify-content: center;
+  line-height: normal;
+  min-height: 36px;
+  padding: 0;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease;
+}
+
+.dayButton:hover,
+.dayButton:focus-visible {
+  background: rgba(64, 169, 61, 0.08);
+}
+
+.dayOutside {
+  color: #bdbdbd;
+}
+
+.dayToday {
+  border-color: rgba(64, 169, 61, 0.35);
+}
+
+.daySelected {
+  background: #40a93d;
+  border-color: #40a93d;
+  color: #fff;
+}
+
+.daySelected:hover,
+.daySelected:focus-visible {
+  background: #389635;
+  border-color: #389635;
+}
+
+.footer {
+  align-items: center;
+  border-top: 1px solid rgba(153, 153, 153, 0.15);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding-top: 10px;
+}
+
+.footerButton {
+  background: transparent;
+  border: none;
+  color: #40a93d;
+  cursor: pointer;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: normal;
+  padding: 4px 8px;
+  transition: opacity 180ms ease;
+}
+
+.footerButton:hover,
+.footerButton:focus-visible {
+  opacity: 0.8;
+}
+
+@media (max-width: 360px) {
+  .calendarButton {
+    height: 44px;
+    width: 44px;
+  }
+}

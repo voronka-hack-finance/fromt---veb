@@ -1,0 +1,10 @@
+<svg width="334" height="287" viewBox="0 0 334 287" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="167" cy="143" rx="150" ry="120" fill="url(#bankCardGlow)" />
+  <defs>
+    <radialGradient id="bankCardGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(167 143) scale(150 120)">
+      <stop stop-color="#95E274" stop-opacity="0.45" />
+      <stop offset="0.45" stop-color="#95E274" stop-opacity="0.14" />
+      <stop offset="1" stop-color="#95E274" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+</svg>

@@ -49,7 +49,7 @@ export function CreditLoadCard() {
           <button
             aria-label="Дополнительные действия"
             className={styles.menuButton}
-            onClick={() => router.push("/total")}
+            onClick={() => router.push("/credit-load")}
             type="button"
           >
             <img alt="" aria-hidden className={styles.menuIcon} draggable={false} src={assets.menuDots} />
@@ -59,7 +59,7 @@ export function CreditLoadCard() {
         <button
           aria-label={`Кредитная нагрузка ${dashboard.creditScore} — ${dashboard.creditLabel}`}
           className={styles.gauge}
-          onClick={() => router.push("/total")}
+          onClick={() => router.push("/credit-load")}
           type="button"
         >
           <svg className={styles.gaugeSvg} viewBox={`0 0 ${gaugeWidth} ${gaugeHeight}`}>
@@ -85,7 +85,7 @@ export function CreditLoadCard() {
         <button
           aria-label="Подробнее по кредитной нагрузке"
           className={styles.cta}
-          onClick={() => router.push("/total")}
+          onClick={() => router.push("/credit-load")}
           type="button"
         >
           Подробнее

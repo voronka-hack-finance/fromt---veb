@@ -9,7 +9,9 @@ function shouldShowMobileTabNav(pathname: string) {
   if (pathname.startsWith("/operations")) return true;
   if (pathname.startsWith("/goals")) return true;
   if (pathname.startsWith("/categories")) return true;
-  if (pathname.startsWith("/recommendations")) return true;
+  if (pathname.startsWith("/recommendations")) {
+    return !pathname.includes("/chat");
+  }
   if (pathname === "/total") return true;
 
   return false;

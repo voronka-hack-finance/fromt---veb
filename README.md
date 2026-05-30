@@ -73,6 +73,21 @@ npm run start    # запуск собранного приложения
 npm run lint     # ESLint
 ```
 
+### Push-уведомления (Firebase)
+
+1. В [Firebase Console](https://console.firebase.google.com/) → **Project Settings** → **Cloud Messaging** скопируйте **Web Push certificates** (VAPID key).
+2. Добавьте в `.env.local` или production env:
+
+```bash
+NEXT_PUBLIC_FIREBASE_VAPID_KEY=ваш_vapid_key
+```
+
+Остальные параметры Firebase уже зафиксированы в `src/shared/lib/firebase/config.ts` и `public/firebase-messaging-sw.js`, поэтому для web push достаточно добавить `NEXT_PUBLIC_FIREBASE_VAPID_KEY`.
+
+Если фронт собирается в Docker, `NEXT_PUBLIC_FIREBASE_VAPID_KEY` должен быть доступен во время `docker build`: значение уже проброшено в `Dockerfile` и `docker-compose.yml`.
+
+После авторизации (JWT в `localStorage` или `NEXT_PUBLIC_API_TOKEN`) приложение запросит разрешение на уведомления, получит FCM-токен и отправит его на бэкенд (`POST /api/v1/notifications/devices`). Тестовая отправка: `POST /api/v1/notifications/test`.
+
 ## Маршруты
 
 | Маршрут | Описание |

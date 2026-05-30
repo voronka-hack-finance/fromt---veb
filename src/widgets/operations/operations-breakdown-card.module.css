@@ -2,8 +2,8 @@
   background: #fff;
   border: 1px solid rgba(153, 153, 153, 0.4);
   border-radius: 32px;
-  overflow: hidden;
-  padding: 8px;
+  overflow: visible;
+  padding: 8px 8px 16px;
   width: 100%;
 }
 
@@ -14,70 +14,8 @@
   gap: 24px;
   margin: 0 auto;
   max-width: 339px;
+  min-width: 0;
   width: 100%;
-}
-
-.cardTop {
-  align-items: center;
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.periodToggle {
-  background: #f7f9fb;
-  border: 1px solid rgba(153, 153, 153, 0.4);
-  border-radius: 40px;
-  box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.1);
-  display: flex;
-  gap: 4px;
-  padding: 4px 5px;
-}
-
-.periodButton {
-  background: #f7f9fb;
-  border: none;
-  border-radius: 40px;
-  color: #1f1f1f;
-  cursor: pointer;
-  font-family: var(--font-heading), sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  line-height: 14px;
-  min-height: 42px;
-  min-width: 72px;
-  padding: 14px 24px;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease;
-}
-
-.periodButtonActive {
-  background: #1f1f1f;
-  color: #fff;
-}
-
-.viewControls {
-  align-items: center;
-  display: flex;
-  gap: 8px;
-}
-
-.viewButton {
-  align-items: center;
-  background: transparent;
-  border: none;
-  color: #8a8a8a;
-  cursor: pointer;
-  display: inline-flex;
-  height: 24px;
-  justify-content: center;
-  padding: 0;
-  width: 24px;
-}
-
-.viewButtonActive {
-  color: #1f1f1f;
 }
 
 .chartSection {
@@ -129,11 +67,18 @@
   width: 100%;
 }
 
-.gaugeStage {
+.gaugeChartWrap {
+  box-sizing: border-box;
   height: 142px;
-  margin: 0 auto;
+  margin-inline: auto;
   max-width: 315px;
   overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.gaugeStage {
+  height: 142px;
   position: relative;
   width: 100%;
 }
@@ -221,9 +166,10 @@
 
 .percentBubble {
   align-items: center;
-  background: #ece8fb;
+  background: #ece8fb url("/operations/breakdown/bubble-bg.svg") center / cover no-repeat;
   border: none;
   border-radius: 999px;
+  box-shadow: 0 2px 8px rgba(23, 23, 23, 0.08);
   color: #171717;
   cursor: pointer;
   display: inline-flex;
@@ -242,6 +188,7 @@
 
 .percentBubbleActive {
   box-shadow: 0 0 0 2px rgba(77, 188, 71, 0.45);
+  transform: translate(-50%, -50%) scale(1.06);
 }
 
 .percentBubble50 {
@@ -255,15 +202,15 @@
 }
 
 .percentBubble10 {
-  left: calc(50% - 130.63px);
+  left: calc(50% - 116px);
   top: calc(50% + 33px);
 }
 
 .legendGrid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 8px 6px;
-  justify-content: space-between;
+  grid-template-columns: repeat(2, 154px);
+  justify-content: center;
   max-width: 314px;
   width: 100%;
 }
@@ -273,20 +220,28 @@
   background: #f6f6f6;
   border: 1px solid transparent;
   border-radius: 20px;
+  box-sizing: border-box;
   cursor: pointer;
   display: flex;
   height: 35px;
   justify-content: center;
-  overflow: hidden;
-  padding: 0;
+  min-width: 0;
+  overflow: visible;
+  padding: 0 10px;
   transition:
     background-color 180ms ease,
     border-color 180ms ease;
+  width: 100%;
+}
+
+.legendItemGroceries {
+  grid-column: 1 / -1;
+  justify-self: center;
   width: 154px;
 }
 
 .legendItemWide {
-  padding: 8px 12px;
+  padding: 0 10px;
 }
 
 .legendItemActive {
@@ -297,8 +252,10 @@
 .legendContent {
   align-items: center;
   display: inline-flex;
-  gap: 8px;
+  gap: 6px;
   justify-content: center;
+  min-width: 0;
+  width: 100%;
 }
 
 .legendContentWide {
@@ -315,6 +272,7 @@
   font-weight: 500;
   gap: 5px;
   line-height: normal;
+  white-space: nowrap;
 }
 
 .legendDot {
@@ -325,19 +283,20 @@
 }
 
 .legendDotTransfers {
-  background: #4dbc47;
+  background: #4fb848;
 }
 
 .legendDotHotels {
-  background: #b2ff27;
+  background: #b5ff36;
 }
 
 .legendDotGroceries {
-  background: #d2d2d2;
+  background: #d4d4d4;
 }
 
 .legendItem strong {
   color: #404040;
+  flex-shrink: 0;
   font-family: var(--font-body), sans-serif;
   font-size: 16px;
   font-weight: 700;
@@ -345,12 +304,18 @@
 }
 
 @media (max-width: 360px) {
-  .legendItem {
-    width: calc(50% - 3px);
+  .legendGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 100%;
+  }
+
+  .legendLabel,
+  .legendItem strong {
+    font-size: 15px;
   }
 
   .percentBubble50 {
-    left: calc(50% + 78px);
+    left: calc(50% + 82px);
   }
 
   .percentBubble40 {
@@ -358,6 +323,7 @@
   }
 
   .percentBubble10 {
-    left: calc(50% - 112px);
+    left: calc(50% - 108px);
+    top: calc(50% + 30px);
   }
 }

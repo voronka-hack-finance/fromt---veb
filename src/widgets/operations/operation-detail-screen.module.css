@@ -1,0 +1,602 @@
+.stage {
+  background: #e9eeea;
+  min-height: 100%;
+}
+
+.shell {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 100%;
+  padding: 16px 16px calc(var(--mobile-nav-offset) + 16px);
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 56px minmax(0, 1fr);
+  padding: 48px 0 20px;
+}
+
+.iconButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: none;
+  border-radius: 50%;
+  color: #2f2f2f;
+  display: inline-flex;
+  height: 56px;
+  justify-content: center;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 56px;
+}
+
+.iconButton:hover,
+.iconButton:focus-visible {
+  background: rgba(248, 251, 249, 0.96);
+  transform: translateY(-1px);
+}
+
+.headerDate {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+  padding-right: 56px;
+  text-align: center;
+}
+
+.accountCard {
+  align-items: center;
+  background: #fff;
+  border-radius: 32px;
+  display: flex;
+  gap: 12px;
+  padding: 12px 24px;
+  width: 100%;
+}
+
+.accountLabel {
+  color: #000;
+  flex: 1;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountChip {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 100px;
+  color: #1f1f1f;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  gap: 4px;
+  padding: 12px;
+}
+
+.mainCard {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 14px 18px 16px 22px;
+  width: 100%;
+}
+
+.mainHeader {
+  align-items: flex-end;
+  display: flex;
+  gap: 9px;
+  width: 100%;
+}
+
+.mainInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.merchant {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.subInfo {
+  align-items: center;
+  color: #bdbdbd;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  gap: 4px;
+}
+
+.categoryIcon {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 50%;
+  color: #666;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 56px;
+  justify-content: center;
+  width: 56px;
+}
+
+.amountRow {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.amount {
+  color: #d85752;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 1.2;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.amountIncome {
+  color: #1d9e25;
+}
+
+.actionRow {
+  display: flex;
+  gap: 6px;
+  width: 100%;
+}
+
+.actionButton {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 100px;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 1;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  gap: 4px;
+  justify-content: center;
+  min-width: 0;
+  padding: 6px 18px 6px 6px;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.actionButton:hover,
+.actionButton:focus-visible {
+  background: rgba(255, 255, 255, 0.96);
+  transform: translateY(-1px);
+}
+
+.actionIconWrap {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border-radius: 50%;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.taxCard {
+  background: #fff;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow: hidden;
+  padding: 18px 12px;
+  position: relative;
+  width: 100%;
+}
+
+.taxBg {
+  height: 236px;
+  opacity: 0.3;
+  pointer-events: none;
+  position: absolute;
+  right: -12px;
+  top: 23px;
+  transform: rotate(2.26deg);
+  width: 171px;
+}
+
+.taxHeader {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  padding: 0 12px;
+  position: relative;
+  z-index: 1;
+}
+
+.taxTitleRow {
+  align-items: flex-end;
+  display: flex;
+  flex: 1;
+  gap: 4px;
+  min-width: 0;
+}
+
+.taxTitle {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.infoButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: none;
+  border-radius: 50%;
+  color: #666;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 22px;
+  justify-content: center;
+  padding: 0;
+  width: 22px;
+}
+
+.taxAmount {
+  align-items: center;
+  color: #1d9e25;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  gap: 6px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.taxBanner {
+  align-items: center;
+  backdrop-filter: blur(5px);
+  background: rgba(80, 184, 72, 0.03);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 36px;
+  display: flex;
+  gap: 12px;
+  padding: 12px 28px 12px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.taxBannerIcon {
+  align-items: center;
+  background: #a8dca3;
+  border-radius: 50%;
+  color: #fff;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.taxBannerText {
+  color: #000;
+  flex: 1;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 11px;
+  line-height: 1.35;
+  margin: 0;
+  min-width: 0;
+}
+
+.pastExpensesCard {
+  backdrop-filter: blur(4px);
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 12px 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.pastExpensesTitle {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  margin: 0;
+  padding-left: 12px;
+}
+
+.pastExpensesList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pastExpenseItem {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  padding: 4px 12px 8px 0;
+}
+
+.pastExpenseIcon {
+  align-items: center;
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 50%;
+  color: #666;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.pastExpenseInfo {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  padding-right: 8px;
+}
+
+.pastExpenseCategory {
+  color: #9b9b9b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  margin: 0;
+}
+
+.pastExpenseTitle {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pastExpenseAmount {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.howToButton {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 100px;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  gap: 4px;
+  justify-content: center;
+  padding: 12px;
+  position: relative;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 100%;
+  z-index: 1;
+}
+
+.howToButton:hover,
+.howToButton:focus-visible {
+  background: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.protectionCard {
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.25);
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow: hidden;
+  padding: 18px 24px 18px 16px;
+  position: relative;
+  width: 100%;
+}
+
+.protectionContent {
+  position: relative;
+  z-index: 1;
+}
+
+.protectionPlush {
+  height: 225px;
+  pointer-events: none;
+  position: absolute;
+  right: -40px;
+  top: -34px;
+  transform: rotate(-76deg);
+  width: 277px;
+}
+
+.protectionTitle {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0 0 12px;
+  max-width: 180px;
+  padding-left: 4px;
+}
+
+.protectionText {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 8px;
+  line-height: 12px;
+  margin: 0;
+  max-width: 180px;
+  padding-left: 4px;
+  white-space: pre-wrap;
+}
+
+.connectButton {
+  align-items: center;
+  background: #e1e1e1;
+  border: none;
+  border-radius: 100px;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  gap: 4px;
+  padding: 12px 12px 12px 16px;
+  position: relative;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  z-index: 1;
+}
+
+.connectButton:hover,
+.connectButton:focus-visible {
+  background: #d8d8d8;
+  transform: translateY(-1px);
+}
+
+.detailsCard {
+  background: #fff;
+  border-radius: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px 24px 18px 16px;
+  width: 100%;
+}
+
+.detailsTitle {
+  color: #000;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  margin: 0;
+  padding: 0 8px;
+}
+
+.detailsActions {
+  display: flex;
+  gap: 4px;
+  padding-top: 8px;
+  width: 100%;
+}
+
+.detailsActionButton {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 100px;
+  color: #1f1f1f;
+  cursor: pointer;
+  display: inline-flex;
+  flex: 1;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  gap: 4px;
+  justify-content: center;
+  min-width: 0;
+  padding: 12px 14px;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+}
+
+.detailsActionButton:hover,
+.detailsActionButton:focus-visible {
+  background: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+.sbpBlock {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(153, 153, 153, 0.15);
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 4px;
+  padding: 12px 16px;
+  width: 100%;
+}
+
+.sbpLabel {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 8px;
+  font-weight: 300;
+  margin: 0;
+  padding: 0 6px;
+}
+
+.sbpValue {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  margin: 0;
+  padding: 0 4px;
+  word-break: break-all;
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    max-width: 420px;
+    padding-top: 24px;
+  }
+
+  .header {
+    padding-top: 24px;
+  }
+}

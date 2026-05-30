@@ -7,6 +7,9 @@ RUN npm ci
 FROM node:22-alpine AS builder
 WORKDIR /app
 
+ARG NEXT_PUBLIC_FIREBASE_VAPID_KEY
+ENV NEXT_PUBLIC_FIREBASE_VAPID_KEY=$NEXT_PUBLIC_FIREBASE_VAPID_KEY
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 

@@ -1,0 +1,382 @@
+.stage {
+  background:
+    linear-gradient(90deg, rgba(64, 169, 61, 0.3) 0%, rgba(64, 169, 61, 0.3) 100%),
+    #e1e1e1;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  min-height: 100dvh;
+}
+
+.shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 0;
+  overflow: hidden;
+  width: 100%;
+}
+
+.header {
+  align-items: center;
+  background: #e1e1e1;
+  border-bottom: 1px solid rgba(153, 153, 153, 0.4);
+  display: flex;
+  flex-shrink: 0;
+  gap: 16px;
+  padding: 8px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.backButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: none;
+  border-radius: 100px;
+  color: #1c1b1b;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  transition:
+    transform 180ms ease,
+    background-color 180ms ease;
+  width: 44px;
+}
+
+.backButton:hover,
+.backButton:focus-visible {
+  background: rgba(235, 241, 236, 0.95);
+  transform: translateY(-1px);
+}
+
+.headerText {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.title {
+  color: #171717;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22.5px;
+  margin: 0;
+}
+
+.subtitle {
+  color: #40a93d;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 18px;
+  margin: 0;
+}
+
+.messages {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 8px 16px;
+}
+
+.dateSeparatorWrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.dateSeparator {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  color: #999999;
+  font-family: var(--font-body), sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16.5px;
+  padding: 3px 16px;
+}
+
+.messageBlock {
+  display: flex;
+  flex-direction: column;
+  padding-top: 16px;
+  width: 100%;
+}
+
+.messageBlockTight {
+  padding-top: 12px;
+}
+
+.messageRow {
+  display: flex;
+  width: 100%;
+}
+
+.messageRowUser {
+  justify-content: flex-end;
+}
+
+.stepsCard {
+  background: #ffffff;
+  border-radius: 16px 16px 16px 6px;
+  box-shadow: 0 1px 1.5px rgba(15, 23, 42, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 16px;
+  width: 100%;
+}
+
+.stepRow {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  width: 100%;
+}
+
+.stepBadge {
+  align-items: center;
+  background: rgba(95, 226, 116, 0.35);
+  border: 1px solid transparent;
+  border-radius: 41px;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 50px;
+  justify-content: center;
+  min-width: 50px;
+  padding: 12px;
+}
+
+.stepNumber {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 1;
+  margin: 0;
+}
+
+.stepText {
+  color: #262626;
+  flex: 1;
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.25px;
+  margin: 0;
+}
+
+.stepTitle {
+  color: #40a93d;
+}
+
+.bubble {
+  max-width: 255px;
+  padding: 12px 16px;
+}
+
+.bubbleBot {
+  background: #ffffff;
+  border-radius: 16px 16px 16px 6px;
+  box-shadow: 0 1px 1.5px rgba(15, 23, 42, 0.06);
+}
+
+.bubbleUser {
+  background: linear-gradient(166deg, #38b334 0%, #58d16b 100%);
+  border-radius: 16px 16px 6px 16px;
+}
+
+.bubbleText {
+  font-family: var(--font-body), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 19.25px;
+  margin: 0;
+}
+
+.bubbleTextBot {
+  color: #262626;
+  white-space: pre-wrap;
+}
+
+.bubbleTextUser {
+  color: #ffffff;
+}
+
+.timestamp {
+  color: #999999;
+  font-family: var(--font-body), sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 16.5px;
+  margin: 4px 0 0;
+  padding: 0 4px;
+}
+
+.timestampUser {
+  text-align: right;
+}
+
+.suggestions {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 40px;
+  width: 100%;
+}
+
+.suggestionButton {
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  border-radius: 999px;
+  color: #404040;
+  cursor: pointer;
+  font-family: var(--font-body), sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 19.5px;
+  padding: 5px 16px;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
+  white-space: nowrap;
+}
+
+.suggestionButton:hover,
+.suggestionButton:focus-visible {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-1px);
+}
+
+.inputBar {
+  background: #ffffff;
+  bottom: 0;
+  box-shadow: 0 -1px 0 rgba(15, 23, 42, 0.06);
+  flex-shrink: 0;
+  padding: 12px 16px 32px;
+  position: sticky;
+  width: 100%;
+  z-index: 10;
+}
+
+.inputRow {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.textInput {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 16px;
+  color: #1f1f1f;
+  flex: 1;
+  font-family: var(--font-body), sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: normal;
+  min-width: 0;
+  outline: none;
+  padding: 12px 16px;
+}
+
+.textInput::placeholder {
+  color: #a1a1a1;
+}
+
+.sendButton {
+  align-items: center;
+  background: #40a93d;
+  border: none;
+  border-radius: 16px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  height: 44px;
+  justify-content: center;
+  opacity: 0.4;
+  transition:
+    opacity 180ms ease,
+    transform 180ms ease;
+  width: 44px;
+}
+
+.sendButtonActive {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.sendButtonActive:hover,
+.sendButtonActive:focus-visible {
+  transform: translateY(-1px);
+}
+
+.bubbleTyping {
+  min-width: 56px;
+  padding: 14px 18px;
+}
+
+.typingDots {
+  align-items: center;
+  display: inline-flex;
+  gap: 4px;
+}
+
+.typingDots span {
+  animation: typingPulse 1.2s ease-in-out infinite;
+  background: #999999;
+  border-radius: 50%;
+  display: block;
+  height: 6px;
+  width: 6px;
+}
+
+.typingDots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.typingDots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes typingPulse {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+
+  40% {
+    opacity: 1;
+    transform: translateY(-2px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .stage {
+    height: calc(100vh - 64px - 28px);
+    min-height: calc(100vh - 64px - 28px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .shell {
+    max-width: 420px;
+  }
+}

@@ -4,19 +4,22 @@
 }
 
 .shell {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   margin: 0 auto;
   max-width: 390px;
   min-height: 100vh;
-  padding: 8px 16px 40px;
+  padding: 52px 16px 32px;
   position: relative;
+  width: 100%;
 }
 
 .header {
   align-items: center;
   display: flex;
   gap: 16px;
+  padding-top: 8px;
 }
 
 .backButton {
@@ -270,21 +273,7 @@
 }
 
 .homeIndicatorArea {
-  height: 34px;
-  margin-top: 24px;
-  position: relative;
-  width: 100%;
-}
-
-.homeIndicator {
-  background: #1a1a1a;
-  border-radius: 100px;
-  bottom: 8px;
-  height: 5px;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
-  width: 134px;
+  display: none;
 }
 
 @media (max-width: 360px) {
@@ -318,27 +307,14 @@
 
 @media (max-width: 340px) {
   .shell {
-    padding-inline: 10px;
+    padding-inline: 12px;
   }
 
-  .summaryTop,
+  .summaryTop {
+    gap: 12px;
+  }
+
   .subscriptionRow {
-    flex-direction: column;
-  }
-
-  .summaryRight,
-  .subscriptionPriceBlock {
-    text-align: left;
-  }
-
-  .summaryValue,
-  .subscriptionPrice,
-  .subscriptionTotal {
-    white-space: normal;
-  }
-
-  .subscriptionPriceBlock {
-    align-items: flex-start;
-    gap: 6px;
+    gap: 8px;
   }
 }

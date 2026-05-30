@@ -1,6 +1,8 @@
 # Заначка (front-hack29)
 
-Мобильный финансовый дашборд на `Next.js 15`, собранный по Figma-макету. Проект показывает сценарий клиентского интерфейса с акцентом на визуальную подачу: карточки баланса, категории, инвестиции, операции, цели, прогнозы и анимированные графики.
+Адаптивный финансовый дашборд на `Next.js 15`, собранный по Figma-макету. Проект показывает сценарий клиентского интерфейса с акцентом на визуальную подачу: карточки баланса, категории, инвестиции, операции, цели, прогнозы, AI-рекомендации и анимированные графики.
+
+На ширине **≥ 1200px** отображается desktop-версия с боковым меню; на меньших экранах — мобильный layout с нижней навигацией.
 
 ## Стек
 
@@ -75,26 +77,50 @@ npm run lint     # ESLint
 
 | Маршрут | Описание |
 |---|---|
-| `/` | Главная панель дашборда |
-| `/total` | Экран общего баланса |
+| `/` | Главная панель дашборда (mobile + desktop preview) |
+| `/budget` | Desktop-экран «Основной бюджет» |
+| `/total` | Экран общего баланса / «Нагрузка» |
 | `/income` | Экран доходов |
 | `/investments` | Экран инвестиций |
 | `/operations` | Операции с разбивкой по категориям |
 | `/operations/trends` | Тренды по операциям (line chart) |
 | `/operations/bars` | Bar-chart представление операций |
 | `/categories` | Экран категорий расходов |
+| `/categories/new` | Создание новой категории |
+| `/categories/[categoryId]` | Детальная карточка категории |
 | `/goals` | Мои цели — прогресс накоплений |
+| `/recommendations` | AI-рекомендации (desktop) |
+| `/subscriptions` | Подписки (desktop) |
 
-### Нижняя навигация
+### Навигация
 
-На части экранов отображается `MobileTabNav` с четырьмя вкладками:
+#### Мобильная (`BottomNav`)
+
+На части экранов отображается нижняя панель с четырьмя вкладками:
 
 - **Главная** → `/`
 - **История** → `/operations/trends`
 - **Мои цели** → `/goals`
 - **Категории** → `/categories`
 
-Навигация также показывается на `/total` и внутри раздела `/operations/*`.
+Панель также показывается на `/total`, `/recommendations` и внутри раздела `/operations/*`.
+
+#### Desktop (`DesktopSidebar`)
+
+На ширине ≥ 1200px большинство экранов переключаются на desktop-layout с боковым меню:
+
+- **Главная** (раскрывающийся блок):
+  - Основной бюджет → `/budget`
+  - Доходы и расходы → `/operations`
+  - Остаток от дохода → `/income`
+  - Инвестиции → `/investments`
+  - Нагрузка → `/total`
+- **Категории** → `/categories`
+- **Цели** → `/goals`
+- **Счета** → `/total`
+- **AI Рекомендации** → `/recommendations`
+
+Конфигурация пунктов меню — в `src/shared/ui/desktop-sidebar/desktop-sidebar-config.ts`.
 
 ## Экраны и виджеты
 
@@ -106,23 +132,32 @@ npm run lint     # ESLint
 - `AssistantCard` — блок ассистента
 - `OperationsCard`, `IncomeStatCard`, `InvestmentStatCard` — метрики
 - `RecurringExpensesCard` — регулярные расходы
-- `ForecastCard` — прогноз доходов и расходов
+- `ForecastCard` / `ForecastLineChart` — прогноз доходов и расходов
 - `CreditLoadCard` — кредитная нагрузка
 - `CategoriesCard` — превью категорий
+- `DesktopDashboard` — desktop-версия главной (календарь операций, метрики, график)
+- `BudgetDashboard` — экран «Основной бюджет» (`/budget`): sparkline, runway, защита бюджета
 
 ### Операции
 
-- `operations-breakdown-card` — круговая разбивка по категориям с переключением периода
+- `operations-screen` — разбивка по категориям с переключением периода
 - `operations-trends-screen` — линейный график трендов
 - `operations-bars-screen` — столбчатый график
 
+### Категории
+
+- `categories-screen` / `desktop-categories-screen` — список категорий с radar-chart
+- `create-category-screen` — форма создания категории (`/categories/new`)
+- `category-detail-screen` — детализация категории с лимитом и операциями
+
 ### Остальные экраны
 
-- `total-balance-screen` — детализация общего баланса
+- `total-balance-screen` / `desktop-total-balance-screen` — общий баланс
 - `income-balance-screen` — экран доходов
-- `investments-balance-screen` — экран инвестиций
-- `categories-screen` — radar-chart категорий
-- `goals-screen` — список финансовых целей
+- `investments-balance-screen` / `desktop-investments-screen` — инвестиции, достижения, график переводов
+- `goals-screen` / `desktop-goals-screen` — финансовые цели
+- `recommendations-screen` — AI-агенты и рекомендации
+- `subscriptions-screen` — управление подписками
 
 ## Структура проекта
 
@@ -137,7 +172,13 @@ src/
     ├── lib/          # форматтеры, chart-утилиты, хуки
     ├── providers/    # QueryProvider
     ├── types/        # общие типы домена
-    └── ui/           # UI-примитивы (Reveal, UserAvatar, QueryBoundary)
+    └── ui/           # UI-примитивы и desktop-оболочка
+        ├── app-brand/
+        ├── desktop-app-header/
+        ├── desktop-sidebar/
+        ├── query-state/   # QueryBoundary, QueryLoading, QueryError
+        ├── reveal/
+        └── user-avatar/
 ```
 
 ### API-слой (`src/shared/api/`)
@@ -150,12 +191,14 @@ src/
 | `operations.ts` | `useOperationsBarsQuery()` | Bar chart |
 | `categories.ts` | `useCategoriesQuery()` | Категории + ассеты |
 | `goals.ts` | `useGoalsQuery()` | Финансовые цели |
+| `recommendations.ts` | `useRecommendationsQuery()` | AI-рекомендации и агенты |
+| `subscriptions.ts` | `useSubscriptionsQuery()` | Подписки |
 | `total-balance.ts` | `useTotalBalanceQuery()` | Общий баланс |
 | `income-balance.ts` | `useIncomeBalanceQuery()` | Доходы |
 | `investments-balance.ts` | `useInvestmentsBalanceQuery()` | Инвестиции |
 | `assets.ts` | `useAssetsQuery()` | Аватар и иконки |
 
-Общие утилиты: `client.ts` (`apiRequest`, `mockDelay`), `query-keys.ts`.
+Общие утилиты: `client.ts` (`apiRequest`, `mockDelay`), `query-keys.ts`, `dashboard-context.tsx` (`DashboardDataProvider`).
 
 ### Mock-данные (`src/shared/data/`)
 
@@ -169,8 +212,12 @@ src/
 | `operations-trends.ts` | Точки для line chart |
 | `operations-bars.ts` | Данные для bar chart |
 | `categories.ts` | Категории расходов |
+| `category-details.ts` | Детализация категории (лимит, операции) |
+| `create-category.ts` | Данные формы создания категории |
 | `goals.ts` | Финансовые цели |
-| `assets.ts` | Активы |
+| `recommendations.ts` | AI-агенты и рекомендации |
+| `subscriptions.ts` | Подписки |
+| `assets.ts` | Активы и иконки |
 
 ### Утилиты и хуки (`src/shared/lib/`)
 
@@ -189,8 +236,15 @@ src/
 3. `widget` вызывает `use*Query()` из `src/shared/api/`.
 4. API-функция (`fetchDashboard` и др.) возвращает mock из `shared/data/` или реальный ответ с бэка.
 5. `QueryBoundary` / `QueryLoading` / `QueryError` обрабатывают loading и ошибки.
-6. На главной дашборд-данные пробрасываются через `DashboardDataProvider`.
-7. Локальный UI-стейт (период, фильтр) остаётся в `useState` внутри виджетов.
+6. На главной и бюджете дашборд-данные пробрасываются через `DashboardDataProvider`.
+7. Локальный UI-стейт (период, фильтр, таб) остаётся в `useState` внутри виджетов.
+
+### Адаптивность
+
+Большинство экранов используют паттерн `desktopShell` / `mobileShell`:
+
+- **≥ 1200px** — desktop-layout с `DesktopSidebar`, `DesktopAppHeader` или `DesktopSidebarLayout`
+- **< 1200px** — мобильный layout с `AppTopBar` и нижней навигацией
 
 ## Технические детали
 
@@ -206,6 +260,7 @@ src/
 - Экранную композицию держите в `src/views`.
 - Сложные визуальные блоки выносите в `src/widgets`.
 - Демо-данные добавляйте в `src/shared/data/`, а виджеты подключайте через новый `fetch*` + `use*Query` в `src/shared/api/`.
+- Для desktop-экранов используйте `DesktopSidebarLayout` или связку `DesktopSidebar` + `DesktopAppHeader`.
 - Для реального бэка задайте `NEXT_PUBLIC_API_URL` и замените mock-реализацию в API-модулях.
 
 ## Roadmap

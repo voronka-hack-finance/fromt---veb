@@ -49,11 +49,11 @@ function MobileDashboardContent() {
 
               <div className={styles.metricsGroup}>
                 <div className={styles.statsRow}>
-                  <Reveal delay={0.14}>
+                  <Reveal className={styles.statsCell} delay={0.14}>
                     <InvestmentStatCard />
                   </Reveal>
 
-                  <Reveal delay={0.17}>
+                  <Reveal className={styles.statsCell} delay={0.17}>
                     <IncomeStatCard />
                   </Reveal>
                 </div>

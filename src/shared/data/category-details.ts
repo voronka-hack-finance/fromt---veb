@@ -1,6 +1,8 @@
-import { categoriesScreenData } from "./categories";
-
-type Category = (typeof categoriesScreenData.categories)[number];
+type Category = {
+  id: string;
+  spent: number;
+  total: number;
+};
 
 type DetailItem = {
   amount: number;

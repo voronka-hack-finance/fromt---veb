@@ -11,7 +11,7 @@ import styles from "./stat-cards.module.css";
 
 const assets = {
   detailArrow: "/dashboard/stat-cards/detail-arrow.svg",
-  trendUp: "/dashboard/stat-cards/trend-up.png",
+  trendUp: "/dashboard/stat-cards/trend-up.svg",
 } as const;
 
 export function InvestmentStatCard() {

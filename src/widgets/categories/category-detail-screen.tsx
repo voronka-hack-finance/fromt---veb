@@ -34,7 +34,7 @@ function DesktopCategoryDetailContent({
   data: CategoriesResponse;
 }) {
   const category = data.screen.categories.find((item) => item.id === categoryId) ?? data.screen.categories[0];
-  const details = getCategoryDetailData(category);
+  const details = data.detailsById?.[category.id] ?? getCategoryDetailData(category);
   const progress = details.limit.spent / details.limit.total;
   const chartStyle = { "--progress-angle": `${progress * 360}deg` } as CSSProperties;
 
@@ -175,7 +175,7 @@ function MobileCategoryDetailContent({
   data: CategoriesResponse;
 }) {
   const category = data.screen.categories.find((item) => item.id === categoryId) ?? data.screen.categories[0];
-  const details = getCategoryDetailData(category);
+  const details = data.detailsById?.[category.id] ?? getCategoryDetailData(category);
   const progress = details.limit.spent / details.limit.total;
   const chartStyle = { "--progress-angle": `${progress * 360}deg` } as CSSProperties;
 

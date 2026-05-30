@@ -13,7 +13,7 @@ export type TransfersChartPoint = {
 };
 
 type InvestmentsTransfersChartProps = {
-  points: TransfersChartPoint[];
+  points: ReadonlyArray<TransfersChartPoint>;
 };
 
 const TRACK_HEIGHT = 112;

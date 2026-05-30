@@ -15,7 +15,7 @@ const chartHeight = 112;
 const chartPadding = { top: 8, right: 14, bottom: 8, left: 6 };
 
 type BalanceSparklineProps = {
-  points: ForecastPoint[];
+  points: ReadonlyArray<ForecastPoint>;
   defaultActiveIndex?: number;
 };
 

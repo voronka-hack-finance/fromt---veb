@@ -24,7 +24,7 @@ const chartSizes = {
 } as const;
 
 type ForecastLineChartProps = {
-  points: ForecastPoint[];
+  points: ReadonlyArray<ForecastPoint>;
   activeIndex: number;
   onActiveIndexChange: (index: number) => void;
   variant?: keyof typeof chartSizes;

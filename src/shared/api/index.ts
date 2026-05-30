@@ -1,5 +1,14 @@
 export { ApiError, apiRequest, mockDelay } from "./client";
+export {
+  clearStoredAuthTokens,
+  getAccessToken,
+  getApiBaseUrl,
+  getRefreshToken,
+  hasStoredAccessToken,
+  storeAuthTokens,
+} from "./client";
 export { queryKeys } from "./query-keys";
+export * from "./backend";
 
 export { fetchAssets, useAssetsQuery, type AssetsResponse } from "./assets";
 export {

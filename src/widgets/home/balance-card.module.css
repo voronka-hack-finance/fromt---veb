@@ -25,7 +25,7 @@
 .topRow {
   align-items: center;
   display: flex;
-  gap: 30px;
+  gap: clamp(12px, 4vw, 30px);
   padding: 0 8px;
   position: relative;
   width: 100%;
@@ -39,16 +39,17 @@
   border-radius: 100px;
   display: inline-flex;
   flex-shrink: 0;
-  height: 52px;
+  height: clamp(44px, 12vw, 52px);
   justify-content: center;
-  padding: 14px;
-  width: 52px;
+  padding: clamp(10px, 3vw, 14px);
+  width: clamp(44px, 12vw, 52px);
 }
 
 .titleRow {
   align-items: center;
   display: flex;
   flex: 1;
+  gap: 8px;
   justify-content: space-between;
   min-width: 0;
 }
@@ -56,11 +57,11 @@
 .title {
   color: #000;
   font-family: var(--font-heading), sans-serif;
-  font-size: 20px;
+  font-size: clamp(16px, 4.5vw, 20px);
   font-weight: 500;
   line-height: 1.25;
   margin: 0;
-  white-space: nowrap;
+  min-width: 0;
 }
 
 .actionButton {
@@ -70,12 +71,12 @@
   border-radius: 100px;
   display: inline-flex;
   flex-shrink: 0;
-  height: 52px;
+  height: clamp(44px, 12vw, 52px);
   justify-content: center;
-  padding: 14px;
+  padding: clamp(10px, 3vw, 14px);
   text-decoration: none;
   transition: transform 180ms ease;
-  width: 52px;
+  width: clamp(44px, 12vw, 52px);
 }
 
 .actionButton:hover,
@@ -85,21 +86,21 @@
 
 .icon24 {
   display: block;
-  height: 24px;
-  width: 24px;
+  height: clamp(20px, 5.5vw, 24px);
+  width: clamp(20px, 5.5vw, 24px);
 }
 
 .amountRow,
 .amountButton {
-  align-items: center;
+  align-items: baseline;
   display: flex;
   font-family: var(--font-heading), sans-serif;
-  font-size: 36px;
+  font-size: clamp(26px, 8.5vw, 36px);
   font-weight: 500;
   justify-content: center;
-  letter-spacing: -1.44px;
-  line-height: 44px;
-  padding: 0 16px;
+  letter-spacing: -0.04em;
+  line-height: 1.1;
+  padding: 0 12px;
   position: relative;
   white-space: nowrap;
   width: 100%;
@@ -125,6 +126,7 @@
 
 .amountFraction {
   color: #999;
+  font-size: clamp(22px, 7vw, 36px);
 }
 
 .bankSection {
@@ -132,7 +134,7 @@
   flex-direction: column;
   gap: 8px;
   justify-content: center;
-  padding: 0 24px 16px;
+  padding: 0 clamp(16px, 4vw, 24px) 16px;
   position: relative;
   width: 100%;
   z-index: 1;
@@ -145,7 +147,6 @@
   font-weight: 400;
   line-height: 1.25;
   margin: 0;
-  white-space: nowrap;
 }
 
 .bankList {
@@ -204,55 +205,10 @@
 
 @media (max-width: 360px) {
   .topRow {
-    gap: 14px;
-    padding-inline: 6px;
-  }
-
-  .walletButton,
-  .actionButton {
-    height: 48px;
-    padding: 12px;
-    width: 48px;
-  }
-
-  .amountRow,
-  .amountButton {
-    font-size: clamp(28px, 8.8vw, 32px);
-    letter-spacing: -0.04em;
-    line-height: 1.15;
-    padding-inline: 12px;
-  }
-
-  .title {
-    font-size: 18px;
-    white-space: normal;
+    padding-inline: 4px;
   }
 
   .bankSection {
-    padding: 0 16px 16px;
-  }
-
-  .bankSectionTitle {
-    white-space: normal;
-  }
-}
-
-@media (max-width: 340px) {
-  .topRow {
-    align-items: flex-start;
-  }
-
-  .titleRow {
-    gap: 8px;
-  }
-
-  .amountRow,
-  .amountButton {
-    font-size: 26px;
-    white-space: normal;
-  }
-
-  .bankChipText {
-    white-space: normal;
+    padding-bottom: 14px;
   }
 }

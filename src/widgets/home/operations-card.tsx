@@ -20,6 +20,9 @@ export function OperationsCard() {
   const { dashboard } = useDashboardData();
   const receiptsParts = formatCurrencyParts(dashboard.receipts);
   const expensesParts = formatCurrencyParts(dashboard.expenses);
+  const operationsTotal = dashboard.receipts + dashboard.expenses;
+  const incomeBarRatio = operationsTotal > 0 ? dashboard.receipts / operationsTotal : 0.5;
+  const expenseBarRatio = operationsTotal > 0 ? dashboard.expenses / operationsTotal : 0.5;
 
   const openOperations = () => router.push("/operations");
 
@@ -79,21 +82,10 @@ export function OperationsCard() {
         >
           <div className={styles.metricBlock}>
             <span className={styles.metricLabel}>Поступления</span>
-            <div className={styles.incomeValue}>
+            <div className={styles.metricValue}>
               <span>{receiptsParts.whole}</span>
               <span className={styles.valueFraction}>,{receiptsParts.fraction} ₽</span>
             </div>
-          </div>
-
-          <div className={styles.barRow}>
-            <span className={styles.barDivider} />
-            <motion.span
-              animate={{ scaleX: 1 }}
-              className={styles.incomeBar}
-              initial={{ scaleX: 0 }}
-              style={{ transformOrigin: "left center" }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            />
           </div>
         </button>
 
@@ -108,23 +100,31 @@ export function OperationsCard() {
         >
           <div className={styles.metricBlock}>
             <span className={styles.metricLabel}>Расходы</span>
-            <div className={styles.expenseValue}>
+            <div className={styles.metricValue}>
               <span>{expensesParts.whole}</span>
               <span className={styles.valueFraction}>,{expensesParts.fraction} ₽</span>
             </div>
           </div>
-
-          <div className={styles.barRow}>
-            <span className={styles.barDividerOverlap} />
-            <motion.span
-              animate={{ scaleX: 1 }}
-              className={styles.expenseBar}
-              initial={{ scaleX: 0 }}
-              style={{ transformOrigin: "left center" }}
-              transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            />
-          </div>
         </button>
+
+        <div aria-hidden className={styles.barRow}>
+          <span className={styles.barDivider} />
+          <motion.span
+            animate={{ scaleX: 1 }}
+            className={styles.incomeBar}
+            initial={{ scaleX: 0 }}
+            style={{ flex: incomeBarRatio, transformOrigin: "left center" }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          />
+          <span className={styles.barDividerOverlap} />
+          <motion.span
+            animate={{ scaleX: 1 }}
+            className={styles.expenseBar}
+            initial={{ scaleX: 0 }}
+            style={{ flex: expenseBarRatio, transformOrigin: "left center" }}
+            transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          />
+        </div>
       </div>
     </section>
   );

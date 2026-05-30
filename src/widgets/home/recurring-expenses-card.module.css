@@ -1,13 +1,13 @@
 .card {
   background: #fff;
   border: 1px solid rgba(153, 153, 153, 0.4);
-  border-radius: 28px;
+  border-radius: 24px;
   color: inherit;
   display: flex;
   flex-direction: column;
   gap: 10px;
   overflow: hidden;
-  padding: 12px 20px;
+  padding: clamp(12px, 3.5vw, 16px) clamp(14px, 4vw, 20px);
   text-align: left;
   width: 100%;
 }
@@ -15,18 +15,20 @@
 .headerRow {
   align-items: center;
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   width: 100%;
 }
 
 .title {
   color: #000;
+  flex: 1;
   font-family: var(--font-heading), sans-serif;
-  font-size: 18px;
+  font-size: clamp(16px, 4.2vw, 18px);
   font-weight: 400;
   line-height: normal;
   margin: 0;
-  max-width: 200px;
+  min-width: 0;
 }
 
 .actionButton {
@@ -38,7 +40,7 @@
   display: inline-flex;
   flex-shrink: 0;
   justify-content: center;
-  padding: 12px;
+  padding: clamp(10px, 2.8vw, 12px);
   transition:
     transform 180ms ease,
     box-shadow 180ms ease;
@@ -52,13 +54,14 @@
 
 .actionIcon {
   display: block;
-  height: 20px;
-  width: 20px;
+  height: clamp(18px, 4.8vw, 20px);
+  width: clamp(18px, 4.8vw, 20px);
 }
 
 .footerRow {
   align-items: center;
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   width: 100%;
 }
@@ -66,8 +69,9 @@
 .meta {
   align-items: center;
   display: flex;
-  flex-shrink: 0;
+  flex: 1;
   gap: 2px;
+  min-width: 0;
 }
 
 .icons {
@@ -104,9 +108,10 @@
 .categories {
   color: #979ba3;
   font-family: var(--font-heading), sans-serif;
-  font-size: 12px;
+  font-size: clamp(11px, 2.8vw, 12px);
   font-weight: 500;
   line-height: normal;
+  min-width: 0;
   white-space: nowrap;
 }
 
@@ -114,34 +119,8 @@
   color: #000;
   flex-shrink: 0;
   font-family: var(--font-heading), sans-serif;
-  font-size: 20px;
+  font-size: clamp(16px, 4.8vw, 20px);
   font-weight: 400;
   line-height: normal;
   white-space: nowrap;
-}
-
-@media (max-width: 360px) {
-  .card {
-    padding-inline: 16px;
-  }
-
-  .title {
-    font-size: 16px;
-  }
-}
-
-@media (max-width: 340px) {
-  .card {
-    padding: 12px 14px;
-  }
-
-  .footerRow {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .categories {
-    white-space: normal;
-  }
 }

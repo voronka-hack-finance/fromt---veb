@@ -21,6 +21,7 @@
 .header {
   align-items: center;
   display: flex;
+  gap: 8px;
   justify-content: space-between;
   width: 100%;
 }
@@ -28,7 +29,9 @@
 .titleGroup {
   align-items: center;
   display: flex;
+  flex: 1;
   gap: 16px;
+  min-width: 0;
 }
 
 .iconChipPrimary {
@@ -51,11 +54,11 @@
 .title {
   color: #1f1f1f;
   font-family: var(--font-heading), sans-serif;
-  font-size: 18px;
+  font-size: clamp(16px, 4.2vw, 18px);
   font-weight: 400;
   line-height: normal;
+  min-width: 0;
   padding-bottom: 2px;
-  white-space: nowrap;
 }
 
 .actions {
@@ -92,9 +95,9 @@
 }
 
 .summary {
-  align-items: flex-start;
-  display: flex;
+  display: grid;
   gap: 12px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   width: 100%;
 }
 
@@ -104,10 +107,8 @@
   border: none;
   color: inherit;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  justify-content: flex-start;
+  display: block;
+  min-width: 0;
   padding: 0;
   text-align: left;
   transition: opacity 180ms ease;
@@ -118,16 +119,6 @@
 .incomeColumn:focus-visible,
 .expenseColumn:focus-visible {
   opacity: 0.88;
-}
-
-.incomeColumn {
-  flex-shrink: 0;
-  width: 185px;
-}
-
-.expenseColumn {
-  flex: 1;
-  min-width: 0;
 }
 
 .metricBlock {
@@ -143,39 +134,31 @@
   font-size: 8px;
   font-weight: 400;
   line-height: normal;
-  white-space: nowrap;
 }
 
-.incomeValue,
-.expenseValue {
+.metricValue {
+  align-items: baseline;
   color: #1f1f1f;
   display: flex;
   font-family: var(--font-heading), sans-serif;
+  font-size: clamp(13px, 3.6vw, 18px);
   font-weight: 400;
+  gap: 0;
   line-height: 1.15;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  min-width: 0;
   white-space: nowrap;
-}
-
-.incomeValue {
-  font-size: 16px;
-}
-
-.expenseValue {
-  font-size: 18px;
-  gap: 4px;
 }
 
 .valueFraction {
   color: #999;
-  font-size: 16px;
+  font-size: clamp(12px, 3.2vw, 16px);
 }
 
 .barRow {
-  align-items: flex-end;
+  align-items: stretch;
   display: flex;
+  grid-column: 1 / -1;
+  height: 36px;
   isolation: isolate;
   width: 100%;
 }
@@ -183,14 +166,12 @@
 .barDivider {
   background: #999;
   flex-shrink: 0;
-  height: 44px;
   width: 1px;
 }
 
 .barDividerOverlap {
   background: #999;
   flex-shrink: 0;
-  height: 44px;
   margin-right: -1px;
   position: relative;
   width: 1px;
@@ -199,9 +180,8 @@
 
 .incomeBar {
   background: #40a93d;
-  border-radius: 12px;
+  border-radius: 12px 0 0 12px;
   flex: 1;
-  height: 36px;
   min-width: 0;
 }
 
@@ -214,52 +194,47 @@
       rgba(236, 236, 236, 1) 7px,
       rgba(236, 236, 236, 1) 13px
     );
-  border-radius: 12px;
+  border-radius: 0 12px 12px 0;
   flex: 1;
-  height: 36px;
   min-width: 0;
   z-index: 1;
 }
 
 @media (max-width: 360px) {
-  .incomeColumn {
-    width: 168px;
+  .card {
+    gap: 24px;
+    padding: 14px;
   }
 
   .titleGroup {
     gap: 12px;
   }
 
-  .incomeValue,
-  .expenseValue,
-  .valueFraction {
-    font-size: 14px;
+  .iconChipPrimary {
+    padding: 10px;
+  }
+
+  .barRow {
+    height: 32px;
   }
 }
 
 @media (max-width: 340px) {
   .card {
-    gap: 24px;
-    padding: 14px;
+    gap: 20px;
+    padding: 12px;
   }
 
-  .header {
-    align-items: flex-start;
-    gap: 10px;
+  .iconButton {
+    padding: 8px;
   }
 
-  .summary {
-    align-items: stretch;
-    flex-direction: column;
-    gap: 16px;
+  .icon20 {
+    height: 18px;
+    width: 18px;
   }
 
-  .incomeColumn,
-  .expenseColumn {
-    width: 100%;
-  }
-
-  .title {
-    white-space: normal;
+  .metricLabel {
+    font-size: 7px;
   }
 }

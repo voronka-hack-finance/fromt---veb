@@ -13,11 +13,13 @@
 }
 
 .phoneFrame {
+  box-sizing: border-box;
   margin: 0 auto;
   max-width: 390px;
   min-height: 100vh;
   padding: 60px 16px var(--mobile-nav-offset);
   position: relative;
+  width: 100%;
 }
 
 .pageGlow {
@@ -89,17 +91,18 @@
 .metricsGroup {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 12px;
 }
 
 .statsRow {
   align-items: stretch;
   display: grid;
-  gap: 8px;
+  gap: 10px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.statsRow > * {
+.statsCell {
+  display: flex;
   min-width: 0;
 }
 
@@ -121,13 +124,6 @@
   transform: translateY(-2px);
 }
 
-@media (max-width: 399px) {
-  .page {
-    border-radius: 30px;
-    padding-inline: 12px;
-  }
-}
-
 @media (min-width: 1024px) {
   .desktopShell {
     display: block;
@@ -146,11 +142,6 @@
   .sections {
     gap: 18px;
   }
-
-  .statsRow {
-    gap: 6px;
-  }
-
 }
 
 @media (max-width: 340px) {
@@ -160,9 +151,5 @@
 
   .sections {
     gap: 16px;
-  }
-
-  .statsRow {
-    grid-template-columns: 1fr;
   }
 }

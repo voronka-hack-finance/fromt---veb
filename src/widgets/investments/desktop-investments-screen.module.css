@@ -77,6 +77,7 @@
 }
 
 .shell {
+  align-items: stretch;
   display: grid;
   flex: 1;
   gap: 26px;
@@ -172,13 +173,16 @@
 
 .content {
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-height: 0;
   min-width: 0;
-  overflow: hidden;
+  overflow: auto;
+  padding-right: 6px;
 }
 
 .rightPanelActions {
+  align-self: stretch;
   box-sizing: border-box;
   flex-shrink: 0;
   max-width: 100%;
@@ -187,10 +191,10 @@
 }
 
 .contentGrid {
+  align-items: stretch;
   display: grid;
-  flex: 1;
   gap: 20px;
-  grid-template-columns: minmax(0, 1fr) minmax(360px, 547px);
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 547px);
   min-height: 0;
 }
 
@@ -203,16 +207,23 @@
   min-width: 0;
 }
 
+.leftColumn > :last-child {
+  margin-top: auto;
+}
+
 .rightColumn {
-  max-height: calc(100vh - 200px);
   min-width: 0;
 }
 
 .metricCard,
 .calendarCard,
 .protectionCard {
-  background: rgba(255, 255, 255, 0.94);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 15px;
+}
+
+.calendarCard,
+.protectionCard {
   box-shadow: 0 14px 30px rgba(32, 40, 62, 0.06);
 }
 
@@ -310,85 +321,110 @@
 }
 
 .metricsRow {
-  display: grid;
+  align-items: stretch;
+  display: flex;
   gap: 20px;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr) 109px;
+}
+
+.metricCard,
+.accentCard {
+  align-self: stretch;
+  box-sizing: border-box;
+  min-height: 156px;
+}
+
+.metricsRow .metricCard:nth-child(1) {
+  flex: 1.2 1 0;
+  min-width: 0;
+}
+
+.metricsRow .metricCard:nth-child(2) {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.accentCard {
+  align-items: center;
+  background: rgba(64, 169, 61, 0.4);
+  border-radius: 20px;
+  display: flex;
+  flex: 0 0 128px;
+  height: auto;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
 }
 
 .metricCard {
-  min-height: 188px;
-  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 22px 24px;
 }
 
 .metricLabel {
+  color: #232323;
   display: block;
-  font-size: 24px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .metricValueGood {
   color: #50b848;
   display: block;
-  font-size: 40px;
+  font-size: 28px;
   font-weight: 700;
-  margin-top: 10px;
+  letter-spacing: -0.05em;
+  margin-top: 8px;
 }
 
 .metricCaption {
+  color: #4c4c4c;
   display: block;
-  font-size: 16px;
-  line-height: 1.25;
-  margin-top: 10px;
+  font-size: 14px;
+  margin-top: 8px;
 }
 
 .healthInline {
-  align-items: end;
+  align-items: center;
   display: flex;
-  gap: 12px;
-  margin-top: 18px;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .metricValue {
-  font-size: 64px;
+  font-size: 48px;
   font-weight: 700;
-  letter-spacing: -0.06em;
-  line-height: 0.95;
+  letter-spacing: -0.07em;
+  line-height: 1;
 }
 
 .healthBadge {
   background: rgba(188, 22, 22, 0.78);
   border-radius: 999px;
   color: #ffffff;
-  font-size: 20px;
-  padding: 5px 18px;
-}
-
-.accentCard {
-  background: rgba(64, 169, 61, 0.4);
-  border-radius: 20px;
-  min-height: 188px;
-  overflow: hidden;
-  position: relative;
+  font-size: 14px;
+  padding: 5px 14px;
 }
 
 .accentImage {
-  height: 165px;
-  left: -22px;
+  height: 148px;
+  inset: -10px auto auto -14px;
   max-width: none;
   object-fit: cover;
   position: absolute;
-  top: 11px;
   transform: rotate(89.49deg);
-  width: 134px;
+  width: 168px;
 }
 
 .calendarCard {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  max-height: min(520px, calc(100vh - 280px));
-  min-height: 220px;
+  max-height: none;
+  min-height: 180px;
   overflow: hidden;
-  padding: 27px 30px;
+  padding: 16px;
 }
 
 .calendarHeader,
@@ -411,7 +447,7 @@
 }
 
 .calendarTitleWrap h2 {
-  font-size: 24px;
+  font-size: 18px;
   margin: 0;
 }
 
@@ -419,13 +455,14 @@
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
-  gap: 22px;
-  margin-top: 15px;
+  gap: 18px;
+  margin-top: 14px;
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
   padding-right: 4px;
+  scrollbar-gutter: stable;
 }
 
 .calendarGroups::-webkit-scrollbar {
@@ -453,8 +490,10 @@
 
 .calendarGroupHeader strong,
 .calendarGroupHeader span {
-  font-size: 22px;
+  flex-shrink: 0;
+  font-size: 14px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .calendarDivider {
@@ -472,41 +511,37 @@
 .calendarItem {
   background: #ebebeb;
   border-radius: 24px;
+  gap: 8px;
   justify-content: space-between;
-  padding: 11px 12px;
+  padding: 10px 12px;
 }
 
 .calendarItemMeta {
+  flex: 1 1 auto;
   gap: 9px;
+  min-width: 0;
 }
 
-.calendarBadge {
-  align-items: center;
-  background: #ffffff;
-  border-radius: 999px;
-  color: #9b9b9b;
-  display: inline-flex;
-  font-size: 12px;
-  font-weight: 700;
-  height: 36px;
-  justify-content: center;
-  width: 36px;
-}
-
-.calendarTextBlock span {
-  color: #9b9b9b;
-  display: block;
-  font-size: 13px;
+.calendarItemMeta > .calendarTextBlock {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .calendarTextBlock strong {
   display: block;
-  font-size: 15px;
+  font-size: 13px;
   margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .calendarAmount {
-  font-size: 18px;
+  flex-shrink: 0;
+  font-size: 14px;
+  margin-left: 4px;
+  text-align: right;
+  white-space: nowrap;
 }
 
 .protectionCard {
@@ -514,7 +549,8 @@
   border-radius: 27px;
   flex-shrink: 0;
   gap: 22px;
-  min-height: 217px;
+  margin-top: auto;
+  min-height: 116px;
   overflow: hidden;
 }
 
@@ -529,16 +565,16 @@
 }
 
 .protectionContent h2 {
-  font-size: 24px;
+  font-size: 18px;
   line-height: 1.1;
   margin: 0;
 }
 
 .protectionContent p {
   color: #787878;
-  font-size: 20px;
-  line-height: 1.1;
-  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 1.25;
+  margin: 12px 0 0;
 }
 
 .protectionButton {
@@ -546,9 +582,29 @@
   border: none;
   border-radius: 999px;
   color: #ffffff;
-  margin-top: 24px;
-  min-height: 40px;
-  padding: 0 36px;
+  margin-top: 18px;
+  min-height: 38px;
+  padding: 0 26px;
+}
+
+.calendarBadge {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 999px;
+  color: #9b9b9b;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.calendarTextBlock span {
+  color: #9b9b9b;
+  display: block;
+  font-size: 11px;
 }
 
 .sidebarGroups::-webkit-scrollbar,
@@ -562,14 +618,137 @@
   border-radius: 999px;
 }
 
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .shell {
+    gap: 16px;
+    padding: 12px 20px 20px;
+  }
+
+  .contentGrid {
+    gap: 16px;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 400px);
+  }
+
+  .leftColumn,
+  .rightColumn {
+    gap: 16px;
+  }
+
+  .heroCard {
+    gap: 14px;
+  }
+
+  .heroTitle {
+    font-size: 18px;
+  }
+
+  .heroMain {
+    gap: 16px;
+  }
+
+  .heroValue {
+    font-size: clamp(40px, 4.2vw, 56px);
+  }
+
+  .summaryTile,
+  .addTile {
+    gap: 8px;
+    min-height: 48px;
+    padding: 8px 10px;
+  }
+
+  .summaryValue {
+    font-size: 13px;
+  }
+
+  .metricsRow {
+    gap: 14px;
+  }
+
+  .metricCard,
+  .accentCard {
+    min-height: 136px;
+  }
+
+  .accentCard {
+    flex-basis: 112px;
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  .metricCard {
+    padding: 18px 20px;
+  }
+
+  .metricValueGood {
+    font-size: 24px;
+  }
+
+  .metricValue {
+    font-size: 40px;
+  }
+
+  .accentImage {
+    height: 128px;
+    width: 144px;
+  }
+
+  .calendarCard {
+    min-height: 160px;
+    padding: 12px 14px;
+  }
+
+  .calendarGroups {
+    gap: 12px;
+    margin-top: 10px;
+  }
+
+  .calendarGroup {
+    gap: 8px;
+  }
+
+  .calendarItem {
+    padding: 8px 10px;
+  }
+
+  .calendarBadge {
+    height: 30px;
+    width: 30px;
+  }
+
+  .protectionCard {
+    gap: 14px;
+    min-height: 108px;
+  }
+
+  .protectionContent h2 {
+    font-size: 16px;
+  }
+
+  .protectionContent p {
+    font-size: 13px;
+    margin-top: 8px;
+  }
+
+  .protectionButton {
+    margin-top: 12px;
+    min-height: 34px;
+    padding: 0 20px;
+  }
+}
+
+@media (min-width: 1441px) {
+  .contentGrid {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 547px);
+  }
+}
+
 @media (max-width: 1023px) {
   .heroMain {
     align-items: flex-start;
     flex-direction: column;
   }
-}
 
-@media (max-width: 1023px) {
   .shell {
     grid-template-columns: 280px minmax(0, 1fr);
   }
@@ -578,11 +757,25 @@
     grid-template-columns: 1fr;
   }
 
+  .leftColumn > :last-child {
+    margin-top: 0;
+  }
+
+  .protectionCard {
+    margin-top: 0;
+  }
+
   .metricsRow {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    flex-wrap: wrap;
+  }
+
+  .metricsRow .metricCard:nth-child(1),
+  .metricsRow .metricCard:nth-child(2) {
+    flex: 1 1 calc(50% - 10px);
   }
 
   .accentCard {
-    min-height: 140px;
+    flex: 1 1 100%;
+    min-height: 120px;
   }
 }

@@ -4,16 +4,15 @@
   box-shadow: 0 14px 30px rgba(32, 40, 62, 0.06);
   box-sizing: border-box;
   max-width: 100%;
-  overflow-x: hidden;
-  overflow-y: visible;
-  padding: 24px 28px 22px;
+  overflow: visible;
+  padding: 28px 30px 24px;
   width: 100%;
 }
 
 .layout {
-  align-items: start;
+  align-items: stretch;
   display: grid;
-  gap: 24px 40px;
+  column-gap: 40px;
   grid-template-columns: minmax(0, 280px) minmax(0, 1fr);
   min-width: 0;
 }
@@ -25,9 +24,9 @@
 .leftColumn {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  gap: 20px;
   justify-content: space-between;
-  min-height: 210px;
+  min-height: 100%;
 }
 
 .intro {
@@ -87,26 +86,23 @@
 }
 
 .rightColumn {
-  container-name: achievements-cards;
-  container-type: inline-size;
   display: flex;
   flex-direction: column;
   gap: 22px;
   max-width: 100%;
   min-width: 0;
-  overflow-x: hidden;
-  overflow-y: visible;
+  overflow: visible;
 }
 
 .slider {
-  align-self: stretch;
-  box-sizing: content-box;
+  align-self: flex-end;
+  box-sizing: border-box;
   max-width: 100%;
   min-height: 36px;
   overflow: visible;
   padding: 10px 0 6px;
   position: relative;
-  width: 100%;
+  width: min(100%, 449px);
 }
 
 .sliderTrack {
@@ -122,8 +118,8 @@
 .sliderDots {
   align-items: center;
   display: flex;
-  min-height: 30px;
   justify-content: space-between;
+  min-height: 30px;
   position: relative;
   width: 100%;
   z-index: 1;
@@ -173,76 +169,93 @@
   width: 22px;
 }
 
-.scenariosViewport {
-  margin-right: -4px;
-  max-width: 100%;
+.carousel {
+  --panel-step: clamp(132px, 34%, 188px);
+  --panel-width: 175px;
+  height: 252px;
+  margin-inline: auto;
+  max-width: 555px;
   min-width: 0;
-  overflow-x: auto;
-  overflow-y: visible;
-  overscroll-behavior-x: contain;
-  padding: 12px 4px 6px 0;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
+  overflow: visible;
+  position: relative;
+  width: 100%;
 }
 
-.scenariosViewport::-webkit-scrollbar {
-  height: 6px;
-}
-
-.scenariosViewport::-webkit-scrollbar-thumb {
-  background: rgba(143, 150, 162, 0.4);
-  border-radius: 999px;
-}
-
-.scenariosViewport::-webkit-scrollbar-track {
-  background: rgba(143, 150, 162, 0.12);
-  border-radius: 999px;
-}
-
-.scenariosRow {
-  align-items: end;
-  display: inline-flex;
-  gap: 14px;
-  min-height: 168px;
-  width: max-content;
-}
-
-.scenarioCard {
-  align-items: flex-start;
+.panel {
   border: none;
   border-radius: 20px;
+  bottom: 0;
   box-sizing: border-box;
   cursor: pointer;
+  height: 232px;
+  left: 50%;
+  position: absolute;
+  text-align: left;
+  transform: translateX(-50%) scale(0.92);
+  transform-origin: center bottom;
+  transition:
+    opacity 0.3s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease;
+  width: var(--panel-width);
+  will-change: transform;
+}
+
+.panel[data-offset="-1"] {
+  transform: translateX(calc(-50% - var(--panel-step))) scale(0.92);
+  z-index: 1;
+}
+
+.panel[data-offset="1"] {
+  transform: translateX(calc(-50% + var(--panel-step))) scale(0.92);
+  z-index: 2;
+}
+
+.panelActive[data-offset="0"] {
+  transform: translateX(-50%) scale(1);
+  z-index: 3;
+}
+
+.panelInner {
+  box-sizing: border-box;
   display: flex;
-  flex: 0 0 auto;
   flex-direction: column;
   gap: 10px;
-  min-height: 154px;
+  height: 100%;
   padding: 14px 12px;
-  text-align: left;
-  transition: box-shadow 0.25s ease;
-  width: clamp(150px, 28vw, 176px);
 }
 
-.scenarioCardActive {
+.panelActive {
   background: #ffffff;
   box-shadow:
-    0 8px 8px rgba(192, 192, 192, 0.02),
-    0 19px 20px rgba(192, 192, 192, 0.03),
-    0 36px 37px rgba(192, 192, 192, 0.04),
-    0 64px 66px rgba(192, 192, 192, 0.05);
+    0 6.9px 7.1px rgba(192, 192, 192, 0.02),
+    0 16.6px 17.1px rgba(192, 192, 192, 0.03),
+    0 31.3px 32.2px rgba(192, 192, 192, 0.04),
+    0 55.8px 57.4px rgba(192, 192, 192, 0.04),
+    0 104.4px 107.4px rgba(192, 192, 192, 0.05),
+    0 250px 250px rgba(192, 192, 192, 0.07);
+  opacity: 1;
 }
 
-.scenarioCardBad:not(.scenarioCardActive) {
+.panelInactive {
+  opacity: 0.22;
+}
+
+.panelInactive:hover,
+.panelInactive:focus-visible {
+  opacity: 0.36;
+}
+
+.panelInactiveBad {
   background: #ffffff;
 }
 
-.scenarioCardNeutral:not(.scenarioCardActive) {
+.panelInactiveNeutral {
   background: rgba(248, 245, 233, 0.95);
 }
 
-.scenarioCardGood:not(.scenarioCardActive) {
-  background: rgba(95, 226, 116, 0.22);
+.panelInactiveGood {
+  background: rgba(95, 226, 116, 0.28);
 }
 
 .scenarioTag {
@@ -270,6 +283,10 @@
 .scenarioTagGood {
   background: #caf7d3;
   color: #ffffff;
+}
+
+.scenarioTagActive {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .scenarioHeadline {
@@ -307,20 +324,46 @@
   font-weight: 700;
 }
 
-@container achievements-cards (min-width: 540px) {
-  .scenariosViewport {
-    overflow-x: visible;
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .card {
+    padding: 22px 20px 18px;
   }
 
-  .scenariosRow {
-    display: grid;
-    gap: 14px;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    width: 100%;
+  .layout {
+    column-gap: 28px;
+    grid-template-columns: minmax(210px, 250px) minmax(0, 1fr);
   }
 
-  .scenarioCard {
-    width: 100%;
+  .leftColumn {
+    gap: 16px;
+  }
+
+  .title {
+    font-size: 20px;
+    max-width: 200px;
+  }
+
+  .infoLink {
+    font-size: 14px;
+  }
+
+  .slider {
+    width: min(100%, 380px);
+  }
+
+  .carousel {
+    --panel-step: clamp(118px, 30%, 168px);
+    --panel-width: 158px;
+    height: 228px;
+    max-width: 100%;
+  }
+
+  .panel {
+    height: 210px;
+  }
+
+  .panelInner {
+    padding: 12px 10px;
   }
 }
 
@@ -337,5 +380,35 @@
 
   .slider {
     align-self: stretch;
+  }
+}
+
+@media (max-width: 640px) {
+  .carousel {
+    height: auto;
+    overflow: visible;
+    padding-bottom: 24px;
+  }
+
+  .panel[data-offset="-1"],
+  .panel[data-offset="1"] {
+    display: none;
+  }
+
+  .panel[data-offset="0"] {
+    cursor: default;
+    left: auto;
+    position: relative;
+    transform: none !important;
+    width: 100%;
+  }
+
+  .panelInactive {
+    opacity: 1;
+  }
+
+  .panelInactive:hover,
+  .panelInactive:focus-visible {
+    opacity: 1;
   }
 }

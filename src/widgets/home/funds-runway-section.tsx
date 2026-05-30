@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { cn } from "@/shared/lib/cn";
 
@@ -42,22 +42,34 @@ type RunwayScenario = (typeof runwayScenarios)[number];
 
 function RunwayPanel({
   isActive,
+  offset,
+  onSelect,
   scenario,
-  slot,
 }: {
   isActive: boolean;
+  offset: -1 | 0 | 1;
+  onSelect: () => void;
   scenario: RunwayScenario;
-  slot: 0 | 1 | 2;
 }) {
   return (
     <article
+      aria-label={`${scenario.months} ${scenario.monthWord}`}
       className={cn(
         styles.panel,
-        styles[`panelSlot${slot}`],
         isActive ? styles.panelActive : styles.panelInactive,
         !isActive && scenario.sideTone === "success" && styles.panelInactiveSuccess,
         !isActive && scenario.sideTone === "ghost" && styles.panelInactiveGhost,
       )}
+      data-offset={offset}
+      onClick={onSelect}
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+      role="button"
+      tabIndex={0}
     >
       <div className={styles.panelInner}>
         <span
@@ -96,6 +108,16 @@ function RunwayPanel({
 
 export function FundsRunwaySection() {
   const [activeIndex, setActiveIndex] = useState(1);
+
+  const carouselItems = useMemo(
+    () =>
+      ([-1, 0, 1] as const).map((offset) => {
+        const index = (activeIndex + offset + runwayScenarios.length) % runwayScenarios.length;
+
+        return { index, offset };
+      }),
+    [activeIndex],
+  );
 
   return (
     <section className={styles.card}>
@@ -142,13 +164,14 @@ export function FundsRunwaySection() {
             </div>
           </div>
 
-          <div className={styles.carousel}>
-            {runwayScenarios.map((scenario, index) => (
+          <div aria-live="polite" className={styles.carousel}>
+            {carouselItems.map(({ index, offset }) => (
               <RunwayPanel
-                isActive={index === activeIndex}
-                key={scenario.id}
-                scenario={scenario}
-                slot={index as 0 | 1 | 2}
+                isActive={offset === 0}
+                key={`${offset}-${runwayScenarios[index].id}`}
+                offset={offset}
+                onSelect={() => setActiveIndex(index)}
+                scenario={runwayScenarios[index]}
               />
             ))}
           </div>

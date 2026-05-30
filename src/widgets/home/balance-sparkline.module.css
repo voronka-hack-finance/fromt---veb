@@ -55,6 +55,11 @@
   stroke-width: 2;
 }
 
+.expenseMarker {
+  fill: #232323;
+  stroke: #ffffff;
+}
+
 .tooltip {
   align-items: flex-start;
   background: #4fb848;
@@ -70,7 +75,6 @@
   padding: 6px 8px;
   pointer-events: none;
   position: absolute;
-  transform: translateX(-50%);
   white-space: nowrap;
   z-index: 2;
 }
@@ -97,6 +101,13 @@
   line-height: 1;
   text-align: center;
   width: 100%;
+}
+
+@media (min-width: 1024px) and (max-width: 1440px) {
+  .wrap {
+    max-width: min(100%, 420px);
+    min-width: 220px;
+  }
 }
 
 @media (max-width: 1023px) {

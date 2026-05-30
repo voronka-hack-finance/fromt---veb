@@ -28,26 +28,30 @@
 
 .panel .primary,
 .panel .secondary {
+  align-items: flex-start;
   flex: 1 1 0;
   font-size: 12px;
   gap: 8px;
   justify-content: flex-start;
-  line-height: 1.15;
+  line-height: 1.2;
   min-width: 0;
   padding: 10px 12px;
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 .panel .icon {
+  flex-shrink: 0;
   height: 22px;
+  margin-top: 1px;
   width: 22px;
 }
 
 .panel .label {
   flex: 1;
   min-width: 0;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .primary,

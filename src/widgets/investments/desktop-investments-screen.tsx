@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { CalendarDays, ChevronRight, Plus } from "lucide-react";
 
 import type { InvestmentsBalanceResponse } from "@/shared/api/investments-balance";

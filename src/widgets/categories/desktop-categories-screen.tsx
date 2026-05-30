@@ -28,8 +28,8 @@ function SpendingFunnelChart() {
       <div className={styles.funnelColumn}>
         <span className={styles.funnelColumnLabel}>Поступило по категориям</span>
         <div className={styles.funnelColumnBodyLeft}>
-          {funnelLeft.map((value) => (
-            <span key={value}>{value}</span>
+          {funnelLeft.map((value, index) => (
+            <span key={`left-${index}`}>{value}</span>
           ))}
         </div>
       </div>
@@ -56,8 +56,8 @@ function SpendingFunnelChart() {
       <div className={styles.funnelColumn}>
         <span className={styles.funnelColumnLabel}>Потрачено по категориям</span>
         <div className={styles.funnelColumnBodyRight}>
-          {funnelRight.map((value) => (
-            <span key={value}>{value}</span>
+          {funnelRight.map((value, index) => (
+            <span key={`right-${index}`}>{value}</span>
           ))}
         </div>
       </div>
@@ -133,26 +133,26 @@ export function DesktopCategoriesScreen({ data }: { data: CategoriesResponse }) 
           <div className={styles.pageTitle}>Категории</div>
 
           <div className={styles.contentGrid}>
-            <form
-              className={styles.searchBar}
-              onSubmit={(event) => event.preventDefault()}
-              role="search"
-            >
-              <Search aria-hidden size={24} strokeWidth={1.9} />
-              <label className={styles.searchLabel} htmlFor={searchInputId}>
-                Поиск по категориям
-              </label>
-              <input
-                autoComplete="off"
-                id={searchInputId}
-                onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Поиск по категориям"
-                type="search"
-                value={searchQuery}
-              />
-            </form>
-
             <div className={styles.leftColumn}>
+              <form
+                className={styles.searchBar}
+                onSubmit={(event) => event.preventDefault()}
+                role="search"
+              >
+                <Search aria-hidden className={styles.searchIcon} size={22} strokeWidth={1.9} />
+                <label className={styles.searchLabel} htmlFor={searchInputId}>
+                  Поиск по категориям
+                </label>
+                <input
+                  autoComplete="off"
+                  id={searchInputId}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Поиск по категориям"
+                  type="search"
+                  value={searchQuery}
+                />
+              </form>
+
               <div className={styles.cardsScroll}>
                 <div className={styles.cardsGrid}>
                 <section className={styles.createCard}>

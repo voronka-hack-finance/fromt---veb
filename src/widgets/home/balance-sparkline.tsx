@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 
 import { buildDualLineChartPaths } from "@/shared/lib/charts";
+import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import type { ForecastPoint } from "@/shared/types/dashboard";
 
@@ -48,6 +49,7 @@ function buildLineEndArrow(
 export function BalanceSparkline({ points, defaultActiveIndex = 4 }: BalanceSparklineProps) {
   const initialIndex = Math.min(defaultActiveIndex, Math.max(points.length - 1, 0));
   const [activeIndex, setActiveIndex] = useState(initialIndex);
+  const [activeSeries, setActiveSeries] = useState<"income" | "expense">("income");
 
   const paths = useMemo(
     () =>
@@ -62,13 +64,22 @@ export function BalanceSparkline({ points, defaultActiveIndex = 4 }: BalanceSpar
   );
 
   const activePoint = points[activeIndex];
-  const activeCoordinate = paths.income.coordinates[activeIndex];
+  const activeCoordinate = paths[activeSeries].coordinates[activeIndex];
   const plotBottom = chartHeight - chartPadding.bottom;
+  const activeTooltipValue =
+    activeSeries === "income" ? activePoint?.balance : activePoint?.spend;
+  const activeTooltipLabel = activeSeries === "income" ? "Баланс" : "Расходы";
+
+  const handlePointSelect = (series: "income" | "expense", index: number) => {
+    setActiveSeries(series);
+    setActiveIndex(index);
+  };
 
   const tooltipStyle = activeCoordinate
     ? {
         left: `${(activeCoordinate.x / chartWidth) * 100}%`,
-        top: Math.max(activeCoordinate.y - 46, 0),
+        top: `${(activeCoordinate.y / chartHeight) * 100}%`,
+        transform: "translate(-50%, calc(-100% - 14px))",
       }
     : undefined;
 
@@ -97,10 +108,10 @@ export function BalanceSparkline({ points, defaultActiveIndex = 4 }: BalanceSpar
           })}
 
           <motion.path
-            animate={{ opacity: 1, pathLength: 1 }}
+            animate={{ opacity: 1 }}
             className={styles.spendLine}
             d={paths.expense.linePath}
-            initial={{ opacity: 0.25, pathLength: 0 }}
+            initial={{ opacity: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
           />
           <motion.path
@@ -112,20 +123,56 @@ export function BalanceSparkline({ points, defaultActiveIndex = 4 }: BalanceSpar
           />
           {buildLineEndArrow(paths.income.coordinates, "#5ccf5d")}
 
-          {paths.income.coordinates.map((coordinate, index) => {
-            const isActive = index === activeIndex;
+          {paths.expense.coordinates.map((coordinate, index) => {
+            const isActive = activeSeries === "expense" && index === activeIndex;
 
             return (
-              <g key={points[index]?.month ?? index}>
+              <g key={`expense-${points[index]?.month ?? index}`}>
                 <circle
+                  aria-label={`Расходы за ${points[index]?.month ?? index}`}
                   className={styles.hitArea}
                   cx={coordinate.x}
                   cy={coordinate.y}
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => handlePointSelect("expense", index)}
                   onKeyDown={(event) => {
                     if (event.key === "Enter" || event.key === " ") {
                       event.preventDefault();
-                      setActiveIndex(index);
+                      handlePointSelect("expense", index);
+                    }
+                  }}
+                  r={14}
+                  role="button"
+                  tabIndex={0}
+                />
+                {isActive ? (
+                  <motion.circle
+                    animate={{ opacity: 1, r: 4.5 }}
+                    className={cn(styles.marker, styles.expenseMarker)}
+                    cx={coordinate.x}
+                    cy={coordinate.y}
+                    initial={{ opacity: 0, r: 0 }}
+                    transition={{ duration: 0.2 }}
+                  />
+                ) : null}
+              </g>
+            );
+          })}
+
+          {paths.income.coordinates.map((coordinate, index) => {
+            const isActive = activeSeries === "income" && index === activeIndex;
+
+            return (
+              <g key={`income-${points[index]?.month ?? index}`}>
+                <circle
+                  aria-label={`Баланс за ${points[index]?.month ?? index}`}
+                  className={styles.hitArea}
+                  cx={coordinate.x}
+                  cy={coordinate.y}
+                  onClick={() => handlePointSelect("income", index)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      handlePointSelect("income", index);
                     }
                   }}
                   r={14}
@@ -147,19 +194,19 @@ export function BalanceSparkline({ points, defaultActiveIndex = 4 }: BalanceSpar
           })}
         </svg>
 
-        {activePoint && activeCoordinate && tooltipStyle ? (
+        {activePoint && activeTooltipValue !== undefined && activeCoordinate && tooltipStyle ? (
           <motion.div
-            animate={{ opacity: 1, y: 0 }}
+            animate={{ opacity: 1 }}
             className={styles.tooltip}
-            initial={{ opacity: 0, y: 6 }}
-            key={activePoint.month}
+            initial={{ opacity: 0 }}
+            key={`${activeSeries}-${activePoint.month}`}
             style={tooltipStyle}
             transition={{ duration: 0.2 }}
           >
             <span className={styles.tooltipValue}>
-              {formatCurrencyParts(activePoint.balance).whole.replace(/\s/g, " ")}
+              {formatCurrencyParts(activeTooltipValue).whole.replace(/\s/g, " ")}
             </span>
-            <span className={styles.tooltipLabel}>Баланс</span>
+            <span className={styles.tooltipLabel}>{activeTooltipLabel}</span>
           </motion.div>
         ) : null}
       </div>

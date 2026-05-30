@@ -1,8 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Info } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import type { InvestmentsBalanceResponse } from "@/shared/api/investments-balance";
 import { cn } from "@/shared/lib/cn";
@@ -16,12 +15,14 @@ const assets = {
 
 type Scenario = InvestmentsBalanceResponse["scenarios"][number];
 
-function ScenarioCard({
+function ScenarioPanel({
   isActive,
+  offset,
   onSelect,
   scenario,
 }: {
   isActive: boolean;
+  offset: -1 | 0 | 1;
   onSelect: () => void;
   scenario: Scenario;
 }) {
@@ -32,43 +33,52 @@ function ScenarioCard({
   const totalFormatted = formatCurrencyParts(scenario.totalIncome).whole;
 
   return (
-    <motion.button
-      animate={{ opacity: isActive ? 1 : 0.56, y: isActive ? -10 : 0 }}
+    <article
+      aria-label={`${scenario.tag}: ${scenario.percentLabel}`}
       className={cn(
-        styles.scenarioCard,
-        scenario.tone === "bad" && styles.scenarioCardBad,
-        scenario.tone === "default" && styles.scenarioCardNeutral,
-        scenario.tone === "good" && styles.scenarioCardGood,
-        isActive && styles.scenarioCardActive,
+        styles.panel,
+        isActive ? styles.panelActive : styles.panelInactive,
+        scenario.tone === "bad" && !isActive && styles.panelInactiveBad,
+        scenario.tone === "default" && !isActive && styles.panelInactiveNeutral,
+        scenario.tone === "good" && !isActive && styles.panelInactiveGood,
       )}
-      initial={false}
+      data-offset={offset}
       onClick={onSelect}
-      transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-      type="button"
+      onKeyDown={(event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          onSelect();
+        }
+      }}
+      role="button"
+      tabIndex={0}
     >
-      <span
-        className={cn(
-          styles.scenarioTag,
-          scenario.tone === "bad" && styles.scenarioTagBad,
-          scenario.tone === "default" && styles.scenarioTagNeutral,
-          scenario.tone === "good" && styles.scenarioTagGood,
-        )}
-      >
-        {scenario.tag}
-      </span>
+      <div className={styles.panelInner}>
+        <span
+          className={cn(
+            styles.scenarioTag,
+            scenario.tone === "bad" && styles.scenarioTagBad,
+            scenario.tone === "default" && styles.scenarioTagNeutral,
+            scenario.tone === "good" && styles.scenarioTagGood,
+            isActive && styles.scenarioTagActive,
+          )}
+        >
+          {scenario.tag}
+        </span>
 
-      <p className={styles.scenarioHeadline}>
-        <strong>{percentValue}</strong>
-        {percentRest.length > 0 ? <span> {percentRest.join(" ")}</span> : null}
-      </p>
-
-      <div className={styles.scenarioMetric}>
-        <p>
-          Потратили {spentFormatted}, осталось <strong>{leftFormatted}</strong> из {totalFormatted}{" "}
-          ₽
+        <p className={styles.scenarioHeadline}>
+          <strong>{percentValue}</strong>
+          {percentRest.length > 0 ? <span> {percentRest.join(" ")}</span> : null}
         </p>
+
+        <div className={styles.scenarioMetric}>
+          <p>
+            Потратили {spentFormatted}, осталось <strong>{leftFormatted}</strong> из {totalFormatted}{" "}
+            ₽
+          </p>
+        </div>
       </div>
-    </motion.button>
+    </article>
   );
 }
 
@@ -77,7 +87,17 @@ export function InvestmentsAchievementsSection({
 }: {
   scenarios: InvestmentsBalanceResponse["scenarios"];
 }) {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(1);
+
+  const carouselItems = useMemo(
+    () =>
+      ([-1, 0, 1] as const).map((offset) => {
+        const index = (activeIndex + offset + scenarios.length) % scenarios.length;
+
+        return { index, offset };
+      }),
+    [activeIndex, scenarios.length],
+  );
 
   return (
     <section className={styles.card}>
@@ -124,17 +144,16 @@ export function InvestmentsAchievementsSection({
             </div>
           </div>
 
-          <div className={styles.scenariosViewport}>
-            <div className={styles.scenariosRow}>
-              {scenarios.map((scenario, index) => (
-                <ScenarioCard
-                  isActive={index === activeIndex}
-                  key={scenario.id}
-                  onSelect={() => setActiveIndex(index)}
-                  scenario={scenario}
-                />
-              ))}
-            </div>
+          <div aria-live="polite" className={styles.carousel}>
+            {carouselItems.map(({ index, offset }) => (
+              <ScenarioPanel
+                isActive={offset === 0}
+                key={`${offset}-${scenarios[index].id}`}
+                offset={offset}
+                onSelect={() => setActiveIndex(index)}
+                scenario={scenarios[index]}
+              />
+            ))}
           </div>
         </div>
       </div>

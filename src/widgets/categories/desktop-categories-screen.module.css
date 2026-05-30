@@ -77,12 +77,16 @@
 }
 
 .shell {
+  align-items: stretch;
   display: grid;
   flex: 1;
   gap: 16px;
   grid-template-columns: 280px minmax(0, 1fr);
+  margin: 0 auto;
+  max-width: 1820px;
   min-height: 0;
   padding: 28px 40px 32px;
+  width: 100%;
 }
 
 .sidebar {
@@ -157,9 +161,12 @@
 
 .content {
   display: flex;
+  flex: 1;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
+  min-width: 0;
+  overflow: auto;
+  padding-right: 6px;
 }
 
 .pageTitle {
@@ -171,26 +178,29 @@
 
 .searchBar {
   align-items: center;
-  align-self: start;
   background: #ffffff;
-  border: 1px solid transparent;
-  border-radius: 18px;
+  border: 1px solid rgba(205, 209, 224, 0.65);
+  border-radius: 999px;
   box-shadow: 0 1px 2px rgba(31, 31, 31, 0.04);
   display: flex;
-  gap: 16px;
-  grid-column: 1;
-  grid-row: 1;
+  flex-shrink: 0;
+  gap: 12px;
   height: 52px;
   padding: 0 20px;
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease;
-  width: calc((100% - 36px) / 3);
+  width: 100%;
 }
 
 .searchBar:focus-within {
   border-color: rgba(80, 184, 72, 0.45);
   box-shadow: 0 0 0 3px rgba(80, 184, 72, 0.12);
+}
+
+.searchIcon {
+  color: #9b9b9b;
+  flex-shrink: 0;
 }
 
 .searchLabel {
@@ -230,12 +240,11 @@
 }
 
 .contentGrid {
-  align-items: start;
+  align-items: stretch;
   display: grid;
   flex: 1;
-  gap: 18px;
-  grid-template-columns: minmax(0, 1fr) 410px;
-  grid-template-rows: auto minmax(0, 1fr);
+  gap: 20px;
+  grid-template-columns: minmax(0, 1fr) minmax(320px, 410px);
   margin-top: 12px;
   min-height: 0;
 }
@@ -250,17 +259,12 @@
 }
 
 .leftColumn {
-  grid-column: 1;
-  grid-row: 2;
   overflow: hidden;
 }
 
 .rightColumn {
-  grid-column: 2;
-  grid-row: 1 / -1;
-  max-height: 100%;
-  overflow-y: auto;
-  overscroll-behavior: contain;
+  max-height: none;
+  overflow: hidden;
 }
 
 .cardsScroll {
@@ -303,7 +307,7 @@
 
 .createCard {
   display: flex;
-  min-height: 226px;
+  min-height: 248px;
   padding: 26px 24px 0;
   position: relative;
 }
@@ -362,8 +366,9 @@
 
 .categoryCard {
   color: inherit;
-  display: block;
-  min-height: 226px;
+  display: flex;
+  flex-direction: column;
+  min-height: 248px;
   padding: 22px 24px;
   text-align: left;
   text-decoration: none;
@@ -429,7 +434,7 @@
   background: #dddddf;
   border-radius: 999px;
   height: 14px;
-  margin-top: 18px;
+  margin-top: auto;
   overflow: hidden;
 }
 
@@ -442,7 +447,8 @@
 .protectionCard {
   background: #dcdcdc;
   border-radius: 27px;
-  min-height: 217px;
+  flex-shrink: 0;
+  min-height: 116px;
   overflow: hidden;
   position: relative;
   width: 100%;
@@ -450,13 +456,14 @@
 
 .protectionImageWrap {
   border-radius: 27px 27px 0 27px;
-  height: 246px;
-  left: -34px;
+  height: 100%;
+  left: -24px;
+  max-width: 48%;
   overflow: hidden;
   pointer-events: none;
   position: absolute;
-  top: -9px;
-  width: 248px;
+  top: 0;
+  width: 220px;
 }
 
 .protectionImage {
@@ -467,17 +474,20 @@
 }
 
 .protectionContent {
-  left: 206px;
-  padding: 27px 16px 20px 0;
-  position: absolute;
-  right: 0;
-  top: 0;
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: auto;
+  max-width: 58%;
+  min-height: 116px;
+  padding: 18px 16px 18px 0;
 }
 
 .protectionContent h2 {
   color: #000000;
   font-family: var(--font-body), sans-serif;
-  font-size: 21.5px;
+  font-size: 18px;
   font-weight: 600;
   line-height: 1.1;
   margin: 0;
@@ -485,36 +495,35 @@
 
 .protectionContent p {
   color: #787878;
-  font-size: 17px;
-  line-height: 1.1;
+  font-size: 14px;
+  line-height: 1.25;
   margin: 10px 0 0;
-  max-width: 184px;
 }
 
 .protectionButton {
   align-items: center;
   background: #000000;
   border: none;
-  border-radius: 27px;
+  border-radius: 999px;
   color: #ffffff;
   display: inline-flex;
-  font-size: 17px;
+  font-size: 14px;
   justify-content: center;
   line-height: 1.1;
-  margin-top: 16px;
-  min-height: 42px;
-  min-width: 189px;
-  padding: 11px 53px;
+  margin-top: 14px;
+  min-height: 38px;
+  padding: 0 26px;
 }
 
 .funnelCard {
   background: #ffffff;
   border-radius: 15px;
   display: flex;
+  flex: 1 1 auto;
   flex-direction: column;
-  min-height: 470px;
+  min-height: 360px;
   overflow: hidden;
-  padding: 20px 20px 24px;
+  padding: 18px 16px 20px;
   width: 100%;
 }
 
@@ -566,9 +575,9 @@
 
 .funnelColumnLabel {
   color: #b0b0b0;
-  font-size: 11px;
+  font-size: 10px;
   line-height: 1.25;
-  min-height: 28px;
+  min-height: 26px;
 }
 
 .funnelColumnBodyLeft,
@@ -578,8 +587,8 @@
   flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 340px;
-  padding: 14px 10px;
+  min-height: 0;
+  padding: 12px 8px;
   position: relative;
 }
 

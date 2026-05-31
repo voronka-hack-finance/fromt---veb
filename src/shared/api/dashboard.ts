@@ -52,6 +52,16 @@ export type DashboardResponse = {
   spendingCalendar: ReadonlyArray<SpendingCalendarGroup>;
 };
 
+const dashboardPlaceholderData: DashboardResponse = {
+  bankAccounts,
+  categoryRadarMetrics,
+  dashboard: dashboardData,
+  desktopForecastPoints,
+  forecastPoints,
+  forecastYearPoints,
+  spendingCalendar: spendingCalendarMockGroups,
+};
+
 function withSpendingCalendar(data: DashboardResponse): DashboardResponse {
   return {
     ...data,
@@ -63,21 +73,17 @@ function withSpendingCalendar(data: DashboardResponse): DashboardResponse {
 
 export async function fetchDashboard(): Promise<DashboardResponse> {
   await mockDelay();
-  const data = (await tryLoadScreenData(loadDashboardScreenData, () => ({
-    bankAccounts,
-    categoryRadarMetrics,
-    dashboard: dashboardData,
-    desktopForecastPoints,
-    forecastPoints,
-    forecastYearPoints,
-    spendingCalendar: spendingCalendarMockGroups,
-  } as DashboardResponse))) as DashboardResponse;
+  const data = (await tryLoadScreenData(
+    loadDashboardScreenData,
+    () => dashboardPlaceholderData,
+  )) as DashboardResponse;
 
   return withSpendingCalendar(data);
 }
 
 export function useDashboardQuery() {
   return useQuery({
+    placeholderData: dashboardPlaceholderData,
     queryKey: queryKeys.dashboard,
     queryFn: fetchDashboard,
   });

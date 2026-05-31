@@ -209,11 +209,11 @@
 }
 
 .legendGrid {
+  box-sizing: border-box;
   display: grid;
   gap: 8px 6px;
-  grid-template-columns: repeat(2, 154px);
-  justify-content: center;
-  max-width: 314px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 100%;
   width: 100%;
 }
 
@@ -228,8 +228,8 @@
   height: 35px;
   justify-content: center;
   min-width: 0;
-  overflow: visible;
-  padding: 0 10px;
+  overflow: hidden;
+  padding: 0 8px;
   transition:
     background-color 180ms ease,
     border-color 180ms ease;
@@ -239,11 +239,8 @@
 .legendItemGroceries {
   grid-column: 1 / -1;
   justify-self: center;
-  width: 154px;
-}
-
-.legendItemWide {
-  padding: 0 10px;
+  max-width: calc(50% - 3px);
+  width: auto;
 }
 
 .legendItemActive {
@@ -253,15 +250,10 @@
 
 .legendContent {
   align-items: center;
-  display: inline-flex;
-  gap: 6px;
-  justify-content: center;
-  min-width: 0;
-  width: 100%;
-}
-
-.legendContentWide {
+  display: flex;
+  gap: 4px;
   justify-content: space-between;
+  min-width: 0;
   width: 100%;
 }
 
@@ -269,11 +261,15 @@
   align-items: center;
   color: #767676;
   display: inline-flex;
+  flex: 1;
   font-family: var(--font-body), sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500;
   gap: 5px;
   line-height: normal;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -300,20 +296,15 @@
   color: #404040;
   flex-shrink: 0;
   font-family: var(--font-body), sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   line-height: normal;
 }
 
 @media (max-width: 360px) {
-  .legendGrid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 100%;
-  }
-
   .legendLabel,
   .legendItem strong {
-    font-size: 15px;
+    font-size: 13px;
   }
 
   .percentBubble50 {

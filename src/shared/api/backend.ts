@@ -78,6 +78,55 @@ export type ExpectedIncomeResponse = Schemas["ExpectedIncomeResponse"];
 export type ExpectedIncomesPageResponse = Schemas["ExpectedIncomesPageResponse"];
 export type ExpectedExpenseResponse = Schemas["ExpectedExpenseResponse"];
 export type ExpectedExpensesPageResponse = Schemas["ExpectedExpensesPageResponse"];
+
+export type RegularExpenseResponse = {
+  id: string;
+  account_id?: string | null;
+  category_id?: string | null;
+  merchant_pattern: string;
+  average_amount: string;
+  expected_amount?: string | null;
+  currency: string;
+  frequency_days: number;
+  next_expected_at?: string | null;
+  confidence: string;
+  status: string;
+  source_type: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type RegularExpensesPageResponse = {
+  items: RegularExpenseResponse[];
+  pagination: PaginationResponse;
+};
+
+export type RegularExpenseCreateRequest = {
+  merchant_pattern: string;
+  expected_amount: string;
+  average_amount?: string | null;
+  account_id?: string | null;
+  category_id?: string | null;
+  currency?: string;
+  frequency_days?: number;
+  next_expected_at?: string | null;
+  status?: string;
+  source_type?: "manual" | "detected" | "user_adjusted";
+};
+
+export type RegularExpenseUpdateRequest = {
+  merchant_pattern?: string | null;
+  expected_amount?: string | null;
+  average_amount?: string | null;
+  account_id?: string | null;
+  category_id?: string | null;
+  currency?: string | null;
+  frequency_days?: number | null;
+  next_expected_at?: string | null;
+  status?: string | null;
+  source_type?: "manual" | "detected" | "user_adjusted" | null;
+};
+
 export type AnalyticsPeriodQuery = {
   period_end?: string;
   period_start?: string;
@@ -459,6 +508,48 @@ export async function fetchExpectedExpenses(query: PaginationQuery = {}) {
   return apiRequest<ExpectedExpensesPageResponse>(
     "/api/v1/analytics/expected-expenses",
     { query },
+  );
+}
+
+export async function fetchRegularExpensesPage(query: PaginationQuery = {}) {
+  return apiRequest<RegularExpensesPageResponse>(
+    "/api/v1/analytics/regular-expenses",
+    { query },
+  );
+}
+
+export async function createRegularExpense(payload: RegularExpenseCreateRequest) {
+  return apiRequest<RegularExpenseResponse>("/api/v1/analytics/regular-expenses", {
+    json: payload,
+    method: "POST",
+  });
+}
+
+export async function fetchRegularExpense(regularExpenseId: string) {
+  return apiRequest<RegularExpenseResponse>(
+    `/api/v1/analytics/regular-expenses/${regularExpenseId}`,
+  );
+}
+
+export async function updateRegularExpense(
+  regularExpenseId: string,
+  payload: RegularExpenseUpdateRequest,
+) {
+  return apiRequest<RegularExpenseResponse>(
+    `/api/v1/analytics/regular-expenses/${regularExpenseId}`,
+    {
+      json: payload,
+      method: "PATCH",
+    },
+  );
+}
+
+export async function deleteRegularExpense(regularExpenseId: string) {
+  return apiRequest<StatusResponse>(
+    `/api/v1/analytics/regular-expenses/${regularExpenseId}`,
+    {
+      method: "DELETE",
+    },
   );
 }
 

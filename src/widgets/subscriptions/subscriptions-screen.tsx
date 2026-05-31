@@ -1,20 +1,27 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Plus } from "lucide-react";
+import { ArrowLeft, Pause, Pencil, Play, Plus, Trash2 } from "lucide-react";
 import { useState } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
+import { queryKeys } from "@/shared/api/query-keys";
 import {
   useSubscriptionsQuery,
   type SubscriptionsResponse,
 } from "@/shared/api/subscriptions";
 import { cn } from "@/shared/lib/cn";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
+import {
+  deleteRegularExpenseOnBackend,
+  updateRegularExpenseOnBackend,
+} from "@/shared/lib/regular-expenses";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
 import { CreateSubscriptionDialog } from "./create-subscription-dialog";
+import { EditSubscriptionDialog } from "./edit-subscription-dialog";
 import styles from "./subscriptions-screen.module.css";
 
 type TabId = SubscriptionsResponse["tabs"][number]["id"];
@@ -54,7 +61,14 @@ function SubscriptionItem({
   name,
   status,
   totalSpent,
-}: SubscriptionsResponse["subscriptions"][number]) {
+  onDelete,
+  onEdit,
+  onToggleStatus,
+}: SubscriptionsResponse["subscriptions"][number] & {
+  onEdit: () => void;
+  onDelete: () => void;
+  onToggleStatus: () => void;
+}) {
   const isPaused = status === "paused";
 
   return (
@@ -80,6 +94,23 @@ function SubscriptionItem({
         </p>
         <p className={styles.subscriptionTotal}>Всего: {formatRubles(totalSpent)}</p>
       </div>
+
+      <div className={styles.subscriptionActions}>
+        <button aria-label={`Редактировать ${name}`} className={styles.actionButton} onClick={onEdit} type="button">
+          <Pencil size={18} strokeWidth={1.8} />
+        </button>
+        <button
+          aria-label={isPaused ? `Возобновить ${name}` : `Поставить на паузу ${name}`}
+          className={styles.actionButton}
+          onClick={onToggleStatus}
+          type="button"
+        >
+          {isPaused ? <Play size={18} strokeWidth={1.8} /> : <Pause size={18} strokeWidth={1.8} />}
+        </button>
+        <button aria-label={`Удалить ${name}`} className={styles.actionButtonDanger} onClick={onDelete} type="button">
+          <Trash2 size={18} strokeWidth={1.8} />
+        </button>
+      </div>
     </article>
   );
 }
@@ -99,8 +130,35 @@ function SubscriptionsScreenContent({
 }: {
   screenData: SubscriptionsResponse;
 }) {
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState<TabId>("all");
   const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [editingSubscription, setEditingSubscription] = useState<
+    SubscriptionsResponse["subscriptions"][number] | null
+  >(null);
+
+  const mutation = useMutation({
+    mutationFn: async ({
+      expenseId,
+      mode,
+    }: {
+      expenseId: string;
+      mode: "delete" | "pause" | "resume";
+    }) => {
+      if (mode === "delete") {
+        await deleteRegularExpenseOnBackend(expenseId);
+        return;
+      }
+
+      await updateRegularExpenseOnBackend(expenseId, {
+        status: mode === "pause" ? "paused" : "active",
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: queryKeys.subscriptions });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.dashboard });
+    },
+  });
 
   const visibleSubscriptions = screenData.subscriptions.filter((item) => {
     if (activeTab === "active") return item.status === "active";
@@ -113,6 +171,11 @@ function SubscriptionsScreenContent({
     <DesktopSidebarLayout>
       <main className={styles.stage}>
       <CreateSubscriptionDialog onClose={() => setIsCreateOpen(false)} open={isCreateOpen} />
+      <EditSubscriptionDialog
+        onClose={() => setEditingSubscription(null)}
+        open={Boolean(editingSubscription)}
+        subscription={editingSubscription}
+      />
       <div className={styles.shell}>
         <div className={styles.topSection}>
           <Reveal delay={0.03}>
@@ -162,14 +225,32 @@ function SubscriptionsScreenContent({
           </Reveal>
 
           <section className={styles.listCard}>
-            {visibleSubscriptions.map((subscription, index) => (
-              <Reveal delay={0.15 + index * 0.04} key={subscription.id}>
-                <div className={styles.listRowWrap}>
-                  <SubscriptionItem {...subscription} />
-                  {index < visibleSubscriptions.length - 1 ? <div className={styles.divider} /> : null}
-                </div>
-              </Reveal>
-            ))}
+            {visibleSubscriptions.length ? (
+              visibleSubscriptions.map((subscription, index) => (
+                <Reveal delay={0.15 + index * 0.04} key={subscription.id}>
+                  <div className={styles.listRowWrap}>
+                    <SubscriptionItem
+                      {...subscription}
+                      onDelete={() => {
+                        if (window.confirm(`Удалить подписку «${subscription.name}»?`)) {
+                          mutation.mutate({ expenseId: subscription.id, mode: "delete" });
+                        }
+                      }}
+                      onEdit={() => setEditingSubscription(subscription)}
+                      onToggleStatus={() =>
+                        mutation.mutate({
+                          expenseId: subscription.id,
+                          mode: subscription.status === "paused" ? "resume" : "pause",
+                        })
+                      }
+                    />
+                    {index < visibleSubscriptions.length - 1 ? <div className={styles.divider} /> : null}
+                  </div>
+                </Reveal>
+              ))
+            ) : (
+              <p className={styles.emptyState}>Пока нет регулярных затрат. Добавьте первую подписку.</p>
+            )}
           </section>
           </div>
         </div>

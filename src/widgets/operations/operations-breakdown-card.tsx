@@ -242,7 +242,6 @@ function OperationsBreakdownCardContent({
                     className={cn(
                       styles.legendItem,
                       slotId === "groceries" && styles.legendItemGroceries,
-                      slotId === "hotels" && styles.legendItemWide,
                       isActive && styles.legendItemActive,
                     )}
                     initial={{ opacity: 0, y: 10 }}
@@ -254,7 +253,7 @@ function OperationsBreakdownCardContent({
                     }}
                     type="button"
                   >
-                    <span className={cn(styles.legendContent, slotId === "hotels" && styles.legendContentWide)}>
+                    <span className={styles.legendContent}>
                       <span className={styles.legendLabel}>
                         <span
                           className={cn(styles.legendDot, legendDotClass[slotId as BreakdownSlotId])}

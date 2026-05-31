@@ -6,12 +6,14 @@ import { useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 
 import { queryKeys } from "@/shared/api/query-keys";
-import { createRegularExpenseOnBackend } from "@/shared/lib/regular-expenses";
+import type { SubscriptionsResponse } from "@/shared/api/subscriptions";
+import { updateRegularExpenseOnBackend } from "@/shared/lib/regular-expenses";
 
 import styles from "./create-subscription-dialog.module.css";
 
-type CreateSubscriptionDialogProps = {
+type EditSubscriptionDialogProps = {
   open: boolean;
+  subscription: SubscriptionsResponse["subscriptions"][number] | null;
   onClose: () => void;
 };
 
@@ -20,7 +22,11 @@ function parseAmount(value: string) {
   return Number.isFinite(normalized) ? normalized : 0;
 }
 
-export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDialogProps) {
+export function EditSubscriptionDialog({
+  open,
+  subscription,
+  onClose,
+}: EditSubscriptionDialogProps) {
   const titleId = useId();
   const priceId = useId();
   const queryClient = useQueryClient();
@@ -35,6 +41,16 @@ export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDi
   }, []);
 
   useEffect(() => {
+    if (!subscription || !open) {
+      return;
+    }
+
+    setName(subscription.name);
+    setMonthlyPrice(String(subscription.monthlyPrice));
+    setErrorMessage(null);
+  }, [open, subscription]);
+
+  useEffect(() => {
     if (!open) {
       return;
     }
@@ -47,12 +63,18 @@ export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDi
     };
   }, [open]);
 
-  if (!open || !mounted) {
+  if (!open || !mounted || !subscription) {
     return null;
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    const expenseId = subscription?.id;
+
+    if (!expenseId) {
+      return;
+    }
 
     const trimmedName = name.trim();
     const price = parseAmount(monthlyPrice);
@@ -65,18 +87,16 @@ export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDi
     setErrorMessage(null);
 
     try {
-      await createRegularExpenseOnBackend({
+      await updateRegularExpenseOnBackend(expenseId, {
         monthlyPrice: price,
         name: trimmedName,
       });
 
       await queryClient.invalidateQueries({ queryKey: queryKeys.subscriptions });
       await queryClient.invalidateQueries({ queryKey: queryKeys.dashboard });
-      setName("");
-      setMonthlyPrice("");
       onClose();
     } catch {
-      setErrorMessage("Не удалось добавить подписку. Попробуйте ещё раз.");
+      setErrorMessage("Не удалось сохранить изменения. Попробуйте ещё раз.");
     } finally {
       setIsSaving(false);
     }
@@ -93,7 +113,7 @@ export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDi
       >
         <div className={styles.header}>
           <h2 className={styles.title} id={titleId}>
-            Новая подписка
+            Редактировать подписку
           </h2>
           <button aria-label="Закрыть" className={styles.closeButton} onClick={onClose} type="button">
             <X size={20} strokeWidth={1.8} />
@@ -106,7 +126,6 @@ export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDi
             <input
               autoFocus
               onChange={(event) => setName(event.target.value)}
-              placeholder="Например, Netflix"
               required
               type="text"
               value={name}
@@ -120,7 +139,6 @@ export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDi
               inputMode="numeric"
               min={1}
               onChange={(event) => setMonthlyPrice(event.target.value)}
-              placeholder="299"
               required
               type="text"
               value={monthlyPrice}
@@ -134,7 +152,7 @@ export function CreateSubscriptionDialog({ open, onClose }: CreateSubscriptionDi
             disabled={!name.trim() || parseAmount(monthlyPrice) <= 0 || isSaving}
             type="submit"
           >
-            {isSaving ? "Сохраняем..." : "Добавить подписку"}
+            {isSaving ? "Сохраняем..." : "Сохранить"}
           </button>
         </form>
       </div>

@@ -22,6 +22,7 @@ export const subscriptionsScreenData = {
       totalSpent: 4186,
       status: "active",
       icon: subscriptionCategoryIcon,
+      sourceType: "manual",
     },
     {
       id: "yandex-plus",
@@ -31,6 +32,7 @@ export const subscriptionsScreenData = {
       totalSpent: 299,
       status: "active",
       icon: subscriptionCategoryIcon,
+      sourceType: "manual",
     },
     {
       id: "cloud-ai",
@@ -40,6 +42,7 @@ export const subscriptionsScreenData = {
       totalSpent: 79996,
       status: "active",
       icon: subscriptionCategoryIcon,
+      sourceType: "manual",
     },
     {
       id: "mts-premium",
@@ -49,6 +52,7 @@ export const subscriptionsScreenData = {
       totalSpent: 2388,
       status: "paused",
       icon: subscriptionCategoryIcon,
+      sourceType: "manual",
     },
   ],
 } as const;

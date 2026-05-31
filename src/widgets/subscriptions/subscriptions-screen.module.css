@@ -190,7 +190,8 @@
 .subscriptionRow {
   align-items: center;
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 10px 12px;
   justify-content: space-between;
   padding: 0 16px;
 }
@@ -297,6 +298,40 @@
 .subscriptionPriceSuffix,
 .subscriptionTotal {
   color: #999;
+}
+
+.subscriptionActions {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.actionButton,
+.actionButtonDanger {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(153, 153, 153, 0.35);
+  border-radius: 999px;
+  color: #3a3a3a;
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.actionButtonDanger {
+  color: #c53b3b;
+}
+
+.emptyState {
+  color: #666;
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0;
+  padding: 8px 16px 4px;
+  text-align: center;
 }
 
 .divider {

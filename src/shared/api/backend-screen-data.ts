@@ -14,6 +14,11 @@ import {
   forecastYearPoints,
 } from "@/shared/data/dashboard";
 import { loadGoalsFromBackend } from "@/shared/lib/goals-screen";
+import {
+  buildRecurringExpensesSummary,
+  loadSubscriptionsFromBackend,
+  mapRegularExpenseToSubscription,
+} from "@/shared/lib/regular-expenses";
 import { incomeBalanceScreenData } from "@/shared/data/income-balance";
 import { investmentsBalanceScreenData } from "@/shared/data/investments-balance";
 import { operationsBarsData } from "@/shared/data/operations-bars";
@@ -44,6 +49,7 @@ import {
   fetchCategoriesPage,
   fetchChats,
   fetchExpectedExpenses,
+  fetchRegularExpensesPage,
   fetchExpectedIncomes,
   fetchFinancialHealthHistory,
   fetchFinancialHealthProfile,
@@ -100,6 +106,7 @@ type SubscriptionItem = {
   totalSpent: number;
   status: "active" | "paused";
   icon: string;
+  sourceType: string;
 };
 
 type OperationsBreakdownItem = {
@@ -747,6 +754,7 @@ function inferSubscriptions(transactions: TransactionResponse[]) {
         monthlyPrice: Math.round(averageValue),
         months: uniqueMonths.size || 1,
         name: group.name,
+        sourceType: "detected",
         status,
         totalSpent: Math.round(group.total),
       };
@@ -1122,6 +1130,7 @@ export async function loadDashboardScreenData() {
     availableBalance,
     expectedIncomes,
     expectedExpenses,
+    regularExpensesResponse,
     transactions,
     recommendationsResponse,
     financialHealth,
@@ -1130,6 +1139,7 @@ export async function loadDashboardScreenData() {
     fetchAvailableBalance(),
     fetchExpectedIncomes({ page_size: 100 }),
     fetchExpectedExpenses({ page_size: 100 }),
+    fetchRegularExpensesPage({ page_size: 100 }),
     fetchAllTransactions(),
     fetchAgentRecommendations(),
     fetchFinancialHealthScoreSafe(),
@@ -1155,7 +1165,12 @@ export async function loadDashboardScreenData() {
   const availableAmount = parseDecimal(availableBalance.available_amount);
   const expectedIncomeTotal = parseDecimal(availableBalance.expected_income_total);
   const expectedExpenseTotal = parseDecimal(availableBalance.expected_expense_total);
-  const subscriptions = inferSubscriptions(transactions);
+  const regularExpenseSubscriptions = regularExpensesResponse.items
+    .filter((item) => item.status !== "deleted")
+    .map(mapRegularExpenseToSubscription);
+  const subscriptions = regularExpenseSubscriptions.length
+    ? regularExpenseSubscriptions
+    : inferSubscriptions(transactions);
   const investmentSeries = buildInvestmentSeries(transactions, accounts);
   const investmentValue = investmentSeries.reduce((sum, item) => sum + item.value, 0);
   const assetsTotal = accounts.reduce(
@@ -1236,14 +1251,7 @@ export async function loadDashboardScreenData() {
       investmentPercent,
       notifications: recommendations.length || dashboardData.notifications,
       receipts,
-      recurringExpenses: {
-        categories: `${subscriptions.length} категорий`,
-        total: `${Math.round(
-          subscriptions
-            .filter((subscription) => subscription.status === "active")
-            .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0),
-        )} ₽`,
-      },
+      recurringExpenses: buildRecurringExpensesSummary(subscriptions),
       totalBalance,
     },
     desktopForecastPoints:
@@ -1337,55 +1345,7 @@ export async function loadRecommendationsScreenData() {
 }
 
 export async function loadSubscriptionsScreenData() {
-  const transactionsResponse = await fetchTransactions({ page_size: 500 });
-  const subscriptions = inferSubscriptions(transactionsResponse.items);
-
-  if (!subscriptions.length) {
-    return subscriptionsScreenData;
-  }
-
-  const activeSubscriptions = subscriptions.filter(
-    (subscription) => subscription.status === "active",
-  );
-  const nextChargeBase = activeSubscriptions
-    .map((subscription) => subscription.id)
-    .length
-    ? new Date()
-    : null;
-
-  return {
-    ...subscriptionsScreenData,
-    subscriptions,
-    summary: {
-      nextChargeDate: nextChargeBase
-        ? formatDate(nextChargeBase, { day: "2-digit", month: "2-digit" })
-        : subscriptionsScreenData.summary.nextChargeDate,
-      nextChargeLabel: subscriptionsScreenData.summary.nextChargeLabel,
-      perMonth: Math.round(
-        activeSubscriptions.reduce((sum, subscription) => sum + subscription.monthlyPrice, 0),
-      ),
-      totalSpent: Math.round(
-        subscriptions.reduce((sum, subscription) => sum + subscription.totalSpent, 0),
-      ),
-    },
-    tabs: [
-      {
-        count: subscriptions.length,
-        id: "all" as const,
-        label: subscriptionsScreenData.tabs[0].label,
-      },
-      {
-        count: activeSubscriptions.length,
-        id: "active" as const,
-        label: subscriptionsScreenData.tabs[1].label,
-      },
-      {
-        count: subscriptions.length - activeSubscriptions.length,
-        id: "paused" as const,
-        label: subscriptionsScreenData.tabs[2].label,
-      },
-    ],
-  };
+  return loadSubscriptionsFromBackend();
 }
 
 export async function loadOperationsScreenData() {

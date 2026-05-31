@@ -10,6 +10,8 @@ import {
   forecastPoints,
   forecastYearPoints,
 } from "@/shared/data/dashboard";
+import { spendingCalendarMockGroups } from "@/shared/data/spending-calendar";
+import type { SpendingCalendarGroup } from "@/shared/lib/spending-calendar";
 import type { BankAccount, ForecastPoint } from "@/shared/types/dashboard";
 
 import { tryLoadScreenData, loadDashboardScreenData } from "./backend-screen-data";
@@ -47,18 +49,31 @@ export type DashboardResponse = {
   desktopForecastPoints: ReadonlyArray<ForecastPoint>;
   forecastPoints: ReadonlyArray<ForecastPoint>;
   forecastYearPoints: ReadonlyArray<ForecastPoint>;
+  spendingCalendar: ReadonlyArray<SpendingCalendarGroup>;
 };
+
+function withSpendingCalendar(data: DashboardResponse): DashboardResponse {
+  return {
+    ...data,
+    spendingCalendar: data.spendingCalendar?.length
+      ? data.spendingCalendar
+      : spendingCalendarMockGroups,
+  };
+}
 
 export async function fetchDashboard(): Promise<DashboardResponse> {
   await mockDelay();
-  return tryLoadScreenData(loadDashboardScreenData, () => ({
+  const data = (await tryLoadScreenData(loadDashboardScreenData, () => ({
     bankAccounts,
     categoryRadarMetrics,
     dashboard: dashboardData,
     desktopForecastPoints,
     forecastPoints,
     forecastYearPoints,
-  } as DashboardResponse)) as Promise<DashboardResponse>;
+    spendingCalendar: spendingCalendarMockGroups,
+  } as DashboardResponse))) as DashboardResponse;
+
+  return withSpendingCalendar(data);
 }
 
 export function useDashboardQuery() {

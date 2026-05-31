@@ -19,7 +19,21 @@ const assets = {
   iconWallet: "/dashboard/balance/icon-wallet.svg",
 } as const;
 
+const defaultBankMeta = {
+  divider: assets.dividerSber,
+  icon: assets.iconWallet,
+  textColor: "#1f1f1f",
+} as const;
+
 const bankMeta: Record<string, { divider: string; icon: string; textColor: string }> = {
+  alfa: {
+    divider: assets.dividerSber,
+    icon: "/bank-accounts/icons/alfa.svg",
+    textColor: "#1f1f1f",
+  },
+  default: defaultBankMeta,
+  gpb: defaultBankMeta,
+  raif: defaultBankMeta,
   sber: {
     divider: assets.dividerSber,
     icon: assets.iconSber,
@@ -30,7 +44,12 @@ const bankMeta: Record<string, { divider: string; icon: string; textColor: strin
     icon: assets.iconTbank,
     textColor: "#3a3a3a",
   },
+  vtb: defaultBankMeta,
 };
+
+function getBankMeta(bankKey: string) {
+  return bankMeta[bankKey] ?? defaultBankMeta;
+}
 
 export function BalanceCard() {
   const router = useRouter();
@@ -69,7 +88,7 @@ export function BalanceCard() {
 
         <div className={styles.bankList}>
           {bankAccounts.map((account) => {
-            const meta = bankMeta[account.id];
+            const meta = getBankMeta(account.bankKey);
 
             return (
               <button

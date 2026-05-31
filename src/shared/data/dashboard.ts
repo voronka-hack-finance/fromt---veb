@@ -1,8 +1,8 @@
 import type { BankAccount, ForecastPoint } from "@/shared/types/dashboard";
 
 export const bankAccounts: BankAccount[] = [
-  { id: "tbank", label: "Счет", suffix: "0418", color: "#ffd84d" },
-  { id: "sber", label: "Счет", suffix: "1521", color: "#52c26d" },
+  { id: "tbank", bankKey: "tbank", label: "Счет", suffix: "0418", color: "#ffd84d" },
+  { id: "sber", bankKey: "sber", label: "Счет", suffix: "1521", color: "#52c26d" },
 ];
 
 export const forecastPoints: ForecastPoint[] = [

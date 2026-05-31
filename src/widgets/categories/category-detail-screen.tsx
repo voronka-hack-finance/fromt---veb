@@ -5,11 +5,11 @@ import type { CSSProperties } from "react";
 import {
   ArrowLeft,
   ChevronRight,
-  CircleDollarSign,
   Coffee,
   Pencil,
   Trash2,
 } from "lucide-react";
+import { RubleBoldDuotoneIcon } from "@/shared/ui/icons/ruble-bold-duotone-icon";
 
 import { useCategoriesQuery, type CategoriesResponse } from "@/shared/api/categories";
 import { getCategoryDetailData, type CategoryDetailData } from "@/shared/data/category-details";
@@ -194,7 +194,7 @@ function DesktopCategoryDetailContent({
               <section className={styles.banksCard}>
                 <div className={styles.banksHeader}>
                   <div className={styles.banksTitle}>
-                    <CircleDollarSign size={18} strokeWidth={1.8} />
+                    <RubleBoldDuotoneIcon size={18} />
                     <h2>Топ банков по тратам</h2>
                   </div>
                   <ChevronRight size={18} strokeWidth={1.8} />

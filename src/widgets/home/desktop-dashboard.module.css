@@ -182,8 +182,10 @@
 .contentGrid {
   align-items: stretch;
   display: grid;
+  flex: 1 1 auto;
   gap: 20px;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 547px);
+  min-height: 0;
 }
 
 .leftColumn,
@@ -191,6 +193,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
   min-height: 0;
   min-width: 0;
 }
@@ -263,8 +266,8 @@
   border-radius: 14px;
   display: flex;
   gap: 12px;
-  min-height: 52px;
-  padding: 10px 14px;
+  min-height: 72px;
+  padding: 16px 14px;
 }
 
 .summaryBadge {
@@ -417,12 +420,21 @@
 
 .calendarCard {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 1 0;
   flex-direction: column;
-  max-height: none;
-  min-height: 180px;
+  max-height: 100%;
+  min-height: 0;
   overflow: hidden;
   padding: 16px;
+}
+
+.rightColumn > .protectionCard,
+.rightColumn > .rightPanelActions {
+  flex-shrink: 0;
+}
+
+.calendarCard .calendarHeader {
+  flex-shrink: 0;
 }
 
 .calendarHeader,
@@ -459,7 +471,9 @@
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
+  padding-bottom: 4px;
   padding-right: 4px;
+  scrollbar-gutter: stable;
 }
 
 .calendarGroups::-webkit-scrollbar {
@@ -507,9 +521,11 @@
 .calendarItem {
   background: #ececec;
   border-radius: 20px;
+  color: inherit;
   gap: 8px;
   justify-content: space-between;
   padding: 10px 12px;
+  text-decoration: none;
 }
 
 .calendarItemMeta {
@@ -666,8 +682,8 @@
   .summaryTile,
   .addTile {
     gap: 8px;
-    min-height: 48px;
-    padding: 8px 10px;
+    min-height: 64px;
+    padding: 14px 10px;
   }
 
   .summaryValue {

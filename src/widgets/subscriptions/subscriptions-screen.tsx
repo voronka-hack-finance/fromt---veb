@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Plus } from "lucide-react";
 import { useState } from "react";
 
 import {
@@ -32,20 +32,34 @@ function pluralizeMonths(months: number) {
   return "месяцев";
 }
 
+function SubscriptionCategoryIcon() {
+  return (
+    <div aria-hidden className={styles.subscriptionIconWrap}>
+      <div className={styles.subscriptionIconInner}>
+        <img
+          alt=""
+          className={styles.subscriptionIconGlyph}
+          draggable={false}
+          src="/subscriptions/category-icon.svg"
+        />
+      </div>
+    </div>
+  );
+}
+
 function SubscriptionItem({
   monthlyPrice,
   months,
   name,
   status,
   totalSpent,
-  icon,
 }: SubscriptionsResponse["subscriptions"][number]) {
   const isPaused = status === "paused";
 
   return (
     <article className={cn(styles.subscriptionRow, isPaused && styles.subscriptionRowPaused)}>
       <div className={styles.subscriptionMain}>
-        <img alt="" aria-hidden className={styles.subscriptionIcon} draggable={false} src={icon} />
+        <SubscriptionCategoryIcon />
 
         <div className={styles.subscriptionMeta}>
           <h2 className={styles.subscriptionName}>{name}</h2>
@@ -97,16 +111,17 @@ function SubscriptionsScreenContent({
     <DesktopSidebarLayout>
       <main className={styles.stage}>
       <div className={styles.shell}>
-        <Reveal delay={0.03}>
-          <header className={styles.header}>
-            <Link aria-label="Назад" className={styles.backButton} href="/">
-              <ArrowLeft size={24} strokeWidth={1.9} />
-            </Link>
-            <h1 className={styles.title}>{screenData.title}</h1>
-          </header>
-        </Reveal>
+        <div className={styles.topSection}>
+          <Reveal delay={0.03}>
+            <header className={styles.header}>
+              <Link aria-label="Назад" className={styles.backButton} href="/">
+                <ArrowLeft size={24} strokeWidth={1.9} />
+              </Link>
+              <h1 className={styles.title}>{screenData.title}</h1>
+            </header>
+          </Reveal>
 
-        <div className={styles.content}>
+          <div className={styles.content}>
           <Reveal delay={0.07}>
             <section className={styles.summaryCard}>
               <div className={styles.summaryTop}>
@@ -153,7 +168,15 @@ function SubscriptionsScreenContent({
               </Reveal>
             ))}
           </section>
+          </div>
         </div>
+
+        <Reveal delay={0.28}>
+          <button className={styles.addButton} type="button">
+            <span>Добавить подписку</span>
+            <Plus aria-hidden size={24} strokeWidth={1.9} />
+          </button>
+        </Reveal>
 
         <div aria-hidden className={styles.homeIndicatorArea}>
           <div className={styles.homeIndicator} />

@@ -2,12 +2,12 @@
 
 import {
   ChevronRight,
-  CircleDollarSign,
   Ellipsis,
   Pencil,
   Trash2,
   Wallet,
 } from "lucide-react";
+import { RubleBoldDuotoneIcon } from "@/shared/ui/icons/ruble-bold-duotone-icon";
 
 import type { TotalBalanceResponse } from "@/shared/api/total-balance";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
@@ -153,7 +153,7 @@ export function DesktopTotalBalanceScreen({ screenData }: { screenData: TotalBal
               <section className={styles.topBanksCard}>
                 <div className={styles.topBanksHeader}>
                   <div className={styles.topBanksTitle}>
-                    <CircleDollarSign size={18} strokeWidth={1.8} />
+                    <RubleBoldDuotoneIcon size={18} />
                     <h2>Топ банков по тратам</h2>
                   </div>
                   <button

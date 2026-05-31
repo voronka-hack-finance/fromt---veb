@@ -7,7 +7,7 @@ import {
   type OperationDetail,
 } from "@/shared/data/operation-details";
 
-import { loadOperationDetailScreenData } from "./backend-entity-loaders";
+import { loadOperationDetailFromBackend } from "@/shared/lib/operation-detail";
 import { tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
@@ -20,7 +20,7 @@ export async function fetchOperationDetail(
   await mockDelay();
 
   return tryLoadScreenData(
-    () => loadOperationDetailScreenData(operationId),
+    () => loadOperationDetailFromBackend(operationId),
     () => {
       const operation = operationDetails[operationId];
 

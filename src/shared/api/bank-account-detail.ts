@@ -9,7 +9,6 @@ import {
 
 import { loadBankAccountDetailScreenData } from "./backend-entity-loaders";
 import { tryLoadScreenData } from "./backend-screen-data";
-import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
 
 export type BankAccountDetailResponse = BankAccountDetail;
@@ -17,8 +16,6 @@ export type BankAccountDetailResponse = BankAccountDetail;
 export async function fetchBankAccountDetail(
   accountId: string,
 ): Promise<BankAccountDetailResponse> {
-  await mockDelay();
-
   return tryLoadScreenData(
     () => loadBankAccountDetailScreenData(accountId),
     () => {

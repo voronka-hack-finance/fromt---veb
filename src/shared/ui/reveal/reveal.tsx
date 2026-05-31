@@ -3,6 +3,8 @@
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
+import styles from "./reveal.module.css";
+
 type RevealProps = {
   children: ReactNode;
   className?: string;
@@ -12,7 +14,7 @@ type RevealProps = {
 export function Reveal({ children, className, delay = 0 }: RevealProps) {
   return (
     <motion.div
-      className={className}
+      className={[styles.reveal, className].filter(Boolean).join(" ")}
       initial={{ opacity: 0, y: 24, scale: 0.98 }}
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, amount: 0.1, margin: "0px 0px -40px 0px" }}

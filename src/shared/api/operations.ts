@@ -47,6 +47,11 @@ export type OperationsScreenResponse = {
     label: string;
     total: number;
   };
+  operationGroups?: ReadonlyArray<{
+    label: string;
+    total: number;
+    operations: OperationsScreenResponse["operations"];
+  }>;
   operations: ReadonlyArray<{
     id: string;
     category: string;

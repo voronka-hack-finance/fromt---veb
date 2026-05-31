@@ -1,6 +1,8 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
+import { createContext, useContext, useMemo, type ReactNode } from "react";
+
+import { spendingCalendarMockGroups } from "@/shared/data/spending-calendar";
 
 import type { DashboardResponse } from "./dashboard";
 
@@ -12,7 +14,19 @@ type DashboardDataProviderProps = {
 };
 
 export function DashboardDataProvider({ children, value }: DashboardDataProviderProps) {
-  return <DashboardContext.Provider value={value}>{children}</DashboardContext.Provider>;
+  const normalizedValue = useMemo(
+    () => ({
+      ...value,
+      spendingCalendar: value.spendingCalendar?.length
+        ? value.spendingCalendar
+        : spendingCalendarMockGroups,
+    }),
+    [value],
+  );
+
+  return (
+    <DashboardContext.Provider value={normalizedValue}>{children}</DashboardContext.Provider>
+  );
 }
 
 export function useDashboardData() {

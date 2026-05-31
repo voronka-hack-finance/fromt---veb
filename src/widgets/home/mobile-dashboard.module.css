@@ -125,8 +125,15 @@
 }
 
 @media (min-width: 1024px) {
+  .stage {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
   .desktopShell {
     display: block;
+    height: 100%;
   }
 
   .mobileShell {

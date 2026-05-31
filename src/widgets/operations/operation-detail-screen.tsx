@@ -48,7 +48,7 @@ function CategoryIcon({
   if (icon === "education") {
     return (
       <div className={className}>
-        <ShoppingBag {...props} />
+        <GraduationCap {...props} />
       </div>
     );
   }
@@ -65,6 +65,22 @@ function CategoryIcon({
     return (
       <div className={className}>
         <ShoppingBag {...props} />
+      </div>
+    );
+  }
+
+  if (icon === "wifi") {
+    return (
+      <div className={className}>
+        <Sparkles {...props} />
+      </div>
+    );
+  }
+
+  if (icon === "bank" || icon === "income") {
+    return (
+      <div className={className}>
+        <CreditCard {...props} />
       </div>
     );
   }

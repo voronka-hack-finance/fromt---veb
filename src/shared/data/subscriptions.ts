@@ -1,3 +1,5 @@
+export const subscriptionCategoryIcon = "/subscriptions/category-icon.svg";
+
 export const subscriptionsScreenData = {
   title: "Мои подписки",
   summary: {
@@ -19,7 +21,7 @@ export const subscriptionsScreenData = {
       monthlyPrice: 299,
       totalSpent: 4186,
       status: "active",
-      icon: "/subscriptions/vk-music.png",
+      icon: subscriptionCategoryIcon,
     },
     {
       id: "yandex-plus",
@@ -28,7 +30,7 @@ export const subscriptionsScreenData = {
       monthlyPrice: 299,
       totalSpent: 299,
       status: "active",
-      icon: "/subscriptions/yandex-plus.png",
+      icon: subscriptionCategoryIcon,
     },
     {
       id: "cloud-ai",
@@ -37,7 +39,7 @@ export const subscriptionsScreenData = {
       monthlyPrice: 19999,
       totalSpent: 79996,
       status: "active",
-      icon: "/subscriptions/cloud-ai.png",
+      icon: subscriptionCategoryIcon,
     },
     {
       id: "mts-premium",
@@ -46,7 +48,7 @@ export const subscriptionsScreenData = {
       monthlyPrice: 199,
       totalSpent: 2388,
       status: "paused",
-      icon: "/subscriptions/mts-premium.png",
+      icon: subscriptionCategoryIcon,
     },
   ],
 } as const;

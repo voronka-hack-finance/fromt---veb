@@ -49,7 +49,11 @@ export function AppSelect<T extends string>({
   }, [open]);
 
   return (
-    <div className={[styles.wrap, open ? styles.wrapOpen : ""].join(" ")} ref={wrapRef}>
+    <div
+      className={[styles.wrap, open ? styles.wrapOpen : ""].join(" ")}
+      data-overlay-open={open ? "true" : undefined}
+      ref={wrapRef}
+    >
       <button
         aria-controls={listboxId}
         aria-expanded={open}

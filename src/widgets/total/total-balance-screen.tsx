@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, CircleDollarSign, Info, SlidersHorizontal } from "lucide-react";
+import { ArrowLeft, Info, SlidersHorizontal } from "lucide-react";
+import { RubleBoldDuotoneIcon } from "@/shared/ui/icons/ruble-bold-duotone-icon";
 import { useMemo, useRef, useState } from "react";
 
 import { useTotalBalanceQuery, type TotalBalanceResponse } from "@/shared/api/total-balance";
@@ -158,7 +159,7 @@ function TotalBalanceScreenContent({ screenData }: { screenData: TotalBalanceRes
                       onClick={() => handleFilterChange(filter.id)}
                       type="button"
                     >
-                      <CircleDollarSign size={18} strokeWidth={1.8} />
+                      <RubleBoldDuotoneIcon size={18} />
                       <span>{filter.label}</span>
                     </button>
                   ))}

@@ -1,4 +1,8 @@
-const DEFAULT_MOCK_DELAY_MS = 200;
+const DEFAULT_MOCK_DELAY_MS = parseNumberEnv(process.env.NEXT_PUBLIC_MOCK_DELAY_MS, 0);
+const SLOW_REQUEST_LOG_MS = parseNumberEnv(
+  process.env.NEXT_PUBLIC_SLOW_REQUEST_LOG_MS,
+  process.env.NODE_ENV === "development" ? 700 : 0,
+);
 const DEFAULT_API_BASE_URL = "https://zanachka.avenir-team.ru";
 const ACCESS_TOKEN_STORAGE_KEY = "zanachka_access_token";
 const REFRESH_TOKEN_STORAGE_KEY = "zanachka_refresh_token";
@@ -36,6 +40,15 @@ export class ApiError extends Error {
 }
 
 let refreshPromise: Promise<string | null> | null = null;
+
+function parseNumberEnv(value: string | undefined, fallback: number) {
+  if (!value) {
+    return fallback;
+  }
+
+  const normalized = Number(value);
+  return Number.isFinite(normalized) ? normalized : fallback;
+}
 
 function isBrowser() {
   return typeof window !== "undefined";
@@ -159,6 +172,7 @@ async function performRequest(
   options: ApiRequestOptions,
   accessToken: string | null,
 ) {
+  const startedAt = Date.now();
   const baseUrl = getApiBaseUrl();
 
   if (!baseUrl) {
@@ -186,14 +200,26 @@ async function performRequest(
     options.formData ??
     (options.json !== undefined ? JSON.stringify(options.json) : undefined);
 
-  return fetch(url.toString(), {
+  const response = await fetch(url.toString(), {
     ...options,
     body,
     headers,
   });
+
+  const duration = Date.now() - startedAt;
+
+  if (SLOW_REQUEST_LOG_MS > 0 && duration >= SLOW_REQUEST_LOG_MS) {
+    console.warn(`[api] slow request ${path} ${response.status} ${duration}ms`);
+  }
+
+  return response;
 }
 
 export async function mockDelay(ms = DEFAULT_MOCK_DELAY_MS) {
+  if (ms <= 0) {
+    return;
+  }
+
   await new Promise((resolve) => setTimeout(resolve, ms));
 }
 

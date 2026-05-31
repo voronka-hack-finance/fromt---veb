@@ -13,7 +13,7 @@ import {
   forecastPoints,
   forecastYearPoints,
 } from "@/shared/data/dashboard";
-import { goalsScreenData } from "@/shared/data/goals";
+import { loadGoalsFromBackend } from "@/shared/lib/goals-screen";
 import { incomeBalanceScreenData } from "@/shared/data/income-balance";
 import { investmentsBalanceScreenData } from "@/shared/data/investments-balance";
 import { operationsBarsData } from "@/shared/data/operations-bars";
@@ -23,9 +23,19 @@ import {
   recommendationsAssets,
   recommendationsScreenData,
 } from "@/shared/data/recommendations";
-import { subscriptionsScreenData } from "@/shared/data/subscriptions";
+import { subscriptionCategoryIcon, subscriptionsScreenData } from "@/shared/data/subscriptions";
 import { totalBalanceScreenData } from "@/shared/data/total-balance";
 import type { BankAccount, ForecastPoint } from "@/shared/types/dashboard";
+
+import { spendingCalendarMockGroups } from "@/shared/data/spending-calendar";
+import { buildSpendingCalendarGroups } from "@/shared/lib/spending-calendar";
+
+import {
+  fetchAllTransactions,
+  getTransactionAbsAmount,
+  getTransactionSignedAmount,
+  resolveTransactionType,
+} from "./transaction-utils";
 
 import {
   fetchAccounts,
@@ -38,7 +48,6 @@ import {
   fetchFinancialHealthHistory,
   fetchFinancialHealthProfile,
   fetchFinancialHealthScore,
-  fetchGoalsPage,
   fetchLimitsPage,
   fetchTransactions,
   type AccountResponse,
@@ -62,18 +71,6 @@ type CategoriesScreenCategory = {
   tone: "dark" | "light" | "light-darkbar";
   icon: keyof typeof categoriesAssets.icons;
   progress: number;
-};
-
-type GoalCardData = {
-  id: string;
-  title: string;
-  image: string;
-  current: number;
-  target: number;
-  account: {
-    label: string;
-    suffix: string;
-  };
 };
 
 type RecommendationAgent = {
@@ -157,21 +154,14 @@ const recommendationVisuals = {
   Pick<RecommendationAgent, "imageKey" | "imageVariant" | "subtitle">
 >;
 
-const goalImages = [
-  "/goals/bali-goal.png",
-  "/goals/safety-cushion-goal.png",
-  "/goals/create-card.png",
-  "/goals/protection-card.png",
-] as const;
-
 const subscriptionIconMatchers = [
-  { keyword: "vk", icon: "/subscriptions/vk-music.png" },
-  { keyword: "music", icon: "/subscriptions/vk-music.png" },
-  { keyword: "янд", icon: "/subscriptions/yandex-plus.png" },
-  { keyword: "yandex", icon: "/subscriptions/yandex-plus.png" },
-  { keyword: "cloud", icon: "/subscriptions/cloud-ai.png" },
-  { keyword: "mts", icon: "/subscriptions/mts-premium.png" },
-  { keyword: "premium", icon: "/subscriptions/mts-premium.png" },
+  { keyword: "vk", icon: subscriptionCategoryIcon },
+  { keyword: "music", icon: subscriptionCategoryIcon },
+  { keyword: "янд", icon: subscriptionCategoryIcon },
+  { keyword: "yandex", icon: subscriptionCategoryIcon },
+  { keyword: "cloud", icon: subscriptionCategoryIcon },
+  { keyword: "mts", icon: subscriptionCategoryIcon },
+  { keyword: "premium", icon: subscriptionCategoryIcon },
 ] as const;
 
 const categoryKeywordToIcon: Array<[string, CategoryIconKey]> = [
@@ -367,6 +357,7 @@ function getOperationIcon(categoryName: string, description: string, type: Trans
   if (
     haystack.includes("магаз") ||
     haystack.includes("market") ||
+    haystack.includes("маркет") ||
     haystack.includes("shop") ||
     haystack.includes("wild")
   ) {
@@ -387,9 +378,15 @@ function buildBankAccounts(accounts: AccountResponse[]): BankAccount[] {
     const bankId = getBankId(account);
     const suffix = normalizeLabel(account.card_last4) || account.id.slice(-4);
 
+    const bankKey =
+      bankId === account.id
+        ? "default"
+        : bankId;
+
     return {
+      bankKey,
       color: colors[index % colors.length],
-      id: bankId,
+      id: account.id,
       label: account.account_type || "Счет",
       suffix,
     };
@@ -457,8 +454,47 @@ function buildQuarterForecastSeries(transactions: TransactionResponse[]) {
   }));
 }
 
+const OPERATIONS_LIST_LIMIT = 50;
+
 function pickTopTransactions(transactions: TransactionResponse[], limit: number) {
   return sortByDateDesc(transactions).slice(0, limit);
+}
+
+function mapTransactionToListOperation(
+  transaction: TransactionResponse,
+  accountsById: Map<string, AccountResponse>,
+  categoriesById: Map<string, CategoryResponse>,
+) {
+  const account = transaction.account_id
+    ? accountsById.get(transaction.account_id)
+    : undefined;
+  const category = transaction.category_id
+    ? categoriesById.get(transaction.category_id)
+    : undefined;
+  const type = resolveTransactionType(transaction);
+  const categoryName =
+    transaction.category_name ||
+    category?.name ||
+    (type === "income" ? "Доходы" : "Расходы");
+  const description =
+    normalizeLabel(transaction.description) || categoryName || "Операция";
+  const bank = account ? getBankLabel(account) : "Счет";
+  const bankId = account ? getBankId(account) : "default";
+
+  return {
+    amount: getTransactionSignedAmount(transaction),
+    bank,
+    bankTone: getBankTone(bankId) as OperationsOperation["bankTone"],
+    category: categoryName,
+    direction: (type === "income" ? "income" : "outcome") as OperationsOperation["direction"],
+    icon: getOperationIcon(categoryName, description, type),
+    iconTone:
+      type === "income"
+        ? ("success" as OperationsOperation["iconTone"])
+        : ("neutral" as OperationsOperation["iconTone"]),
+    id: transaction.id,
+    title: description,
+  };
 }
 
 function buildOperationsList(
@@ -466,40 +502,39 @@ function buildOperationsList(
   accountsById: Map<string, AccountResponse>,
   categoriesById: Map<string, CategoryResponse>,
 ) {
-  return pickTopTransactions(transactions, 6).map((transaction) => {
-    const account = transaction.account_id
-      ? accountsById.get(transaction.account_id)
-      : undefined;
-    const category = transaction.category_id
-      ? categoriesById.get(transaction.category_id)
-      : undefined;
-    const categoryName =
-      transaction.category_name ||
-      category?.name ||
-      (transaction.type === "income" ? "Доходы" : "Расходы");
-    const description =
-      normalizeLabel(transaction.description) ||
-      categoryName ||
-      "Операция";
-    const bank = account ? getBankLabel(account) : "Счет";
-    const bankId = account ? getBankId(account) : "default";
-    const amount = parseDecimal(transaction.operation_amount);
+  return pickTopTransactions(transactions, OPERATIONS_LIST_LIMIT).map((transaction) =>
+    mapTransactionToListOperation(transaction, accountsById, categoriesById),
+  );
+}
+
+function buildOperationsDateGroups(
+  transactions: TransactionResponse[],
+  accountsById: Map<string, AccountResponse>,
+  categoriesById: Map<string, CategoryResponse>,
+) {
+  const labels: string[] = [];
+  const groups = new Map<string, OperationsOperation[]>();
+
+  pickTopTransactions(transactions, OPERATIONS_LIST_LIMIT).forEach((transaction) => {
+    const operation = mapTransactionToListOperation(transaction, accountsById, categoriesById);
+    const date = toDate(transaction.operation_at);
+    const label = date ? formatDayMonthLong(date) : "Без даты";
+
+    if (!groups.has(label)) {
+      groups.set(label, []);
+      labels.push(label);
+    }
+
+    groups.get(label)!.push(operation);
+  });
+
+  return labels.map((label) => {
+    const operations = groups.get(label) ?? [];
 
     return {
-      amount: transaction.type === "income" ? amount : -Math.abs(amount),
-      bank,
-      bankTone: getBankTone(bankId) as OperationsOperation["bankTone"],
-      category: categoryName,
-      direction: (
-        transaction.type === "income" ? "income" : "outcome"
-      ) as OperationsOperation["direction"],
-      icon: getOperationIcon(categoryName, description, transaction.type),
-      iconTone:
-        transaction.type === "income"
-          ? ("success" as OperationsOperation["iconTone"])
-          : ("neutral" as OperationsOperation["iconTone"]),
-      id: transaction.id,
-      title: description,
+      label,
+      operations,
+      total: Math.round(operations.reduce((sum, operation) => sum + operation.amount, 0)),
     };
   });
 }
@@ -508,10 +543,10 @@ function buildBreakdownItems(transactions: TransactionResponse[], limit = 3) {
   const totals = new Map<string, number>();
 
   transactions
-    .filter((transaction) => transaction.type === "expense")
+    .filter((transaction) => resolveTransactionType(transaction) === "expense")
     .forEach((transaction) => {
       const key = transaction.category_name || "Прочее";
-      totals.set(key, (totals.get(key) ?? 0) + Math.abs(parseDecimal(transaction.operation_amount)));
+      totals.set(key, (totals.get(key) ?? 0) + getTransactionAbsAmount(transaction));
     });
 
   const entries = [...totals.entries()]
@@ -704,7 +739,7 @@ function inferSubscriptions(transactions: TransactionResponse[]) {
       const icon =
         subscriptionIconMatchers.find(({ keyword }) =>
           group.name.toLowerCase().includes(keyword),
-        )?.icon ?? subscriptionsScreenData.subscriptions[0].icon;
+        )?.icon ?? subscriptionCategoryIcon;
 
       const nextSubscription: SubscriptionItem = {
         icon,
@@ -1087,7 +1122,7 @@ export async function loadDashboardScreenData() {
     availableBalance,
     expectedIncomes,
     expectedExpenses,
-    transactionsResponse,
+    transactions,
     recommendationsResponse,
     financialHealth,
   ] = await Promise.all([
@@ -1095,13 +1130,13 @@ export async function loadDashboardScreenData() {
     fetchAvailableBalance(),
     fetchExpectedIncomes({ page_size: 100 }),
     fetchExpectedExpenses({ page_size: 100 }),
-    fetchTransactions({ page_size: 200 }),
+    fetchAllTransactions(),
     fetchAgentRecommendations(),
     fetchFinancialHealthScoreSafe(),
   ]);
 
   const accounts = accountsResponse.items;
-  const transactions = transactionsResponse.items;
+  const spendingCalendar = buildSpendingCalendarGroups(transactions);
   const recommendations = recommendationsResponse.items;
   const bankAccounts = buildBankAccounts(accounts);
   const liveForecastPoints = buildForecastSeries(transactions, 6);
@@ -1121,10 +1156,35 @@ export async function loadDashboardScreenData() {
   const expectedIncomeTotal = parseDecimal(availableBalance.expected_income_total);
   const expectedExpenseTotal = parseDecimal(availableBalance.expected_expense_total);
   const subscriptions = inferSubscriptions(transactions);
-  const investmentValue = buildInvestmentSeries(transactions, accounts).reduce(
-    (sum, item) => sum + item.value,
+  const investmentSeries = buildInvestmentSeries(transactions, accounts);
+  const investmentValue = investmentSeries.reduce((sum, item) => sum + item.value, 0);
+  const assetsTotal = accounts.reduce(
+    (sum, account) => sum + Math.max(0, parseDecimal(account.current_balance)),
     0,
   );
+  const investmentDenominator = Math.max(assetsTotal, Math.abs(totalBalance), 1);
+  const investmentSharePercent = clamp(
+    Math.round((investmentValue / investmentDenominator) * 100),
+    0,
+    99,
+  );
+  const investmentMonthGrowth =
+    investmentSeries.at(-2)?.value && investmentSeries.at(-2)!.value > 0
+      ? ((investmentSeries.at(-1)?.value ?? 0) - investmentSeries.at(-2)!.value) /
+        investmentSeries.at(-2)!.value
+      : 0;
+  const useInvestmentFallback =
+    totalBalance <= 0 || investmentValue <= 0 || investmentSharePercent >= 90;
+  const investmentPercent = useInvestmentFallback
+    ? dashboardData.investmentPercent
+    : investmentSharePercent || dashboardData.investmentPercent;
+  const investmentGrowth = useInvestmentFallback
+    ? dashboardData.investmentGrowth
+    : `+${Math.max(0.01, Math.abs(investmentMonthGrowth) * 100)
+        .toFixed(2)
+        .replace(".", ",")} (${(investmentSharePercent / 100)
+        .toFixed(2)
+        .replace(".", ",")}%)`;
   const forecastPercent = clamp(
     Math.round((availableAmount / Math.max(totalBalance, 1)) * 100),
     0,
@@ -1158,7 +1218,7 @@ export async function loadDashboardScreenData() {
       if (metric.id === "investments") {
         return {
           ...metric,
-          percent: clamp(Math.round((investmentValue / Math.max(totalBalance, 1)) * 100), 1, 99),
+          percent: clamp(investmentPercent, 1, 99),
         };
       }
 
@@ -1172,11 +1232,8 @@ export async function loadDashboardScreenData() {
       forecastPercent,
       forecastTooltip: liveForecastPoints.at(-1)?.balance ?? dashboardData.forecastTooltip,
       incomeRemainder: availableAmount,
-      investmentGrowth:
-        investmentValue > 0
-          ? `+${(investmentValue / Math.max(totalBalance, 1)).toFixed(2)}`
-          : dashboardData.investmentGrowth,
-      investmentPercent: clamp((investmentValue / Math.max(totalBalance, 1)) * 100, 0, 100),
+      investmentGrowth,
+      investmentPercent,
       notifications: recommendations.length || dashboardData.notifications,
       receipts,
       recurringExpenses: {
@@ -1201,6 +1258,9 @@ export async function loadDashboardScreenData() {
       liveYearForecastPoints.some((point) => point.balance || point.spend)
         ? liveYearForecastPoints
         : forecastYearPoints,
+    spendingCalendar: spendingCalendar.length
+      ? spendingCalendar
+      : spendingCalendarMockGroups,
   };
 }
 
@@ -1250,36 +1310,7 @@ export async function loadCategoriesScreenData() {
 }
 
 export async function loadGoalsScreenData() {
-  const [goalsResponse, accountsResponse] = await Promise.all([
-    fetchGoalsPage({ page_size: 100 }),
-    fetchAccounts({ page_size: 100 }),
-  ]);
-
-  const accountsById = new Map(
-    accountsResponse.items.map((account) => [account.id, account]),
-  );
-
-  const goals = goalsResponse.items.map((goal, index) => {
-    const account = goal.account_id ? accountsById.get(goal.account_id) : undefined;
-
-    return {
-      account: {
-        label: account?.account_type || "Счет",
-        suffix: normalizeLabel(account?.card_last4) || account?.id.slice(-4) || "0000",
-      },
-      current: Math.round(parseDecimal(goal.current_amount)),
-      id: goal.id,
-      image: goalImages[index % goalImages.length]!,
-      target: Math.max(Math.round(parseDecimal(goal.target_amount)), 1),
-      title: goal.title,
-    } satisfies GoalCardData;
-  });
-
-  return {
-    ...goalsScreenData,
-    goals: goals.length ? goals : goalsScreenData.goals,
-    notifications: goals.length || goalsScreenData.notifications,
-  };
+  return loadGoalsFromBackend();
 }
 
 export async function loadRecommendationsScreenData() {
@@ -1358,13 +1389,11 @@ export async function loadSubscriptionsScreenData() {
 }
 
 export async function loadOperationsScreenData() {
-  const [transactionsResponse, accountsResponse, categoriesResponse] = await Promise.all([
-    fetchTransactions({ page_size: 500 }),
+  const [transactions, accountsResponse, categoriesResponse] = await Promise.all([
+    fetchAllTransactions(),
     fetchAccounts({ page_size: 100 }),
     fetchCategoriesPage({ page_size: 200 }),
   ]);
-
-  const transactions = transactionsResponse.items;
   const accountsById = new Map(accountsResponse.items.map((account) => [account.id, account]));
   const categoriesById = new Map(categoriesResponse.items.map((category) => [category.id, category]));
 
@@ -1380,6 +1409,9 @@ export async function loadOperationsScreenData() {
   const latestDate = sortByDateDesc(transactions)[0]
     ? toDate(sortByDateDesc(transactions)[0]!.operation_at)
     : null;
+  const operations = buildOperationsList(transactions, accountsById, categoriesById);
+  const operationGroups = buildOperationsDateGroups(transactions, accountsById, categoriesById);
+  const firstGroup = operationGroups[0];
 
   return {
     ...operationsScreenData,
@@ -1390,16 +1422,16 @@ export async function loadOperationsScreenData() {
         items: yearBreakdown.length ? yearBreakdown : operationsScreenData.breakdownByPeriod["Год"].items,
         total: Math.round(
           transactions
-            .filter((transaction) => transaction.type === "expense")
-            .reduce((sum, transaction) => sum + Math.abs(parseDecimal(transaction.operation_amount)), 0),
+            .filter((transaction) => resolveTransactionType(transaction) === "expense")
+            .reduce((sum, transaction) => sum + getTransactionAbsAmount(transaction), 0),
         ),
       },
       Мес: {
         items: monthBreakdown.length ? monthBreakdown : operationsScreenData.breakdownByPeriod["Мес"].items,
         total: Math.round(
           transactions
-            .filter((transaction) => transaction.type === "expense")
-            .reduce((sum, transaction) => sum + Math.abs(parseDecimal(transaction.operation_amount)), 0),
+            .filter((transaction) => resolveTransactionType(transaction) === "expense")
+            .reduce((sum, transaction) => sum + getTransactionAbsAmount(transaction), 0),
         ),
       },
       Нед: {
@@ -1407,33 +1439,33 @@ export async function loadOperationsScreenData() {
         total: Math.round(
           transactions
             .filter((transaction) => {
+              if (resolveTransactionType(transaction) !== "expense") {
+                return false;
+              }
+
               const date = toDate(transaction.operation_at);
               return Boolean(
                 date && Date.now() - date.getTime() <= 7 * 24 * 60 * 60 * 1000,
               );
             })
-            .reduce((sum, transaction) => sum + Math.abs(parseDecimal(transaction.operation_amount)), 0),
+            .reduce((sum, transaction) => sum + getTransactionAbsAmount(transaction), 0),
         ),
       },
     },
     monthLabel: latestDate ? formatMonthLong(latestDate) : operationsScreenData.monthLabel,
-    operations: buildOperationsList(transactions, accountsById, categoriesById).length
-      ? buildOperationsList(transactions, accountsById, categoriesById)
-      : operationsScreenData.operations,
+    operationGroups: operationGroups.length ? operationGroups : undefined,
+    operations: operations.length ? operations : operationsScreenData.operations,
     totalAmount: Math.round(
       transactions
-        .filter((transaction) => transaction.type === "expense")
-        .reduce((sum, transaction) => sum + Math.abs(parseDecimal(transaction.operation_amount)), 0),
+        .filter((transaction) => resolveTransactionType(transaction) === "expense")
+        .reduce((sum, transaction) => sum + getTransactionAbsAmount(transaction), 0),
     ),
-    yesterday: {
-      label: latestDate ? formatDayMonthLong(latestDate) : operationsScreenData.yesterday.label,
-      total: Math.round(
-        pickTopTransactions(transactions, 5).reduce(
-          (sum, transaction) => sum + parseDecimal(transaction.operation_amount),
-          0,
-        ),
-      ),
-    },
+    yesterday: firstGroup
+      ? { label: firstGroup.label, total: firstGroup.total }
+      : {
+          label: latestDate ? formatDayMonthLong(latestDate) : operationsScreenData.yesterday.label,
+          total: 0,
+        },
   };
 }
 
@@ -1644,12 +1676,13 @@ export async function loadIncomeBalanceScreenData() {
 }
 
 export async function loadInvestmentsBalanceScreenData() {
-  const [accountsResponse, transactionsResponse] = await Promise.all([
+  const [accountsResponse, transactions] = await Promise.all([
     fetchAccounts({ page_size: 100 }),
-    fetchTransactions({ page_size: 500 }),
+    fetchAllTransactions(),
   ]);
 
-  const chart = buildInvestmentSeries(transactionsResponse.items, accountsResponse.items);
+  const spendingCalendar = buildSpendingCalendarGroups(transactions);
+  const chart = buildInvestmentSeries(transactions, accountsResponse.items);
   const amount = accountsResponse.items
     .filter((account) => /(invest|broker|iis|накоп|сберег)/i.test(`${account.account_type} ${account.display_name}`))
     .reduce((sum, account) => sum + parseDecimal(account.current_balance), 0);
@@ -1662,12 +1695,15 @@ export async function loadInvestmentsBalanceScreenData() {
       ...investmentsBalanceScreenData.summary,
       remainPercent: clamp(Math.round((amount / Math.max(amount + 1, 1)) * 100), 0, 100),
       spentAmount: Math.round(
-        transactionsResponse.items.reduce(
-          (sum, transaction) => sum + Math.abs(parseDecimal(transaction.operation_amount)),
+        transactions.reduce(
+          (sum, transaction) => sum + getTransactionAbsAmount(transaction),
           0,
         ),
       ),
     },
+    spendingCalendar: spendingCalendar.length
+      ? spendingCalendar
+      : spendingCalendarMockGroups,
   };
 }
 

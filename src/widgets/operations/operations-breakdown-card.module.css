@@ -137,12 +137,13 @@
   flex-direction: column;
   gap: 0;
   left: 50%;
+  max-width: calc(100% - 24px);
   pointer-events: none;
   position: absolute;
   text-align: center;
   top: 83px;
   transform: translateX(-50%);
-  width: 106px;
+  width: max-content;
   z-index: 2;
 }
 
@@ -160,8 +161,9 @@
 
 .gaugeCenter strong {
   color: #232323;
+  font-size: clamp(13px, 3.8vw, 16px);
   font-weight: 700;
-  white-space: pre;
+  white-space: nowrap;
 }
 
 .percentBubble {

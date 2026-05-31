@@ -3,6 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { investmentsBalanceScreenData } from "@/shared/data/investments-balance";
+import { spendingCalendarMockGroups } from "@/shared/data/spending-calendar";
+import type { SpendingCalendarGroup } from "@/shared/lib/spending-calendar";
 
 import {
   loadInvestmentsBalanceScreenData,
@@ -35,14 +37,32 @@ export type InvestmentsBalanceResponse = {
     left: number;
     totalIncome: number;
   }>;
+  spendingCalendar: ReadonlyArray<SpendingCalendarGroup>;
 };
+
+function withSpendingCalendar(
+  data: InvestmentsBalanceResponse,
+): InvestmentsBalanceResponse {
+  return {
+    ...data,
+    spendingCalendar: data.spendingCalendar?.length
+      ? data.spendingCalendar
+      : spendingCalendarMockGroups,
+  };
+}
 
 export async function fetchInvestmentsBalance(): Promise<InvestmentsBalanceResponse> {
   await mockDelay();
-  return tryLoadScreenData<InvestmentsBalanceResponse>(
+  const data = (await tryLoadScreenData<InvestmentsBalanceResponse>(
     () => loadInvestmentsBalanceScreenData() as Promise<InvestmentsBalanceResponse>,
-    () => investmentsBalanceScreenData as InvestmentsBalanceResponse,
-  ) as Promise<InvestmentsBalanceResponse>;
+    () =>
+      ({
+        ...investmentsBalanceScreenData,
+        spendingCalendar: spendingCalendarMockGroups,
+      }) as InvestmentsBalanceResponse,
+  )) as InvestmentsBalanceResponse;
+
+  return withSpendingCalendar(data);
 }
 
 export function useInvestmentsBalanceQuery() {

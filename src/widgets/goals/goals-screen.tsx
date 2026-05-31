@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Bell, Edit3 } from "lucide-react";
 
 import { useGoalsQuery, type GoalsResponse } from "@/shared/api/goals";
@@ -7,11 +8,11 @@ import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
+import { CreateGoalDialog } from "./create-goal-dialog";
 import { DesktopGoalsScreen } from "./desktop-goals-screen";
 import styles from "./goals-screen.module.css";
 
 const assets = {
-  sberIcon: "/dashboard/balance/icon-sber.svg",
   accountDot: "/dashboard/balance/divider-dot-sber.svg",
   createIllustration: "/goals/create-illustration.png",
   avatar: "/goals/avatar.png",
@@ -44,7 +45,7 @@ function GoalCard({
         </div>
 
         <div className={styles.accountChip}>
-          <img alt="" aria-hidden className={styles.accountIcon} draggable={false} src={assets.sberIcon} />
+          <img alt="" aria-hidden className={styles.accountIcon} draggable={false} src={account.bankIcon} />
           <span className={styles.accountText}>
             {account.label}
             <img alt="" aria-hidden className={styles.accountDot} draggable={false} src={assets.accountDot} />
@@ -78,10 +79,14 @@ export function GoalsScreenView() {
 }
 
 function GoalsScreenContent({ goalsScreenData }: { goalsScreenData: GoalsResponse }) {
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+
   return (
     <main className={styles.stage}>
+      <CreateGoalDialog onClose={() => setIsCreateOpen(false)} open={isCreateOpen} />
+
       <div className={styles.desktopShell}>
-        <DesktopGoalsScreen data={goalsScreenData} />
+        <DesktopGoalsScreen data={goalsScreenData} onCreateGoal={() => setIsCreateOpen(true)} />
       </div>
 
       <div className={styles.mobileShell}>
@@ -109,7 +114,7 @@ function GoalsScreenContent({ goalsScreenData }: { goalsScreenData: GoalsRespons
                 <div className={styles.createCardBody}>
                   <h2 className={styles.createCardTitle}>{goalsScreenData.createCard.title}</h2>
                   <p className={styles.createCardDescription}>{goalsScreenData.createCard.description}</p>
-                  <button className={styles.createButton} type="button">
+                  <button className={styles.createButton} onClick={() => setIsCreateOpen(true)} type="button">
                     {goalsScreenData.createCard.cta}
                   </button>
                 </div>

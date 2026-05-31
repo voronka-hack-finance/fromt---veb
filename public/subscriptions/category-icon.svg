@@ -1,0 +1,13 @@
+<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="vuesax/linear/group" opacity="0.8">
+<path id="Vector" d="M8 3.70667H14.6667" stroke="var(--stroke-0, white)" stroke-width="0.8" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_2" d="M9.48 1.33333H13.1867C14.3733 1.33333 14.6667 1.62667 14.6667 2.8V5.54C14.6667 6.71333 14.3733 7.00667 13.1867 7.00667H9.48C8.29333 7.00667 8 6.71333 8 5.54V2.8C8 1.62667 8.29333 1.33333 9.48 1.33333Z" stroke="var(--stroke-0, white)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_3" d="M1.33333 11.3733H8" stroke="var(--stroke-0, white)" stroke-width="0.8" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_4" d="M2.81333 9H6.52C7.70667 9 8 9.29333 8 10.4667V13.2067C8 14.38 7.70667 14.6733 6.52 14.6733H2.81333C1.62667 14.6733 1.33333 14.38 1.33333 13.2067V10.4667C1.33333 9.29333 1.62667 9 2.81333 9Z" stroke="var(--stroke-0, white)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<g id="Group">
+<path id="Vector_5" d="M14.6667 10C14.6667 12.58 12.58 14.6667 10 14.6667L10.7 13.5" stroke="var(--stroke-0, white)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path id="Vector_6" d="M1.33333 6C1.33333 3.42 3.42 1.33333 6 1.33333L5.30001 2.5" stroke="var(--stroke-0, white)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+<path id="Vector_7" opacity="0" d="M15.5996 0.400391V15.5996H0.400391V0.400391H15.5996Z" stroke="var(--stroke-0, white)" stroke-width="0.8"/>
+</g>
+</svg>

@@ -7,12 +7,22 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  gap: 16px;
+  justify-content: space-between;
   margin: 0 auto;
   max-width: 390px;
   min-height: 100vh;
-  padding: 52px 16px 32px;
+  padding: 52px 16px 50px;
   position: relative;
   width: 100%;
+}
+
+.topSection {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
 }
 
 .header {
@@ -55,10 +65,8 @@
 
 .content {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 16px;
-  margin-top: 16px;
 }
 
 .summaryCard {
@@ -85,12 +93,16 @@
 }
 
 .summaryLabel {
-  color: rgba(255, 255, 255, 0.62);
+  color: rgba(255, 255, 255, 0.6);
   font-family: var(--font-heading), sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 400;
   line-height: 1.35;
   margin: 0 0 4px;
+}
+
+.summaryRight .summaryLabel {
+  font-size: 10px;
 }
 
 .summaryValue {
@@ -145,8 +157,8 @@
   font-weight: 500;
   gap: 4px;
   justify-content: center;
-  min-height: 32px;
-  padding: 8px 6px;
+  min-height: 40px;
+  padding: 12px 8px;
   transition:
     background-color 180ms ease,
     color 180ms ease,
@@ -194,10 +206,32 @@
   min-width: 0;
 }
 
-.subscriptionIcon {
+.subscriptionIconWrap {
+  align-items: center;
+  background: #3a3a3a;
+  border-radius: 19px;
+  display: flex;
   flex: 0 0 auto;
   height: 58px;
+  justify-content: center;
+  padding: 10px;
   width: 58px;
+}
+
+.subscriptionIconInner {
+  align-items: center;
+  border: 1px solid #fff;
+  border-radius: 50%;
+  display: flex;
+  height: 38px;
+  justify-content: center;
+  width: 38px;
+}
+
+.subscriptionIconGlyph {
+  display: block;
+  height: 16px;
+  width: 16px;
 }
 
 .subscriptionMeta {
@@ -272,6 +306,33 @@
   width: 100%;
 }
 
+.addButton {
+  align-items: center;
+  background: #fff;
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 24px;
+  color: #40a93d;
+  cursor: pointer;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  gap: 16px;
+  justify-content: center;
+  line-height: 1.2;
+  padding: 16px;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+  width: 100%;
+}
+
+.addButton:hover,
+.addButton:focus-visible {
+  box-shadow: 0 12px 28px rgba(31, 39, 26, 0.08);
+  transform: translateY(-1px);
+}
+
 .homeIndicatorArea {
   display: none;
 }
@@ -299,9 +360,15 @@
     gap: 12px;
   }
 
-  .subscriptionIcon {
+  .subscriptionIconWrap {
     height: 52px;
+    padding: 8px;
     width: 52px;
+  }
+
+  .subscriptionIconInner {
+    height: 34px;
+    width: 34px;
   }
 }
 

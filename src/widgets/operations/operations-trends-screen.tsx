@@ -219,7 +219,11 @@ function OperationsTrendsScreenContent({
                 <div className={styles.chartBlock}>
                   <div className={styles.graphArea}>
                   {periodData.spendScale.map((label, index) => (
-                    <span className={styles.scaleLabel} key={label} style={{ top: `${SCALE_LABEL_TOPS[index]}px` }}>
+                    <span
+                      className={styles.scaleLabel}
+                      key={`scale-${index}`}
+                      style={{ top: `${SCALE_LABEL_TOPS[index]}px` }}
+                    >
                       {formatCurrencyParts(label).whole} ₽
                     </span>
                   ))}

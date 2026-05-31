@@ -84,7 +84,11 @@ export function AppDatePicker({ ariaLabel, onChange, placeholder, value }: AppDa
   };
 
   return (
-    <div className={[styles.row, open ? styles.rowOpen : ""].join(" ")} ref={wrapRef}>
+    <div
+      className={[styles.row, open ? styles.rowOpen : ""].join(" ")}
+      data-overlay-open={open ? "true" : undefined}
+      ref={wrapRef}
+    >
       <div className={styles.fieldWrap}>
         <input
           aria-label={ariaLabel}

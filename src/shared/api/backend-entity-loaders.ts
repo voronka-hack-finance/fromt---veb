@@ -15,11 +15,8 @@ import {
   creditLoadLoanDetails,
   type CreditLoadLoanDetail,
 } from "@/shared/data/credit-load-loans";
-import {
-  operationDetails,
-  type OperationDetail,
-  type OperationDetailPastExpense,
-} from "@/shared/data/operation-details";
+import { operationDetails } from "@/shared/data/operation-details";
+import { loadOperationDetailFromBackend } from "@/shared/lib/operation-detail";
 
 import {
   createChat,
@@ -31,11 +28,18 @@ import {
   fetchChats,
   fetchExpectedExpenses,
   fetchFinancialHealthScore,
-  fetchTransactions,
   type AccountResponse,
   type ChatMessageResponse,
   type TransactionResponse,
 } from "./backend";
+import {
+  fetchAllTransactions,
+  fetchTransactionPage,
+  getTransactionAbsAmount,
+  getTransactionSignedAmount,
+  parseTransactionDecimal,
+  resolveTransactionType,
+} from "./transaction-utils";
 
 const AGENT_SLUG_TO_KEY: Record<AgentChatId, string> = {
   "pillow-keeper": "pillow_keeper",
@@ -83,18 +87,9 @@ const SECTION_ORDER = [
   { id: "accumulation", title: "накопительный счёт", pattern: /(накоп|accum)/i },
 ] as const;
 
-function parseDecimal(value: string | number | null | undefined) {
-  if (typeof value === "number") {
-    return value;
-  }
+const BANK_ACCOUNT_DETAIL_TRANSACTIONS_LIMIT = 12;
 
-  if (!value) {
-    return 0;
-  }
-
-  const normalized = Number.parseFloat(value.replace(",", "."));
-  return Number.isFinite(normalized) ? normalized : 0;
-}
+const parseDecimal = parseTransactionDecimal;
 
 function normalizeLabel(value: string | null | undefined) {
   return value?.trim() || "";
@@ -189,22 +184,31 @@ function getOperationIcon(
     return "bank";
   }
 
+  if (
+    haystack.includes("магаз") ||
+    haystack.includes("market") ||
+    haystack.includes("маркет") ||
+    haystack.includes("wild")
+  ) {
+    return "bag";
+  }
+
   return "bag";
 }
 
 function mapTransactionToBankOperation(transaction: TransactionResponse): BankAccountOperation {
+  const type = resolveTransactionType(transaction);
   const categoryName =
-    transaction.category_name || (transaction.type === "income" ? "Доходы" : "Расходы");
+    transaction.category_name || (type === "income" ? "Доходы" : "Расходы");
   const description =
     normalizeLabel(transaction.description) || categoryName || "Операция";
-  const amount = parseDecimal(transaction.operation_amount);
 
   return {
-    amount: transaction.type === "income" ? amount : -Math.abs(amount),
+    amount: getTransactionSignedAmount(transaction),
     category: categoryName,
-    direction: transaction.type === "income" ? "income" : "outcome",
-    icon: getOperationIcon(categoryName, description, transaction.type),
-    iconTone: transaction.type === "income" ? "success" : "neutral",
+    direction: type === "income" ? "income" : "outcome",
+    icon: getOperationIcon(categoryName, description, type),
+    iconTone: type === "income" ? "success" : "neutral",
     id: transaction.id,
     title: description,
   };
@@ -422,9 +426,13 @@ export async function loadBankAccountsScreenData(): Promise<{
 }
 
 export async function loadBankAccountDetailScreenData(accountId: string) {
-  const [accountsResponse, transactionsResponse] = await Promise.all([
+  const [accountsResponse, transactions] = await Promise.all([
     fetchAccounts({ page_size: 100 }),
-    fetchTransactions({ page_size: 500, account_id: accountId }),
+    fetchTransactionPage({
+      account_id: accountId,
+      page: 1,
+      page_size: BANK_ACCOUNT_DETAIL_TRANSACTIONS_LIMIT,
+    }).then((response) => response.items),
   ]);
 
   const account = accountsResponse.items.find((item) => item.id === accountId);
@@ -438,9 +446,10 @@ export async function loadBankAccountDetailScreenData(accountId: string) {
 
   const bankId = getBankId(account);
   const logo = getBankLogoMeta(bankId);
-  const accountTransactions = sortTransactionsDesc(
-    transactionsResponse.items.filter((transaction) => transaction.account_id === account.id),
-  ).slice(0, 12);
+  const accountTransactions = sortTransactionsDesc(transactions).slice(
+    0,
+    BANK_ACCOUNT_DETAIL_TRANSACTIONS_LIMIT,
+  );
   const sections = groupTransactionsByDayLabel(accountTransactions);
 
   const detail: BankAccountDetail = {
@@ -462,78 +471,17 @@ export async function loadBankAccountDetailScreenData(accountId: string) {
 }
 
 export async function loadOperationDetailScreenData(operationId: string) {
-  const transactionsResponse = await fetchTransactions({ page_size: 500 });
-  const transaction = transactionsResponse.items.find((item) => item.id === operationId);
-
-  if (!transaction) {
+  try {
+    return await loadOperationDetailFromBackend(operationId);
+  } catch (error) {
     const fallback = operationDetails[operationId];
-    if (!fallback) {
-      throw new Error(`Operation not found: ${operationId}`);
+
+    if (fallback) {
+      return fallback;
     }
-    return fallback;
+
+    throw error;
   }
-
-  const accountsResponse = await fetchAccounts({ page_size: 100 });
-  const account = transaction.account_id
-    ? accountsResponse.items.find((item) => item.id === transaction.account_id)
-    : undefined;
-  const operationDate = toDate(transaction.operation_at) ?? new Date();
-  const categoryName =
-    transaction.category_name || (transaction.type === "income" ? "Доходы" : "Расходы");
-  const description =
-    normalizeLabel(transaction.description) || categoryName || "Операция";
-  const amount = parseDecimal(transaction.operation_amount);
-  const signedAmount =
-    transaction.type === "income" ? amount : -Math.abs(amount);
-  const mockFallback = Object.values(operationDetails)[0]!;
-  const educationExpenses = transactionsResponse.items
-    .filter(
-      (item) =>
-        item.id !== transaction.id &&
-        item.type === "expense" &&
-        /(образ|edu|8220)/i.test(`${item.category_name ?? ""} ${item.description ?? ""} ${item.mcc ?? ""}`),
-    )
-    .slice(0, 2)
-    .map(
-      (item) =>
-        ({
-          amount: Math.abs(parseDecimal(item.operation_amount)),
-          category: item.category_name || "Образование",
-          icon: /спорт|gym/i.test(`${item.category_name ?? ""} ${item.description ?? ""}`)
-            ? "gym"
-            : "education",
-          title: item.description || item.category_name || "Операция",
-        }) satisfies OperationDetailPastExpense,
-    );
-
-  const detail: OperationDetail = {
-    accountLabel: account ? `Операция со счета ${getBankLabel(account)}` : "Операция со счета",
-    accountSuffix: account?.card_last4 ? `*${account.card_last4}` : "*0000",
-    amount: signedAmount,
-    category: categoryName,
-    dateTime: formatOperationDateTime(operationDate),
-    direction: transaction.type === "income" ? "income" : "outcome",
-    icon: getOperationIcon(categoryName, description, transaction.type),
-    id: transaction.id,
-    mcc: transaction.mcc || "—",
-    merchant: description,
-    protection: mockFallback.protection,
-    taxDeduction:
-      educationExpenses.length && transaction.type === "expense"
-        ? {
-            amount: Math.round(Math.abs(signedAmount) * 0.13),
-            pastExpenses: educationExpenses,
-          }
-        : undefined,
-    transaction: {
-      sbpId:
-        (typeof transaction.raw_payload?.sbp_id === "string" &&
-          transaction.raw_payload.sbp_id) ||
-        transaction.dedupe_key,
-    },
-  };
-
-  return detail;
 }
 
 async function fetchFinancialHealthScoreSafe() {
@@ -636,8 +584,8 @@ export async function loadCreditLoadScreenData(): Promise<CreditLoadResponse> {
 }
 
 export async function loadCreditLoadLoanDetailScreenData(loanId: string) {
-  const transactionsResponse = await fetchTransactions({ page_size: 500, type: "expense" });
-  const loans = buildLoanTransactions(transactionsResponse.items);
+  const transactions = await fetchAllTransactions({ type: "expense" });
+  const loans = buildLoanTransactions(transactions);
   const loan = loans.find((item) => item.id === loanId);
 
   if (!loan) {

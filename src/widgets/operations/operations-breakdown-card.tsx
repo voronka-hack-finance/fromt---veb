@@ -20,6 +20,21 @@ type Period = OperationsScreenResponse["periodTabs"][number];
 
 const LEGEND_ORDER = ["transfers", "hotels", "groceries"] as const;
 
+type BreakdownSlotId = (typeof LEGEND_ORDER)[number];
+
+type BreakdownEntry = OperationsScreenResponse["breakdownByPeriod"]["Нед"]["items"][number] & {
+  amount: number;
+};
+
+function mapBreakdownToSlots(items: BreakdownEntry[]) {
+  const sorted = [...items].sort((left, right) => right.percent - left.percent);
+
+  return LEGEND_ORDER.flatMap((slotId, index) => {
+    const item = sorted[index];
+    return item ? [{ item, slotId }] : [];
+  });
+}
+
 const ARC_SRC = {
   transfers: "/operations/breakdown/arc-transfers.svg",
   hotels: "/operations/breakdown/arc-hotels.svg",
@@ -97,6 +112,8 @@ function OperationsBreakdownCardContent({
     [periodData.items, totalAmount],
   );
 
+  const slottedBreakdown = useMemo(() => mapBreakdownToSlots(breakdown), [breakdown]);
+
   const handlePeriodChange = (period: Period) => {
     const nextNavigator = operationsScreenData.periodNavigator[period];
     setActivePeriod(period);
@@ -152,11 +169,12 @@ function OperationsBreakdownCardContent({
               <div className={styles.gaugeStage}>
                 <div aria-hidden className={styles.gaugeArcs}>
                 {(["transfers", "hotels", "groceries"] as const).map((id) => {
-                  const isActive = activeBreakdownId === id;
+                  const slotItem = slottedBreakdown.find((entry) => entry.slotId === id)?.item;
+                  const isActive = Boolean(slotItem && activeBreakdownId === slotItem.id);
 
                   return (
                     <motion.button
-                      aria-label={`${breakdown.find((item) => item.id === id)?.label ?? id}`}
+                      aria-label={`${slotItem?.label ?? id}`}
                       animate={{
                         opacity: 1,
                         scale: isActive ? 1.02 : 1,
@@ -164,7 +182,7 @@ function OperationsBreakdownCardContent({
                       className={cn(styles.arcSegment, arcClass[id])}
                       initial={{ opacity: 0, scale: 0.92 }}
                       key={id}
-                      onClick={() => selectBreakdown(id)}
+                      onClick={() => selectBreakdown(slotItem?.id ?? id)}
                       transition={{ duration: 0.35, delay: id === "transfers" ? 0.04 : id === "hotels" ? 0.09 : 0.14 }}
                       type="button"
                     >
@@ -185,20 +203,26 @@ function OperationsBreakdownCardContent({
                 <strong>{formatCurrencyParts(totalAmount).whole} ₽</strong>
               </motion.div>
 
-              {breakdown.map((item) => {
+              {slottedBreakdown.map(({ item, slotId }) => {
                 const isActive = activeBreakdownId === item.id;
-                const positionClass = bubbleClass[item.id as keyof typeof bubbleClass];
 
                 return (
                   <motion.button
                     aria-label={`${item.label}: ${item.percent}%`}
                     aria-pressed={isActive}
                     animate={{ opacity: 1 }}
-                    className={cn(styles.percentBubble, positionClass, isActive && styles.percentBubbleActive)}
+                    className={cn(
+                      styles.percentBubble,
+                      bubbleClass[slotId as BreakdownSlotId],
+                      isActive && styles.percentBubbleActive,
+                    )}
                     initial={{ opacity: 0 }}
                     key={item.id}
                     onClick={() => selectBreakdown(item.id)}
-                    transition={{ duration: 0.28, delay: item.id === "transfers" ? 0.18 : item.id === "hotels" ? 0.24 : 0.3 }}
+                    transition={{
+                      duration: 0.28,
+                      delay: slotId === "transfers" ? 0.18 : slotId === "hotels" ? 0.24 : 0.3,
+                    }}
                     type="button"
                   >
                     {item.percent}%
@@ -209,10 +233,7 @@ function OperationsBreakdownCardContent({
             </div>
 
             <div className={styles.legendGrid}>
-              {LEGEND_ORDER.map((id) => {
-                const item = breakdown.find((entry) => entry.id === id);
-                if (!item) return null;
-
+              {slottedBreakdown.map(({ item, slotId }) => {
                 const isActive = activeBreakdownId === item.id;
 
                 return (
@@ -220,19 +241,24 @@ function OperationsBreakdownCardContent({
                     animate={{ opacity: 1, y: 0 }}
                     className={cn(
                       styles.legendItem,
-                      id === "groceries" && styles.legendItemGroceries,
-                      id === "hotels" && styles.legendItemWide,
+                      slotId === "groceries" && styles.legendItemGroceries,
+                      slotId === "hotels" && styles.legendItemWide,
                       isActive && styles.legendItemActive,
                     )}
                     initial={{ opacity: 0, y: 10 }}
                     key={item.id}
                     onClick={() => selectBreakdown(item.id)}
-                    transition={{ duration: 0.28, delay: id === "transfers" ? 0.1 : id === "hotels" ? 0.16 : 0.22 }}
+                    transition={{
+                      duration: 0.28,
+                      delay: slotId === "transfers" ? 0.1 : slotId === "hotels" ? 0.16 : 0.22,
+                    }}
                     type="button"
                   >
-                    <span className={cn(styles.legendContent, id === "hotels" && styles.legendContentWide)}>
+                    <span className={cn(styles.legendContent, slotId === "hotels" && styles.legendContentWide)}>
                       <span className={styles.legendLabel}>
-                        <span className={cn(styles.legendDot, legendDotClass[item.id as keyof typeof legendDotClass])} />
+                        <span
+                          className={cn(styles.legendDot, legendDotClass[slotId as BreakdownSlotId])}
+                        />
                         {item.label}
                       </span>
                       <strong>{item.percent}%</strong>

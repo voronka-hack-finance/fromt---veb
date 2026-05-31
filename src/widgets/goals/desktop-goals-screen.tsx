@@ -45,7 +45,13 @@ function GoalDesktopCard({ goal }: { goal: GoalsResponse["goals"][number] }) {
   );
 }
 
-export function DesktopGoalsScreen({ data }: { data: GoalsResponse }) {
+export function DesktopGoalsScreen({
+  data,
+  onCreateGoal,
+}: {
+  data: GoalsResponse;
+  onCreateGoal?: () => void;
+}) {
   const searchInputId = useId();
 
   return (
@@ -83,7 +89,7 @@ export function DesktopGoalsScreen({ data }: { data: GoalsResponse }) {
                       <br />
                       накопления
                     </h2>
-                    <button className={styles.createButton} type="button">
+                    <button className={styles.createButton} onClick={onCreateGoal} type="button">
                       {data.desktop.createCard.cta}
                     </button>
                   </div>

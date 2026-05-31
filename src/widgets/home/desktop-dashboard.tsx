@@ -19,28 +19,8 @@ import { DesktopSidebar } from "@/shared/ui/desktop-sidebar/desktop-sidebar";
 
 import { ForecastLineChart } from "./forecast-line-chart";
 import { ReportActionButtons } from "./report-action-buttons";
+import { SpendingCalendarGroups } from "./spending-calendar-groups";
 import styles from "./desktop-home-dashboard.module.css";
-
-const calendarGroups = [
-  {
-    date: "31 марта",
-    total: "1 400 ₽",
-    items: [
-      { category: "Переводы", title: "Перевод между счетами", amount: "1 100 ₽", badge: "↔" },
-      { category: "Переводы", title: "Арина Ш.", amount: "100 ₽", badge: "АШ" },
-      { category: "Супермаркеты", title: "Продукты", amount: "200 ₽", badge: "🛒" },
-    ],
-  },
-  {
-    date: "30 марта",
-    total: "2 150 ₽",
-    items: [
-      { category: "Подписки", title: "Яндекс Плюс", amount: "399 ₽", badge: "Я+" },
-      { category: "Транспорт", title: "Такси", amount: "651 ₽", badge: "🚕" },
-      { category: "Кафе", title: "Обед", amount: "1 100 ₽", badge: "☕" },
-    ],
-  },
-] as const;
 
 const recurringIcons = [
   "/dashboard/recurring/icon-1.png",
@@ -52,8 +32,8 @@ const investmentsAssets = {
   ring: "/home/investments-ring.png",
 } as const;
 
-function formatWholeCurrency(value: number) {
-  return `${formatCurrencyParts(Math.round(value)).whole} ₽`;
+function formatWholeAmount(value: number) {
+  return formatCurrencyParts(Math.round(value)).whole;
 }
 
 function formatPercent(value: number) {
@@ -111,7 +91,8 @@ function CreditGauge({ label, ratio, score }: { label: string; ratio: number; sc
 }
 
 export function DesktopDashboard() {
-  const { dashboard, desktopForecastPoints, forecastYearPoints } = useDashboardData();
+  const { dashboard, desktopForecastPoints, forecastYearPoints, spendingCalendar } =
+    useDashboardData();
   const [forecastPeriod, setForecastPeriod] = useState<"year" | "week">("week");
   const [forecastActiveIndex, setForecastActiveIndex] = useState(4);
 
@@ -158,7 +139,10 @@ export function DesktopDashboard() {
                     <span className={styles.balanceTitle}>Всего средств</span>
                   </div>
                   <strong className={styles.balanceValue}>
-                    {formatWholeCurrency(Math.floor(dashboard.totalBalance))}
+                    <span className={styles.balanceValueAmount}>
+                      {formatWholeAmount(Math.floor(dashboard.totalBalance))}
+                    </span>
+                    <span className={styles.balanceValueCurrency}>₽</span>
                   </strong>
                 </div>
 
@@ -190,7 +174,11 @@ export function DesktopDashboard() {
                 <span>Остаток доходов</span>
                 <ChevronRight size={18} strokeWidth={2} />
               </div>
-              <div className={styles.remainderValue}>+ {formatWholeCurrency(dashboard.incomeRemainder)}</div>
+              <div className={styles.remainderValue}>
+                <span className={styles.remainderValueSign}>+</span>
+                <span className={styles.remainderValueAmount}>{formatWholeAmount(dashboard.incomeRemainder)}</span>
+                <span className={styles.remainderValueCurrency}>₽</span>
+              </div>
               <div className={styles.remainderTrack}>
                 <div
                   className={styles.remainderFill}
@@ -203,40 +191,15 @@ export function DesktopDashboard() {
             </Link>
 
             <section className={styles.calendarCard}>
-              <div className={styles.cardTitleRow}>
+              <Link className={styles.cardTitleRow} href="/operations">
                 <div className={styles.cardTitleWrap}>
                   <CalendarDays size={18} strokeWidth={1.8} />
                   <h2>Календарь трат</h2>
                 </div>
                 <ChevronRight size={18} strokeWidth={2} />
-              </div>
+              </Link>
 
-              <div className={styles.calendarGroups}>
-                {calendarGroups.map((group) => (
-                  <div className={styles.calendarGroup} key={group.date}>
-                    <div className={styles.calendarGroupHeader}>
-                      <span>{group.date}</span>
-                      <div className={styles.calendarDivider} />
-                      <strong>{group.total}</strong>
-                    </div>
-
-                    <div className={styles.calendarList}>
-                      {group.items.map((item) => (
-                        <div className={styles.calendarItem} key={`${group.date}-${item.title}`}>
-                          <div className={styles.calendarItemMeta}>
-                            <div className={styles.calendarBadge}>{item.badge}</div>
-                            <div>
-                              <div className={styles.calendarCategory}>{item.category}</div>
-                              <div className={styles.calendarTitle}>{item.title}</div>
-                            </div>
-                          </div>
-                          <strong>{item.amount}</strong>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <SpendingCalendarGroups groups={spendingCalendar} styles={styles} />
             </section>
 
             <div className={styles.metricsRow}>
@@ -262,7 +225,10 @@ export function DesktopDashboard() {
                       src={metricAssets.chevronRight}
                     />
                   </div>
-                  <div className={styles.metricValue}>{formatWholeCurrency(dashboard.receipts)}</div>
+                  <div className={styles.metricValue}>
+                    <span>{formatWholeAmount(dashboard.receipts)}</span>
+                    <span className={styles.metricValueCurrency}>₽</span>
+                  </div>
                 </Link>
 
                 <Link className={styles.metricCard} href="/operations">
@@ -287,7 +253,10 @@ export function DesktopDashboard() {
                       src={metricAssets.chevronRight}
                     />
                   </div>
-                  <div className={styles.metricValue}>{formatWholeCurrency(dashboard.expenses)}</div>
+                  <div className={styles.metricValue}>
+                    <span>{formatWholeAmount(dashboard.expenses)}</span>
+                    <span className={styles.metricValueCurrency}>₽</span>
+                  </div>
                 </Link>
             </div>
 

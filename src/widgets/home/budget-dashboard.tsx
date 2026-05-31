@@ -12,30 +12,11 @@ import { DesktopSidebar } from "@/shared/ui/desktop-sidebar/desktop-sidebar";
 import { BalanceSparkline } from "./balance-sparkline";
 import { FundsRunwaySection } from "./funds-runway-section";
 import { ReportActionButtons } from "./report-action-buttons";
+import { SpendingCalendarGroups } from "./spending-calendar-groups";
 import styles from "./desktop-dashboard.module.css";
 
 const protectionAsset = "/home/protection-card.png";
 const accentAsset = "/home/accent-card.png";
-
-const calendarGroups = [
-  {
-    date: "31 марта",
-    total: "1 400 ₽",
-    items: [
-      { category: "Переводы", title: "Перевод между счетами", amount: "1 100 ₽", badge: "↔" },
-      { category: "Переводы", title: "Арина Ш.", amount: "100 ₽", badge: "АШ" },
-      { category: "Супермаркеты", title: "Продукты", amount: "200 ₽", badge: "●" },
-    ],
-  },
-  {
-    date: "30 марта",
-    total: "1 400 ₽",
-    items: [
-      { category: "Переводы", title: "Перевод между счетами", amount: "1 100 ₽", badge: "↔" },
-      { category: "Переводы", title: "Арина Ш.", amount: "100 ₽", badge: "АШ" },
-    ],
-  },
-] as const;
 
 const summaryTiles = [
   { key: "safe", badge: "✓", value: "134 456 ₽", tone: "green" },
@@ -68,7 +49,7 @@ function SummaryTile({
 }
 
 export function DesktopDashboard() {
-  const { dashboard, desktopForecastPoints } = useDashboardData();
+  const { dashboard, desktopForecastPoints, spendingCalendar } = useDashboardData();
 
   const averageMonthlyExpenses = 60_000;
   const runwayMonths = Math.max(1, Math.floor(dashboard.receipts / averageMonthlyExpenses));
@@ -137,40 +118,20 @@ export function DesktopDashboard() {
               <ReportActionButtons className={styles.rightPanelActions} variant="panel" />
 
               <section className={styles.calendarCard}>
-                <div className={styles.calendarHeader}>
+                <Link className={styles.calendarHeader} href="/operations">
                   <div className={styles.calendarTitleWrap}>
                     <CalendarDays size={20} strokeWidth={1.9} />
                     <h2>Календарь трат</h2>
                   </div>
                   <ChevronRight size={18} strokeWidth={2} />
-                </div>
+                </Link>
 
-                <div className={styles.calendarGroups}>
-                  {calendarGroups.map((group) => (
-                    <div className={styles.calendarGroup} key={`${group.date}-${group.total}`}>
-                      <div className={styles.calendarGroupHeader}>
-                        <strong>{group.date}</strong>
-                        <div className={styles.calendarDivider} />
-                        <span>{group.total}</span>
-                      </div>
-
-                      <div className={styles.calendarList}>
-                        {group.items.map((item) => (
-                          <div className={styles.calendarItem} key={`${group.date}-${item.title}`}>
-                            <div className={styles.calendarItemMeta}>
-                              <div className={styles.calendarBadge}>{item.badge}</div>
-                              <div className={styles.calendarTextBlock}>
-                                <span>{item.category}</span>
-                                <strong>{item.title}</strong>
-                              </div>
-                            </div>
-                            <strong className={styles.calendarAmount}>{item.amount}</strong>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <SpendingCalendarGroups
+                  dateTag="strong"
+                  groups={spendingCalendar}
+                  styles={styles}
+                  totalTag="span"
+                />
               </section>
 
               <section className={styles.protectionCard}>

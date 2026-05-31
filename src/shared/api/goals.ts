@@ -4,7 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 
 import { goalsScreenData } from "@/shared/data/goals";
 
-import { loadGoalsScreenData, tryLoadScreenData } from "./backend-screen-data";
+import { loadGoalsFromBackend } from "@/shared/lib/goals-screen";
+
+import { tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
 import { queryKeys } from "./query-keys";
 
@@ -23,6 +25,7 @@ export type GoalsResponse = {
     account: {
       label: string;
       suffix: string;
+      bankIcon: string;
     };
   }>;
 };
@@ -30,7 +33,7 @@ export type GoalsResponse = {
 export async function fetchGoals(): Promise<GoalsResponse> {
   await mockDelay();
   return tryLoadScreenData(
-    loadGoalsScreenData,
+    loadGoalsFromBackend,
     () => goalsScreenData as GoalsResponse,
   ) as Promise<GoalsResponse>;
 }

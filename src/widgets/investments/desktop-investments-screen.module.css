@@ -193,6 +193,7 @@
 .contentGrid {
   align-items: stretch;
   display: grid;
+  flex: 1 1 auto;
   gap: 20px;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 547px);
   min-height: 0;
@@ -203,6 +204,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  height: 100%;
   min-height: 0;
   min-width: 0;
 }
@@ -419,12 +421,21 @@
 
 .calendarCard {
   display: flex;
-  flex: 1 1 auto;
+  flex: 1 1 0;
   flex-direction: column;
-  max-height: none;
-  min-height: 180px;
+  max-height: 100%;
+  min-height: 0;
   overflow: hidden;
   padding: 16px;
+}
+
+.rightColumn > .protectionCard,
+.rightColumn > .rightPanelActions {
+  flex-shrink: 0;
+}
+
+.calendarCard .calendarHeader {
+  flex-shrink: 0;
 }
 
 .calendarHeader,
@@ -461,6 +472,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   overscroll-behavior: contain;
+  padding-bottom: 4px;
   padding-right: 4px;
   scrollbar-gutter: stable;
 }

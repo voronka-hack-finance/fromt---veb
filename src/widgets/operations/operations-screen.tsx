@@ -126,14 +126,25 @@ function OperationsScreenContent({
 
           <Reveal delay={0.12}>
             <section className={styles.listSection}>
-              <div className={styles.yesterdayHeader}>
-                <span>{operationsScreenData.yesterday.label}</span>
-                <div className={styles.headerDivider} />
-                <strong>+{formatCurrencyParts(operationsScreenData.yesterday.total).whole} ₽</strong>
-              </div>
+              {(operationsScreenData.operationGroups?.length
+                ? operationsScreenData.operationGroups
+                : [
+                    {
+                      label: operationsScreenData.yesterday.label,
+                      total: operationsScreenData.yesterday.total,
+                      operations: operationsScreenData.operations,
+                    },
+                  ]
+              ).map((group) => (
+                <div key={group.label}>
+                  <div className={styles.yesterdayHeader}>
+                    <span>{group.label}</span>
+                    <div className={styles.headerDivider} />
+                    <strong>{formatSignedAmount(group.total)}</strong>
+                  </div>
 
-              <div className={styles.operationsList}>
-                {operationsScreenData.operations.map((operation, index) => {
+                  <div className={styles.operationsList}>
+                    {group.operations.map((operation, index) => {
                   const hasDetail = Boolean(operation.id);
                   const cardClassName = styles.operationCard;
                   const cardContent = (
@@ -187,8 +198,10 @@ function OperationsScreenContent({
                       {cardContent}
                     </motion.button>
                   );
-                })}
-              </div>
+                    })}
+                  </div>
+                </div>
+              ))}
 
               <Link className={styles.categoriesLink} href="/categories">
                 Мои категории

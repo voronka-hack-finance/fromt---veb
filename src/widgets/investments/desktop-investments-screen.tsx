@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { CalendarDays, ChevronRight, Plus } from "lucide-react";
 
 import type { InvestmentsBalanceResponse } from "@/shared/api/investments-balance";
@@ -8,6 +9,7 @@ import { DesktopAppHeader } from "@/shared/ui/desktop-app-header/desktop-app-hea
 import { GraphNewBoldIcon } from "@/shared/ui/icons/graph-new-bold-icon";
 import { DesktopSidebar } from "@/shared/ui/desktop-sidebar/desktop-sidebar";
 import { ReportActionButtons } from "@/widgets/home/report-action-buttons";
+import { SpendingCalendarGroups } from "@/widgets/home/spending-calendar-groups";
 
 import styles from "./desktop-investments-screen.module.css";
 import { InvestmentsAchievementsSection } from "./investments-achievements-section";
@@ -26,26 +28,6 @@ const transferChartPoints = [
   { label: "Июл", value: 2_100 },
   { label: "Авг", value: 1_100 },
   { label: "Сен", value: 3_200 },
-] as const;
-
-const calendarGroups = [
-  {
-    date: "31 марта",
-    total: "1 400 ₽",
-    items: [
-      { category: "Переводы", title: "Перевод между счетами", amount: "1 100 ₽", badge: "↔" },
-      { category: "Переводы", title: "Арина Ш.", amount: "100 ₽", badge: "АШ" },
-      { category: "Супермаркеты", title: "Продукты", amount: "200 ₽", badge: "●" },
-    ],
-  },
-  {
-    date: "30 марта",
-    total: "1 400 ₽",
-    items: [
-      { category: "Переводы", title: "Перевод между счетами", amount: "1 100 ₽", badge: "↔" },
-      { category: "Переводы", title: "Арина Ш.", amount: "100 ₽", badge: "АШ" },
-    ],
-  },
 ] as const;
 
 function formatWholeCurrency(value: number) {
@@ -129,40 +111,20 @@ export function DesktopInvestmentsScreen({
               <ReportActionButtons className={styles.rightPanelActions} variant="panel" />
 
               <section className={styles.calendarCard}>
-                <div className={styles.calendarHeader}>
+                <Link className={styles.calendarHeader} href="/operations">
                   <div className={styles.calendarTitleWrap}>
                     <CalendarDays size={20} strokeWidth={1.9} />
                     <h2>Календарь трат</h2>
                   </div>
                   <ChevronRight size={18} strokeWidth={2} />
-                </div>
+                </Link>
 
-                <div className={styles.calendarGroups}>
-                  {calendarGroups.map((group) => (
-                    <div className={styles.calendarGroup} key={`${group.date}-${group.total}`}>
-                      <div className={styles.calendarGroupHeader}>
-                        <strong>{group.date}</strong>
-                        <div className={styles.calendarDivider} />
-                        <span>{group.total}</span>
-                      </div>
-
-                      <div className={styles.calendarList}>
-                        {group.items.map((item) => (
-                          <div className={styles.calendarItem} key={`${group.date}-${item.title}`}>
-                            <div className={styles.calendarItemMeta}>
-                              <div className={styles.calendarBadge}>{item.badge}</div>
-                              <div className={styles.calendarTextBlock}>
-                                <span>{item.category}</span>
-                                <strong>{item.title}</strong>
-                              </div>
-                            </div>
-                            <strong className={styles.calendarAmount}>{item.amount}</strong>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <SpendingCalendarGroups
+                  dateTag="strong"
+                  groups={screenData.spendingCalendar}
+                  styles={styles}
+                  totalTag="span"
+                />
               </section>
 
               <section className={styles.protectionCard}>

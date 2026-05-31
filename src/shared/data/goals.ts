@@ -37,7 +37,11 @@ export const goalsScreenData = {
       image: "/goals/bali-goal.png",
       current: 100000,
       target: 250000,
-      account: { label: "Счёт", suffix: "1521" },
+      account: {
+        bankIcon: "/dashboard/balance/icon-sber.svg",
+        label: "Счёт",
+        suffix: "1521",
+      },
     },
     {
       id: "car",
@@ -45,7 +49,11 @@ export const goalsScreenData = {
       image: "/goals/safety-cushion-goal.png",
       current: 50000,
       target: 100000,
-      account: { label: "Счёт", suffix: "1521" },
+      account: {
+        bankIcon: "/dashboard/balance/icon-sber.svg",
+        label: "Счёт",
+        suffix: "1521",
+      },
     },
   ],
 } as const;

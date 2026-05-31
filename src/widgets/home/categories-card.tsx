@@ -1,6 +1,5 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import type { DashboardResponse } from "@/shared/api/dashboard";
@@ -88,7 +87,6 @@ function getActiveLabelStyle(isActive: boolean) {
 }
 
 export function CategoriesCard() {
-  const router = useRouter();
   const { categoryRadarMetrics, dashboard } = useDashboardData();
   const [activeMetricId, setActiveMetricId] = useState<MetricId>("reserve");
 
@@ -108,8 +106,6 @@ export function CategoriesCard() {
     setActiveMetricId(metricId);
   };
 
-  const openOperations = () => router.push("/operations");
-
   return (
     <section className={styles.card}>
       <img alt="" aria-hidden className={styles.cardBg} draggable={false} src={assets.cardBg} />
@@ -121,19 +117,7 @@ export function CategoriesCard() {
         <h2 className={styles.title}>Ваши категории</h2>
       </div>
 
-      <div
-        aria-label="Открыть операции"
-        className={styles.chart}
-        onClick={openOperations}
-        onKeyDown={(event) => {
-          if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            openOperations();
-          }
-        }}
-        role="button"
-        tabIndex={0}
-      >
+      <div className={styles.chart}>
         <ChartLayer className={`${styles.chartLayer} ${styles.radarGrid1}`} src={assets.radarGrid1} />
         <ChartLayer className={`${styles.chartLayer} ${styles.radarGrid2}`} src={assets.radarGrid2} />
         <ChartLayer className={`${styles.chartLayer} ${styles.radarGrid3}`} src={assets.radarGrid3} />
@@ -157,10 +141,7 @@ export function CategoriesCard() {
               aria-pressed={activeMetricId === dot.id}
               className={`${styles.chartLayer} ${dot.dotClass}`}
               key={`hit-${dot.id}`}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleSelect(dot.id);
-              }}
+              onClick={() => handleSelect(dot.id)}
               style={hitAreaStyle}
               type="button"
             />
@@ -182,10 +163,7 @@ export function CategoriesCard() {
               aria-pressed={isActive}
               className={`${styles.tag} ${ui.tagClass}`}
               key={`tag-${metricId}`}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleSelect(metricId);
-              }}
+              onClick={() => handleSelect(metricId)}
               style={getActiveTagStyle(isActive)}
               type="button"
             >
@@ -209,10 +187,7 @@ export function CategoriesCard() {
               aria-pressed={isActive}
               className={`${styles.label} ${ui.labelClass}`}
               key={`label-${metricId}`}
-              onClick={(event) => {
-                event.stopPropagation();
-                handleSelect(metricId);
-              }}
+              onClick={() => handleSelect(metricId)}
               style={getActiveLabelStyle(isActive)}
               type="button"
             >
@@ -222,12 +197,7 @@ export function CategoriesCard() {
         })}
       </div>
 
-      <button
-        aria-label="Открыть операции"
-        className={styles.summary}
-        onClick={openOperations}
-        type="button"
-      >
+      <button aria-label="Сводка по категориям" className={styles.summary} type="button">
         <div className={styles.summaryValue} key={activeMetric.id}>
           {activeMetric.percent} %
         </div>

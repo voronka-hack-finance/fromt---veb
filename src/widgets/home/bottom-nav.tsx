@@ -18,11 +18,11 @@ const navItems = [
     match: (path: string) => path === "/",
   },
   {
-    id: "history",
-    href: "/operations/trends",
-    label: "История",
-    icon: "/dashboard/nav/graph.svg",
-    match: (path: string) => path.startsWith("/operations/trends"),
+    id: "categories",
+    href: "/categories",
+    label: "Мои категории",
+    icon: "/dashboard/nav/settings-figma.svg",
+    match: (path: string) => path.startsWith("/categories"),
   },
   {
     id: "goals",
@@ -32,11 +32,11 @@ const navItems = [
     match: (path: string) => path.startsWith("/goals"),
   },
   {
-    id: "categories",
-    href: "/categories",
-    label: "Категории",
-    icon: "/dashboard/nav/settings-figma.svg",
-    match: (path: string) => path.startsWith("/categories"),
+    id: "settings",
+    href: "/settings",
+    label: "Настройки",
+    icon: "/dashboard/nav/settings.svg",
+    match: (path: string) => path.startsWith("/settings"),
   },
 ] as const;
 

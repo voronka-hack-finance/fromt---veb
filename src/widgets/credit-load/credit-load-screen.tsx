@@ -12,10 +12,10 @@ import {
 } from "lucide-react";
 
 import {
+  type CreditLoadPaymentItem,
   useCreditLoadQuery,
   type CreditLoadPaymentIcon,
   type CreditLoadResponse,
-  type CreditLoadUpcomingPayment,
 } from "@/shared/api/credit-load";
 import {
   buildCalendarCells,
@@ -77,22 +77,30 @@ function PaymentIcon({ icon }: { icon: CreditLoadPaymentIcon }) {
   );
 }
 
-function PaymentCard({ payment }: { payment: CreditLoadUpcomingPayment }) {
-  return (
-    <article className={styles.paymentCard}>
-      <div className={styles.paymentRow}>
-        <div className={styles.paymentIconWrap}>
-          <PaymentIcon icon={payment.icon} />
-        </div>
-
-        <div className={styles.paymentText}>
-          <p className={styles.paymentDate}>{payment.dateLabel}</p>
-          <p className={styles.paymentTitle}>{payment.title}</p>
-        </div>
-
-        <p className={styles.paymentAmount}>{formatPaymentAmount(payment.amount)}</p>
+function PaymentCard({ payment }: { payment: CreditLoadPaymentItem }) {
+  const content = (
+    <div className={styles.paymentRow}>
+      <div className={styles.paymentIconWrap}>
+        <PaymentIcon icon={payment.icon} />
       </div>
-    </article>
+
+      <div className={styles.paymentText}>
+        <p className={styles.paymentDate}>{payment.dateLabel}</p>
+        <p className={styles.paymentTitle}>{payment.title}</p>
+      </div>
+
+      <p className={styles.paymentAmount}>{formatPaymentAmount(payment.amount)}</p>
+    </div>
+  );
+
+  if (!("debtId" in payment) || !payment.debtId) {
+    return <article className={styles.paymentCard}>{content}</article>;
+  }
+
+  return (
+    <Link className={styles.paymentCard} href={`/credit-load/${payment.debtId}`}>
+      {content}
+    </Link>
   );
 }
 

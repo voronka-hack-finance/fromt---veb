@@ -50,6 +50,63 @@ export type TransactionsQuery = PaginationQuery & {
 export type AccountResponse = Schemas["AccountResponse"];
 export type AccountsPageResponse = Schemas["AccountsPageResponse"];
 
+export type DebtType = "loan" | "credit_card" | "other";
+export type DebtStatus = "active" | "closed" | "deleted";
+export type DebtResponse = {
+  id: string;
+  owner_user_id: string;
+  account_id?: string | null;
+  title: string;
+  description?: string | null;
+  debt_type: DebtType;
+  remaining_balance: string;
+  credit_limit?: string | null;
+  monthly_payment?: string | null;
+  currency: string;
+  payment_day?: number | null;
+  overdue_days: number;
+  interest_rate?: string | null;
+  status: DebtStatus;
+  created_at: string;
+  updated_at: string;
+};
+export type DebtsPageResponse = {
+  items: DebtResponse[];
+  pagination: PaginationResponse;
+};
+export type DebtCreateRequest = {
+  title: string;
+  debt_type: DebtType;
+  remaining_balance: string;
+  account_id?: string | null;
+  description?: string | null;
+  credit_limit?: string | null;
+  monthly_payment?: string | null;
+  currency?: string;
+  payment_day?: number | null;
+  overdue_days?: number;
+  interest_rate?: string | null;
+  status?: DebtStatus;
+};
+export type DebtUpdateRequest = {
+  title?: string | null;
+  debt_type?: DebtType | null;
+  remaining_balance?: string | null;
+  account_id?: string | null;
+  description?: string | null;
+  credit_limit?: string | null;
+  monthly_payment?: string | null;
+  currency?: string | null;
+  payment_day?: number | null;
+  overdue_days?: number | null;
+  interest_rate?: string | null;
+  status?: DebtStatus | null;
+};
+export type DebtsQuery = PaginationQuery & {
+  debt_type?: DebtType | null;
+  status?: DebtStatus;
+};
+
 export type GoalResponse = Schemas["GoalResponse"];
 export type GoalsPageResponse = Schemas["GoalsPageResponse"];
 export type GoalCreateRequest = Schemas["GoalCreateRequest"];
@@ -348,6 +405,34 @@ export async function fetchTransactions(query: TransactionsQuery = {}) {
 
 export async function fetchAccounts(query: PaginationQuery = {}) {
   return apiRequest<AccountsPageResponse>("/api/v1/accounts", { query });
+}
+
+export async function fetchDebtsPage(query: DebtsQuery = {}) {
+  return apiRequest<DebtsPageResponse>("/api/v1/debts", { query });
+}
+
+export async function createDebt(payload: DebtCreateRequest) {
+  return apiRequest<DebtResponse>("/api/v1/debts", {
+    json: payload,
+    method: "POST",
+  });
+}
+
+export async function fetchDebt(debtId: string) {
+  return apiRequest<DebtResponse>(`/api/v1/debts/${debtId}`);
+}
+
+export async function updateDebt(debtId: string, payload: DebtUpdateRequest) {
+  return apiRequest<DebtResponse>(`/api/v1/debts/${debtId}`, {
+    json: payload,
+    method: "PATCH",
+  });
+}
+
+export async function deleteDebt(debtId: string) {
+  return apiRequest<StatusResponse>(`/api/v1/debts/${debtId}`, {
+    method: "DELETE",
+  });
 }
 
 export async function fetchGoalsPage(query: PaginationQuery = {}) {

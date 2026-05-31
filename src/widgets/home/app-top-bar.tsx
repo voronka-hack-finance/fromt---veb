@@ -46,7 +46,7 @@ export function AppTopBar({ lowercaseTitle, notifications, title }: AppTopBarPro
 
       <h1 className={cn(styles.title, lowercaseTitle && styles.titleLowercase)}>{resolvedTitle}</h1>
 
-      <UserAvatar onClick={() => router.push("/categories")} />
+      <UserAvatar />
     </header>
   );
 }

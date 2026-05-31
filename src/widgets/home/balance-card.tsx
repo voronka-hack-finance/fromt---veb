@@ -67,7 +67,11 @@ export function BalanceCard() {
 
         <div className={styles.titleRow}>
           <h2 className={styles.title}>Всего средств</h2>
-          <Link aria-label="Открыть остаток от доходов" className={styles.actionButton} href="/income">
+          <Link
+            aria-label="Открыть страницу всех средств"
+            className={styles.actionButton}
+            href="/total"
+          >
             <img alt="" aria-hidden className={styles.icon24} draggable={false} src={assets.iconArrow} />
           </Link>
         </div>
@@ -76,7 +80,7 @@ export function BalanceCard() {
       <button
         aria-label={`Общий баланс ${whole},${fraction} ₽`}
         className={styles.amountButton}
-        onClick={() => router.push("/income")}
+        onClick={() => router.push("/total")}
         type="button"
       >
         <span className={styles.amountWhole}>{whole}</span>

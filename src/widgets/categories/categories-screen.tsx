@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Settings2 } from "lucide-react";
 
 import { useCategoriesQuery, type CategoriesResponse } from "@/shared/api/categories";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
@@ -115,8 +116,12 @@ function CategoriesScreenContent({ data }: { data: CategoriesResponse }) {
                   >
                     <div className={styles.categoryTop}>
                       <CategoryIcon assets={assets} icon={category.icon} />
-                      <div className={styles.categoryTitle}>{category.title}</div>
+                      <span aria-hidden className={styles.categoryAction}>
+                        <Settings2 size={18} strokeWidth={1.8} />
+                      </span>
                     </div>
+
+                    <div className={styles.categoryTitle}>{category.title}</div>
 
                     <div className={styles.amountRow}>
                       <span className={styles.amountStrong}>{spent} ₽</span>

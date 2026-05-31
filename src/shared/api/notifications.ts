@@ -39,19 +39,42 @@ function formatNotificationTime(date: Date) {
   return date.toLocaleTimeString("ru-RU", { hour: "2-digit", minute: "2-digit" });
 }
 
+function hasMeaningfulCopy(value: string | null | undefined) {
+  const normalized = value?.trim().toLowerCase() ?? "";
+  return Boolean(
+    normalized &&
+      !normalized.includes("ошибка вывода данных") &&
+      !normalized.includes("error") &&
+      normalized !== "null" &&
+      normalized !== "undefined",
+  );
+}
+
+function fallbackNotification(index: number) {
+  return notificationsScreenData.sections[0]?.items[index];
+}
+
 function buildRecommendationNotifications(
   recommendations: Awaited<ReturnType<typeof fetchAgentRecommendations>>["items"],
 ): NotificationItem[] {
-  return recommendations.slice(0, 3).map((item, index) => ({
-    body: item.content.length > 120 ? `${item.content.slice(0, 117)}…` : item.content,
-    icon: "star" as NotificationIconKey,
-    id: `recommendation-${item.id ?? item.agent_key}-${index}`,
-    time: formatNotificationTime(
-      item.created_at ? new Date(item.created_at) : new Date(),
-    ),
-    title: item.title,
-    unread: index === 0,
-  }));
+  return recommendations.slice(0, 3).map((item, index) => {
+    const fallback = fallbackNotification(index);
+    const title = hasMeaningfulCopy(item.title)
+      ? item.title.trim()
+      : fallback?.title ?? "Новая рекомендация";
+    const bodySource = hasMeaningfulCopy(item.content) ? item.content.trim() : fallback?.body ?? "";
+
+    return {
+      body: bodySource.length > 120 ? `${bodySource.slice(0, 117)}...` : bodySource,
+      icon: "star" as NotificationIconKey,
+      id: `recommendation-${item.id ?? item.agent_key}-${index}`,
+      time: formatNotificationTime(
+        item.created_at ? new Date(item.created_at) : new Date(),
+      ),
+      title,
+      unread: index === 0,
+    };
+  });
 }
 
 function buildLimitNotifications(
@@ -93,39 +116,59 @@ function buildLimitNotifications(
     }));
 }
 
-function buildRiskNotifications(
-  drivers: string[],
-): NotificationItem[] {
-  return drivers.slice(0, 2).map((driver, index) => ({
-    body: driver,
-    icon: "trend" as NotificationIconKey,
-    id: `risk-${index}`,
-    time: formatNotificationTime(new Date()),
-    title: "Риск по бюджету",
-    unread: false,
-  }));
+function buildRiskNotifications(drivers: string[]): NotificationItem[] {
+  return drivers
+    .filter((driver) => hasMeaningfulCopy(driver))
+    .slice(0, 2)
+    .map((driver, index) => ({
+      body: driver,
+      icon: "trend" as NotificationIconKey,
+      id: `risk-${index}`,
+      time: formatNotificationTime(new Date()),
+      title: "Риск по бюджету",
+      unread: false,
+    }));
 }
 
 export async function loadNotificationsScreenData(): Promise<NotificationsScreenData> {
-  const [recommendations, limitsResponse, categoriesResponse, transactionsResponse, health] =
-    await Promise.all([
-      fetchAgentRecommendations(),
-      fetchLimitsPage({ page_size: 100 }),
-      fetchCategoriesPage({ page_size: 200 }),
-      fetchTransactions({ page_size: 500 }),
-      fetchFinancialHealthScore().catch(() => null),
-    ]);
+  const [
+    recommendationsResult,
+    limitsResult,
+    categoriesResult,
+    transactionsResult,
+    healthResult,
+  ] = await Promise.allSettled([
+    fetchAgentRecommendations(),
+    fetchLimitsPage({ page_size: 100 }),
+    fetchCategoriesPage({ page_size: 100 }),
+    fetchTransactions({ page_size: 200 }),
+    fetchFinancialHealthScore(),
+  ]);
 
-  const todayItems = [
-    ...buildLimitNotifications(
-      categoriesResponse.items,
-      limitsResponse.items,
-      transactionsResponse.items,
-    ),
-    ...buildRecommendationNotifications(recommendations.items),
-  ];
+  const todayItems: NotificationItem[] = [];
 
-  const yesterdayItems = buildRiskNotifications(health?.top_risk_drivers ?? []);
+  if (recommendationsResult.status === "fulfilled") {
+    todayItems.push(...buildRecommendationNotifications(recommendationsResult.value.items));
+  }
+
+  if (
+    limitsResult.status === "fulfilled" &&
+    categoriesResult.status === "fulfilled" &&
+    transactionsResult.status === "fulfilled"
+  ) {
+    todayItems.push(
+      ...buildLimitNotifications(
+        categoriesResult.value.items,
+        limitsResult.value.items,
+        transactionsResult.value.items,
+      ),
+    );
+  }
+
+  const yesterdayItems =
+    healthResult.status === "fulfilled"
+      ? buildRiskNotifications(healthResult.value.top_risk_drivers ?? [])
+      : [];
 
   if (!todayItems.length && !yesterdayItems.length) {
     return notificationsScreenData;

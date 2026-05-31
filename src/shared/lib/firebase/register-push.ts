@@ -25,11 +25,15 @@ async function registerPushNotificationsInternal() {
     return null;
   }
 
-  const permission = await Notification.requestPermission();
+  const permission = Notification.permission;
+
+  if (permission === "default") {
+    return null;
+  }
 
   await updateNotificationPermission({
     push_enabled: permission === "granted",
-  });
+  }).catch(() => undefined);
 
   if (permission !== "granted") {
     return null;

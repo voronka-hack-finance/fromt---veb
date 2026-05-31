@@ -250,9 +250,9 @@
 }
 
 .categoryTop {
+  align-items: flex-start;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  justify-content: space-between;
   left: 15px;
   position: absolute;
   top: 16px;
@@ -261,8 +261,7 @@
 
 .categoryIconWrap {
   align-items: center;
-  background: rgba(64, 169, 61, 0.2);
-  border: 1.031px solid rgba(64, 169, 61, 0.5);
+  background: rgba(0, 0, 0, 0.06);
   border-radius: 100px;
   display: inline-flex;
   flex-shrink: 0;
@@ -277,12 +276,21 @@
   width: 16px;
 }
 
+.categoryAction {
+  color: #444;
+  display: inline-flex;
+}
+
 .categoryTitle {
-  color: #656565;
+  color: #5c5c5c;
   font-family: var(--font-body), sans-serif;
   font-size: 14px;
   font-weight: 600;
+  left: 15px;
   line-height: normal;
+  position: absolute;
+  top: 72px;
+  width: calc(100% - 30px);
 }
 
 .categoryCardDark .categoryTitle {

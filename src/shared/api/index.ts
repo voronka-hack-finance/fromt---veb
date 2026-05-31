@@ -58,6 +58,7 @@ export {
 export {
   fetchCreditLoad,
   useCreditLoadQuery,
+  type CreditLoadPaymentItem,
   type CreditLoadResponse,
 } from "./credit-load";
 export {
@@ -97,6 +98,7 @@ export {
   saveCreditAsCategoryLimit,
   type SaveCategoryInput,
   type SaveCreditInput,
+  updateCreditDebt,
 } from "./category-mutations";
 export { uploadFileAndWaitForImport, waitForImportCompletion } from "./import";
 export {

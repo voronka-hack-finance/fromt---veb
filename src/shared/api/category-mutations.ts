@@ -1,16 +1,66 @@
-import { createCategory, createLimit } from "./backend";
+import {
+  createCategory,
+  createDebt,
+  createLimit,
+  updateDebt,
+  type DebtCreateRequest,
+  type DebtType,
+  type DebtUpdateRequest,
+} from "./backend";
 
 function parseAmount(value: string) {
   const normalized = Number.parseInt(value.replace(/\s/g, ""), 10);
   return Number.isFinite(normalized) ? normalized : 0;
 }
 
+function normalizeDecimalString(value: string, fractionDigits = 2) {
+  const normalized = value.replace(/\s/g, "").replace(",", ".");
+
+  if (!normalized) {
+    return null;
+  }
+
+  const amount = Number(normalized);
+  return Number.isFinite(amount) ? amount.toFixed(fractionDigits) : null;
+}
+
+function parseDayOfMonth(value: string) {
+  const day = Number.parseInt(value.replace(/[^\d]/g, ""), 10);
+
+  if (!Number.isFinite(day)) {
+    return null;
+  }
+
+  return Math.min(Math.max(day, 1), 31);
+}
+
+function mapDebtType(value: string): DebtType {
+  const normalized = value.trim().toLowerCase();
+
+  if (normalized.includes("кредит") && normalized.includes("карт")) {
+    return "credit_card";
+  }
+
+  if (
+    normalized.includes("ипот") ||
+    normalized.includes("кредит") ||
+    normalized.includes("авто") ||
+    normalized.includes("loan")
+  ) {
+    return "loan";
+  }
+
+  return "other";
+}
+
 function frequencyToPeriodDays(frequency: string) {
-  if (frequency.includes("недел")) {
+  const normalized = frequency.toLowerCase();
+
+  if (normalized.includes("недел") || normalized.includes("week")) {
     return 7;
   }
 
-  if (frequency.includes("год")) {
+  if (normalized.includes("год") || normalized.includes("year")) {
     return 365;
   }
 
@@ -52,21 +102,54 @@ export async function saveCategoryWithLimit(input: SaveCategoryInput) {
 export type SaveCreditInput = {
   bank: string;
   debtType: string;
+  initialAmount: string;
+  interestRate: string;
+  linkedAccountId?: string | null;
+  loanAmount: string;
   loanName: string;
   monthlyPayment: string;
+  paymentDay: string;
   principalRemaining: string;
+  remainingDebt: string;
 };
 
-export async function saveCreditAsCategoryLimit(input: SaveCreditInput) {
-  const limitAmount =
-    parseAmount(input.principalRemaining) || parseAmount(input.monthlyPayment) * 12;
-  const title = input.loanName.trim() || input.debtType;
+function buildDebtPayload(input: SaveCreditInput): DebtCreateRequest | DebtUpdateRequest {
+  const estimatedRemainingBalance = parseAmount(input.monthlyPayment) * 12;
+  const remainingBalance =
+    normalizeDecimalString(input.principalRemaining) ??
+    normalizeDecimalString(input.remainingDebt) ??
+    (estimatedRemainingBalance > 0
+      ? normalizeDecimalString(String(estimatedRemainingBalance))
+      : null) ??
+    "100000.00";
+  const monthlyPayment = normalizeDecimalString(input.monthlyPayment);
+  const creditLimit =
+    normalizeDecimalString(input.initialAmount) ??
+    normalizeDecimalString(input.loanAmount) ??
+    remainingBalance;
+  const title = input.loanName.trim() || input.debtType.trim();
+  const debtType = mapDebtType(input.debtType);
 
-  return saveCategoryWithLimit({
-    description: `Кредит (${input.bank})`,
-    frequency: "Раз в месяц",
-    iconKey: "bank",
-    limit: String(limitAmount || 100_000),
-    name: title,
-  });
+  return {
+    account_id: input.linkedAccountId || null,
+    credit_limit: debtType === "credit_card" ? creditLimit : null,
+    currency: "RUB",
+    debt_type: debtType,
+    description: input.bank.trim() ? `Кредит (${input.bank.trim()})` : "Кредит",
+    interest_rate: normalizeDecimalString(input.interestRate, 4),
+    monthly_payment: monthlyPayment,
+    overdue_days: 0,
+    payment_day: parseDayOfMonth(input.paymentDay),
+    remaining_balance: remainingBalance,
+    status: "active",
+    title,
+  };
+}
+
+export async function saveCreditAsCategoryLimit(input: SaveCreditInput) {
+  return createDebt(buildDebtPayload(input) as DebtCreateRequest);
+}
+
+export async function updateCreditDebt(debtId: string, input: SaveCreditInput) {
+  return updateDebt(debtId, buildDebtPayload(input) as DebtUpdateRequest);
 }

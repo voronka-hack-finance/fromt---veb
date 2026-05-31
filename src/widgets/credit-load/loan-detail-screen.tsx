@@ -1,12 +1,17 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { ArrowLeft, Pencil, Trash2 } from "lucide-react";
 
+import { deleteDebt } from "@/shared/api/backend";
 import {
   useCreditLoadLoanQuery,
   type CreditLoadLoanDetailResponse,
 } from "@/shared/api/credit-load-loan";
+import { queryKeys } from "@/shared/api/query-keys";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
@@ -15,7 +20,7 @@ import { Reveal } from "@/shared/ui/reveal/reveal";
 import styles from "./loan-detail-screen.module.css";
 
 function formatRubles(value: number) {
-  return `${formatCurrencyParts(Math.round(value)).whole}₽`;
+  return `${formatCurrencyParts(Math.round(value)).whole} ₽`;
 }
 
 function DetailRow({ label, value }: { label: string; value: string }) {
@@ -31,6 +36,40 @@ function DetailRow({ label, value }: { label: string; value: string }) {
 }
 
 function LoanDetailContent({ loan }: { loan: CreditLoadLoanDetailResponse }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  const isBackendDebt = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+    loan.id,
+  );
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  async function handleDelete() {
+    if (isDeleting) {
+      return;
+    }
+
+    const confirmed = window.confirm("Удалить этот долг?");
+
+    if (!confirmed) {
+      return;
+    }
+
+    setIsDeleting(true);
+    setDeleteError(null);
+
+    try {
+      await deleteDebt(loan.id);
+      await queryClient.invalidateQueries({ queryKey: queryKeys.creditLoad });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.debts });
+      await queryClient.invalidateQueries({ queryKey: queryKeys.creditLoadLoan(loan.id) });
+      router.push("/credit-load");
+    } catch (error) {
+      setDeleteError(error instanceof Error ? error.message : "Не удалось удалить долг");
+      setIsDeleting(false);
+    }
+  }
+
   return (
     <DesktopSidebarLayout>
       <main className={styles.stage}>
@@ -41,9 +80,17 @@ function LoanDetailContent({ loan }: { loan: CreditLoadLoanDetailResponse }) {
                 <ArrowLeft size={24} strokeWidth={1.9} />
               </Link>
               <h1 className={styles.title}>{loan.title}</h1>
-              <button aria-label="Редактировать кредит" className={styles.iconButton} type="button">
-                <Pencil size={24} strokeWidth={1.8} />
-              </button>
+              {isBackendDebt ? (
+                <Link
+                  aria-label="Редактировать долг"
+                  className={styles.iconButton}
+                  href={`/credit-load/${loan.id}/edit`}
+                >
+                  <Pencil size={24} strokeWidth={1.8} />
+                </Link>
+              ) : (
+                <span aria-hidden className={styles.iconButton} style={{ visibility: "hidden" }} />
+              )}
             </header>
           </Reveal>
 
@@ -74,7 +121,7 @@ function LoanDetailContent({ loan }: { loan: CreditLoadLoanDetailResponse }) {
                 <div aria-hidden className={styles.divider} />
 
                 <DetailRow label="Ежемесячный платёж" value={formatRubles(loan.monthlyPayment)} />
-                <DetailRow label="Остаток от займа" value={formatRubles(loan.remainingBalance)} />
+                <DetailRow label="Остаток по долгу" value={formatRubles(loan.remainingBalance)} />
                 <DetailRow label="Годовой процент" value={loan.annualRate} />
 
                 <div className={styles.remainingBlock}>
@@ -84,6 +131,24 @@ function LoanDetailContent({ loan }: { loan: CreditLoadLoanDetailResponse }) {
               </div>
             </section>
           </Reveal>
+
+          {isBackendDebt ? (
+            <>
+              <Reveal delay={0.12}>
+                <button
+                  className={styles.deleteButton}
+                  disabled={isDeleting}
+                  onClick={() => void handleDelete()}
+                  type="button"
+                >
+                  <Trash2 size={18} strokeWidth={1.8} />
+                  <span>{isDeleting ? "Удаление..." : "Удалить долг"}</span>
+                </button>
+              </Reveal>
+
+              {deleteError ? <p className={styles.errorMessage}>{deleteError}</p> : null}
+            </>
+          ) : null}
         </div>
       </main>
     </DesktopSidebarLayout>

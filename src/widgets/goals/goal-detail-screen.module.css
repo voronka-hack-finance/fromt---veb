@@ -18,14 +18,8 @@
 
 .content {
   display: flex;
-  flex: 1;
   flex-direction: column;
   gap: 16px;
-  min-height: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
 }
 
 .header {

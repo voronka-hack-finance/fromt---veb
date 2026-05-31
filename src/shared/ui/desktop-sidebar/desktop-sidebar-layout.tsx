@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Bell, Settings2 } from "lucide-react";
 
 import { AppBrand } from "@/shared/ui/app-brand/app-brand";
@@ -18,9 +19,9 @@ export function DesktopSidebarLayout({ children }: { children: React.ReactNode }
           <button aria-label="Уведомления" className={styles.iconButton} type="button">
             <Bell size={18} strokeWidth={1.9} />
           </button>
-          <button aria-label="Настройки" className={styles.iconButton} type="button">
+          <Link aria-label="Настройки" className={styles.iconButton} href="/settings">
             <Settings2 size={18} strokeWidth={1.9} />
-          </button>
+          </Link>
           <UserAvatar className={styles.desktopAvatar} />
         </div>
       </header>

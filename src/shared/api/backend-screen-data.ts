@@ -90,6 +90,7 @@ type RecommendationAgent = {
 };
 
 type RecommendationChat = {
+  agentId: string;
   id: string;
   title: string;
   preview: string;
@@ -934,22 +935,56 @@ function buildRecommendations(
     return recommendationsScreenData.agents;
   }
 
+  const fallbackAgentsById = new Map(
+    recommendationsScreenData.agents.map((agent) => [agent.id, agent]),
+  );
+  const fallbackAgentIdsByKey: Record<string, string> = {
+    pillow_keeper: "pillow-keeper",
+    expense_detective: "expense-detective",
+    growth_strategist: "growth-strategist",
+    balancer: "balancer",
+    habit_trainer: "habit-trainer",
+  };
+
+  const isInvalidCopy = (value: string | null | undefined) => {
+    const normalized = value?.trim().toLowerCase() ?? "";
+    return (
+      !normalized ||
+      normalized.includes("ошибка вывода данных") ||
+      normalized.includes("error") ||
+      normalized === "null" ||
+      normalized === "undefined"
+    );
+  };
+
   return recommendations.map((recommendation, index) => {
+    const fallbackAgentId =
+      fallbackAgentIdsByKey[recommendation.agent_key] ??
+      recommendationsScreenData.agents[index % recommendationsScreenData.agents.length]!.id;
+    const fallbackAgent =
+      fallbackAgentsById.get(fallbackAgentId) ??
+      recommendationsScreenData.agents[index % recommendationsScreenData.agents.length]!;
     const visual =
       recommendationVisuals[
         recommendation.agent_key as keyof typeof recommendationVisuals
       ] ??
-      recommendationsScreenData.agents[index % recommendationsScreenData.agents.length]!;
-    const [lead, ...rest] = recommendation.content.split(/(?<=\.)\s+/);
+      fallbackAgent;
+    const recommendationContent = isInvalidCopy(recommendation.content)
+      ? `${fallbackAgent.insightLead} ${fallbackAgent.insightRest}`.trim()
+      : recommendation.content.trim();
+    const [lead, ...rest] = recommendationContent.split(/(?<=\.)\s+/);
+    const recommendationTitle = isInvalidCopy(recommendation.title)
+      ? fallbackAgent.title
+      : recommendation.title.trim();
 
     return {
-      id: recommendation.id ?? `${recommendation.agent_key}-${index}`,
+      id: fallbackAgent.id,
       imageKey: visual.imageKey,
       imageVariant: visual.imageVariant,
-      insightLead: lead || recommendation.content,
-      insightRest: rest.join(" ") || recommendation.content,
-      subtitle: visual.subtitle,
-      title: recommendation.title,
+      insightLead: lead || fallbackAgent.insightLead,
+      insightRest: rest.join(" ") || fallbackAgent.insightRest,
+      subtitle: isInvalidCopy(visual.subtitle) ? fallbackAgent.subtitle : visual.subtitle,
+      title: recommendationTitle,
     } satisfies RecommendationAgent;
   });
 }
@@ -1000,18 +1035,32 @@ function buildChats(chats: ChatResponse[]) {
     return recommendationsScreenData.chats;
   }
 
+  const fallbackAgentIdsByTitle = new Map(
+    recommendationsScreenData.agents.map((agent) => [agent.title.trim(), agent.id]),
+  );
+
   return chats.map((chat, index) => {
     const visual = resolveAgentVisualByTitle(chat.title, index);
     const fallbackChat =
       recommendationsScreenData.chats[index % recommendationsScreenData.chats.length]!;
+    const normalizedTitle = chat.title?.trim();
+    const title =
+      normalizedTitle &&
+      !/ошибка вывода данных|error|null|undefined/i.test(normalizedTitle)
+        ? normalizedTitle
+        : fallbackChat.title;
 
     return {
+      agentId:
+        fallbackAgentIdsByTitle.get(title) ??
+        fallbackAgentIdsByTitle.get(fallbackChat.title) ??
+        "pillow-keeper",
       id: chat.id,
       imageKey: visual.imageKey,
       imageVariant: visual.imageVariant,
       preview: fallbackChat.preview,
       timestamp: formatChatTimestamp(new Date(chat.updated_at)),
-      title: chat.title,
+      title,
     } satisfies RecommendationChat;
   });
 }

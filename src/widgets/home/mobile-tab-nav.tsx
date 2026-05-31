@@ -12,6 +12,7 @@ function shouldShowMobileTabNav(pathname: string) {
   if (pathname.startsWith("/recommendations")) {
     return !pathname.includes("/chat");
   }
+  if (pathname.startsWith("/settings")) return true;
   if (pathname === "/total") return true;
 
   return false;

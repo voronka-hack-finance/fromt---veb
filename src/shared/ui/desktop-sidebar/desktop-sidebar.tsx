@@ -92,7 +92,7 @@ export function DesktopSidebar({ className }: { className?: string }) {
       </div>
 
       <div className={styles.sidebarFooter}>
-        <NavLink href="/categories">
+        <NavLink href="/settings">
           <DesktopNavIcon id="settings" />
           <span>Настройки</span>
         </NavLink>

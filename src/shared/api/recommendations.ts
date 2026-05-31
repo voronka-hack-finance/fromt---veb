@@ -26,6 +26,7 @@ export type RecommendationsResponse = {
     chatCta: string;
     chatsPlaceholder: string;
     chats: ReadonlyArray<{
+      agentId?: string;
       id: string;
       title: string;
       preview: string;
@@ -49,7 +50,22 @@ export async function fetchRecommendations(): Promise<RecommendationsResponse> {
   await mockDelay();
   return tryLoadScreenData(loadRecommendationsScreenData, () => ({
     assets: recommendationsAssets,
-    screen: recommendationsScreenData,
+    screen: {
+      ...recommendationsScreenData,
+      chats: recommendationsScreenData.chats.map((chat) => ({
+        ...chat,
+        agentId:
+          chat.id.includes("expense-detective")
+            ? "expense-detective"
+            : chat.id.includes("growth-strategist")
+              ? "growth-strategist"
+              : chat.id.includes("balancer")
+                ? "balancer"
+                : chat.id.includes("habit-trainer")
+                  ? "habit-trainer"
+                  : "pillow-keeper",
+      })),
+    },
   } as RecommendationsResponse)) as Promise<RecommendationsResponse>;
 }
 

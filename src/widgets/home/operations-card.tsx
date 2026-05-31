@@ -27,18 +27,7 @@ export function OperationsCard() {
   const openOperations = () => router.push("/operations");
 
   return (
-    <section
-      className={styles.card}
-      onClick={openOperations}
-      onKeyDown={(event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          openOperations();
-        }
-      }}
-      role="button"
-      tabIndex={0}
-    >
+    <section className={styles.card}>
       <div className={styles.header}>
         <div className={styles.titleGroup}>
           <div className={styles.iconChipPrimary}>
@@ -51,10 +40,7 @@ export function OperationsCard() {
           <button
             aria-label="Выбрать период"
             className={styles.iconButton}
-            onClick={(event) => {
-              event.stopPropagation();
-              router.push("/operations/trends");
-            }}
+            onClick={() => router.push("/operations/trends")}
             type="button"
           >
             <img alt="" aria-hidden className={styles.icon20} draggable={false} src={assets.calendar} />
@@ -63,7 +49,6 @@ export function OperationsCard() {
             aria-label="Открыть операции"
             className={styles.iconButton}
             href="/operations"
-            onClick={(event) => event.stopPropagation()}
           >
             <img alt="" aria-hidden className={styles.icon20} draggable={false} src={assets.arrow} />
           </Link>
@@ -74,10 +59,7 @@ export function OperationsCard() {
         <button
           aria-label="Поступления"
           className={styles.incomeColumn}
-          onClick={(event) => {
-            event.stopPropagation();
-            router.push("/operations");
-          }}
+          onClick={openOperations}
           type="button"
         >
           <div className={styles.metricBlock}>
@@ -92,10 +74,7 @@ export function OperationsCard() {
         <button
           aria-label="Расходы"
           className={styles.expenseColumn}
-          onClick={(event) => {
-            event.stopPropagation();
-            router.push("/operations/bars");
-          }}
+          onClick={() => router.push("/operations/bars")}
           type="button"
         >
           <div className={styles.metricBlock}>

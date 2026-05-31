@@ -67,7 +67,10 @@ function ChatCard({
   const agentImage = assets.agentImages[chat.imageKey];
 
   return (
-    <Link className={styles.chatCard} href={`/recommendations/${resolveAgentIdFromChatId(chat.id) ?? "pillow-keeper"}/chat`}>
+    <Link
+      className={styles.chatCard}
+      href={`/recommendations/${chat.agentId ?? resolveAgentIdFromChatId(chat.id) ?? "pillow-keeper"}/chat`}
+    >
       <div className={styles.chatAvatar}>
         <div className={styles.chatImageCenter}>
           <div className={chatImageRotatedClassMap[chat.imageVariant]}>

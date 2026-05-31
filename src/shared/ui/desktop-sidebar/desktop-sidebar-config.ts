@@ -3,7 +3,7 @@ export const homeSubmenuItems = [
   { label: "Доходы и расходы", href: "/operations" },
   { label: "Остаток от дохода", href: "/income" },
   { label: "Инвестиции", href: "/investments" },
-  { label: "Нагрузка", href: "/total" },
+  { label: "Всего средств", href: "/total" },
 ] as const;
 
 export const mainNavItems = [

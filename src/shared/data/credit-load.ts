@@ -10,7 +10,7 @@ export type CreditLoadUpcomingPayment = {
 };
 
 export const creditLoadScreenData = {
-  title: "Нагрузка",
+  title: "Кредитная нагрузка",
   calendar: {
     year: 2026,
     month: 5,

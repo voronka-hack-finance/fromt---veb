@@ -11,6 +11,8 @@ export const queryKeys = {
   goals: ["goals"] as const,
   goalDetail: (goalId: string) => ["goals", "detail", goalId] as const,
   subscriptions: ["subscriptions"] as const,
+  debts: ["debts"] as const,
+  debtDetail: (debtId: string) => ["debts", "detail", debtId] as const,
   creditLoad: ["credit-load"] as const,
   creditLoadLoan: (loanId: string) => ["credit-load", "loan", loanId] as const,
   recommendations: ["recommendations"] as const,

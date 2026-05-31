@@ -321,7 +321,7 @@
 .accentCard {
   align-self: stretch;
   box-sizing: border-box;
-  min-height: 156px;
+  min-height: 220px;
 }
 
 .runwayCard {
@@ -335,7 +335,7 @@
 }
 
 .accentCard {
-  flex: 0 0 128px;
+  flex: 0 0 160px;
 }
 
 .runwayCard,
@@ -345,7 +345,7 @@
   flex-direction: column;
   height: auto;
   justify-content: center;
-  padding: 22px 24px;
+  padding: 28px 28px;
   text-decoration: none;
 }
 
@@ -365,9 +365,9 @@
 
 .runwayMonths {
   color: #4fb848;
-  font-size: 28px;
+  font-size: 32px;
   letter-spacing: -0.05em;
-  margin-top: 8px;
+  margin-top: 12px;
 }
 
 .cardCaption {
@@ -380,11 +380,11 @@
   align-items: center;
   display: flex;
   gap: 10px;
-  margin-top: 14px;
+  margin-top: 18px;
 }
 
 .healthValue {
-  font-size: 48px;
+  font-size: 52px;
   font-weight: 700;
   letter-spacing: -0.07em;
   line-height: 1;
@@ -410,12 +410,12 @@
 }
 
 .accentImage {
-  height: 148px;
+  height: 188px;
   inset: -10px auto auto -14px;
   max-width: none;
   object-fit: cover;
   position: absolute;
-  width: 168px;
+  width: 208px;
 }
 
 .calendarCard {
@@ -697,31 +697,31 @@
   .runwayCard,
   .healthCard,
   .accentCard {
-    min-height: 136px;
+    min-height: 188px;
   }
 
   .accentCard {
-    flex-basis: 112px;
+    flex-basis: 140px;
     flex-grow: 0;
     flex-shrink: 0;
   }
 
   .runwayCard,
   .healthCard {
-    padding: 18px 20px;
+    padding: 22px 22px;
   }
 
   .runwayMonths {
-    font-size: 24px;
+    font-size: 28px;
   }
 
   .healthValue {
-    font-size: 40px;
+    font-size: 44px;
   }
 
   .accentImage {
-    height: 128px;
-    width: 144px;
+    height: 160px;
+    width: 176px;
   }
 
   .calendarCard {
@@ -837,6 +837,6 @@
 
   .accentCard {
     flex: 1 1 100%;
-    min-height: 120px;
+    min-height: 160px;
   }
 }

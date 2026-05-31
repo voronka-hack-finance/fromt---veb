@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Bell, Edit3 } from "lucide-react";
 
@@ -20,6 +21,7 @@ const assets = {
 
 function GoalCard({
   current,
+  id,
   image,
   target,
   title,
@@ -30,7 +32,8 @@ function GoalCard({
   const targetFormatted = formatCurrencyParts(target).whole;
 
   return (
-    <article className={styles.goalCard}>
+    <Link className={styles.goalCardLink} href={`/goals/${id}`}>
+      <article className={styles.goalCard}>
       <div aria-hidden className={styles.goalCardBackground}>
         <img alt="" className={styles.goalCardImage} draggable={false} src={image} />
         <div className={styles.goalCardOverlay} />
@@ -39,7 +42,12 @@ function GoalCard({
       <div className={styles.goalCardTop}>
         <div className={styles.goalCardTitleRow}>
           <h2 className={styles.goalCardTitle}>{title}</h2>
-          <button aria-label={`Редактировать цель «${title}»`} className={styles.editButton} type="button">
+          <button
+            aria-label={`Редактировать цель «${title}»`}
+            className={styles.editButton}
+            onClick={(event) => event.preventDefault()}
+            type="button"
+          >
             <Edit3 size={20} strokeWidth={1.8} />
           </button>
         </div>
@@ -65,6 +73,7 @@ function GoalCard({
         </div>
       </div>
     </article>
+    </Link>
   );
 }
 

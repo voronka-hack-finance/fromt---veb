@@ -226,6 +226,30 @@
   flex-direction: column;
   min-height: 220px;
   padding: 22px 22px 18px;
+  position: relative;
+}
+
+.accountCardLink {
+  color: inherit;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 18px;
+  min-width: 0;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.accountCardLink:hover,
+.accountCardLink:focus-visible {
+  transform: translateY(-2px);
+}
+
+.accountCard:has(.accountCardLink:hover),
+.accountCard:has(.accountCardLink:focus-visible) {
+  box-shadow: 0 14px 28px rgba(31, 39, 26, 0.1);
 }
 
 .accountTop {
@@ -302,6 +326,10 @@
   display: flex;
   flex-shrink: 0;
   gap: 10px;
+  position: absolute;
+  right: 22px;
+  top: 22px;
+  z-index: 1;
 }
 
 .cardAction {
@@ -310,10 +338,12 @@
   border: none;
   border-radius: 10px;
   color: #555;
+  cursor: pointer;
   display: inline-flex;
   height: 24px;
   justify-content: center;
   padding: 0;
+  text-decoration: none;
   width: 24px;
 }
 

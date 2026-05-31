@@ -1,0 +1,367 @@
+.viewport {
+  background: #e1e1e1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+
+.shell {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin: 0 auto;
+  max-width: 390px;
+  min-height: 0;
+  padding: 16px 16px var(--mobile-nav-offset);
+  width: 100%;
+}
+
+.content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.header {
+  align-items: center;
+  display: grid;
+  flex-shrink: 0;
+  grid-template-columns: 52px minmax(0, 1fr) 52px;
+}
+
+.backButton,
+.editButton {
+  align-items: center;
+  background: rgba(243, 247, 244, 0.8);
+  border: none;
+  border-radius: 100px;
+  color: #1c1b1b;
+  cursor: pointer;
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  transition: transform 180ms ease;
+  width: 52px;
+}
+
+.backButton:hover,
+.backButton:focus-visible,
+.editButton:hover,
+.editButton:focus-visible {
+  transform: translateY(-1px);
+}
+
+.title {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  grid-column: 2;
+  margin: 0;
+  text-align: center;
+}
+
+.heroCard {
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  height: 300px;
+  isolation: isolate;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 24px;
+  position: relative;
+}
+
+.heroBackground {
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+
+.heroImage {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  width: 100%;
+}
+
+.heroOverlay {
+  background: linear-gradient(
+    0deg,
+    rgba(35, 35, 35, 0.43) 40%,
+    rgba(35, 35, 35, 0) 62%
+  );
+  inset: 0;
+  position: absolute;
+}
+
+.heroContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.heroTopRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.heroTitle {
+  color: #fff;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+}
+
+.accountChip {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(153, 153, 153, 0.4);
+  border-radius: 8px;
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 8px;
+  padding: 8px;
+}
+
+.accountIcon {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.accountText {
+  align-items: center;
+  color: #1f1f1f;
+  display: inline-flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  gap: 2px;
+  line-height: 1.25;
+}
+
+.accountDot {
+  display: block;
+  height: 2px;
+  width: 5px;
+}
+
+.heroProgressBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.amountRow {
+  color: #fff;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+}
+
+.amountCurrent {
+  color: #fff;
+}
+
+.amountTarget {
+  color: #a8a8a8;
+}
+
+.progressTrack {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.progressFill {
+  background: #5fe274;
+  border-radius: 6px 0 0 6px;
+  height: 100%;
+}
+
+.progressLabel {
+  color: #5fe274;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 1.25;
+  margin: 0;
+}
+
+.detailsCard {
+  background: #fff;
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 21px;
+  padding: 16px;
+}
+
+.detailsRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.detailsRow > span {
+  color: #999;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.detailsRow > strong {
+  color: #1f1f1f;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.deadlineValue {
+  font-weight: 600;
+}
+
+.chartCard {
+  background: #1a1a1a;
+  border-radius: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 254px;
+  overflow: hidden;
+  padding: 16px;
+}
+
+.chartTitle {
+  color: #fff;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  padding: 0 17px;
+}
+
+.chartWrap {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 20px minmax(0, 1fr);
+  padding: 0 10px 8px;
+}
+
+.chartYAxis {
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 6px;
+  font-weight: 600;
+  height: 125px;
+  justify-content: space-between;
+  line-height: normal;
+  padding-top: 4px;
+  text-align: right;
+}
+
+.chartPlot {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.chartSvg {
+  display: block;
+  height: 107px;
+  width: 100%;
+}
+
+.chartGridLine {
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-dasharray: 2 3;
+  stroke-width: 0.5;
+}
+
+.chartArea {
+  opacity: 1;
+}
+
+.chartLine {
+  stroke: #5fe274;
+  stroke-width: 2;
+}
+
+.chartXAxis {
+  color: #fbfbfb;
+  display: flex;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 6px;
+  font-weight: 600;
+  justify-content: space-between;
+  line-height: normal;
+  padding-left: 24px;
+}
+
+@media (max-width: 360px) {
+  .shell {
+    padding: 12px 12px var(--mobile-nav-offset);
+  }
+
+  .header {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+  }
+
+  .backButton,
+  .editButton {
+    height: 44px;
+    width: 44px;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .heroCard {
+    height: 260px;
+    padding: 20px;
+  }
+
+  .heroTopRow {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .viewport {
+    min-height: calc(100vh - 80px);
+  }
+
+  .shell {
+    max-width: 420px;
+    padding-top: 32px;
+  }
+}

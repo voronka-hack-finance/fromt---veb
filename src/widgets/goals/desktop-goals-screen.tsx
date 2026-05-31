@@ -1,7 +1,8 @@
 "use client";
 
-import { useId } from "react";
-import { Search, Settings2 } from "lucide-react";
+import Link from "next/link";
+import { useId, useMemo, useState } from "react";
+import { Search, Settings2, X } from "lucide-react";
 
 import type { GoalsResponse } from "@/shared/api/goals";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
@@ -14,11 +15,34 @@ function formatGoalAmount(value: number) {
   return `${formatCurrencyParts(value).whole} ₽`;
 }
 
+function filterGoals(goals: GoalsResponse["goals"], query: string) {
+  const normalizedQuery = query.trim().toLowerCase();
+
+  if (!normalizedQuery) {
+    return goals;
+  }
+
+  return goals.filter((goal) => {
+    const searchableText = [
+      goal.title,
+      goal.account.label,
+      goal.account.suffix,
+      formatGoalAmount(goal.current),
+      formatGoalAmount(goal.target),
+    ]
+      .join(" ")
+      .toLowerCase();
+
+    return searchableText.includes(normalizedQuery);
+  });
+}
+
 function GoalDesktopCard({ goal }: { goal: GoalsResponse["goals"][number] }) {
   const progress = Math.min(100, (goal.current / goal.target) * 100);
 
   return (
-    <article className={styles.goalCard}>
+    <Link className={styles.goalCardLink} href={`/goals/${goal.id}`}>
+      <article className={styles.goalCard}>
       <div aria-hidden className={styles.goalBackground}>
         <img alt="" className={styles.goalImage} draggable={false} src={goal.image} />
         <div className={styles.goalOverlay} />
@@ -42,6 +66,7 @@ function GoalDesktopCard({ goal }: { goal: GoalsResponse["goals"][number] }) {
         </div>
       </div>
     </article>
+    </Link>
   );
 }
 
@@ -53,6 +78,12 @@ export function DesktopGoalsScreen({
   onCreateGoal?: () => void;
 }) {
   const searchInputId = useId();
+  const [searchQuery, setSearchQuery] = useState("");
+  const filteredGoals = useMemo(
+    () => filterGoals(data.goals, searchQuery),
+    [data.goals, searchQuery],
+  );
+  const hasActiveSearch = searchQuery.trim().length > 0;
 
   return (
     <main className={styles.desktopViewport}>
@@ -73,9 +104,21 @@ export function DesktopGoalsScreen({
               <input
                 autoComplete="off"
                 id={searchInputId}
+                onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder={data.desktop.searchPlaceholder}
                 type="search"
+                value={searchQuery}
               />
+              {hasActiveSearch ? (
+                <button
+                  aria-label="Очистить поиск"
+                  className={styles.clearSearchButton}
+                  onClick={() => setSearchQuery("")}
+                  type="button"
+                >
+                  <X size={18} strokeWidth={2} />
+                </button>
+              ) : null}
             </form>
 
             <div className={styles.leftColumn}>
@@ -105,9 +148,13 @@ export function DesktopGoalsScreen({
                   </div>
                 </section>
 
-                {data.goals.map((goal) => (
+                {filteredGoals.map((goal) => (
                   <GoalDesktopCard goal={goal} key={goal.id} />
                 ))}
+
+                {hasActiveSearch && filteredGoals.length === 0 ? (
+                  <p className={styles.emptySearch}>По запросу «{searchQuery.trim()}» цели не найдены</p>
+                ) : null}
               </div>
             </div>
 

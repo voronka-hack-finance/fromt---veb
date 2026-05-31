@@ -18,7 +18,7 @@ export const goalsScreenData = {
       image: "/goals/protection-card.png",
       title: "Защитите деньги от мошенников",
     },
-    searchPlaceholder: "Поиск по категориям",
+    searchPlaceholder: "Поиск по целям",
     title: "Ваши цели",
   },
   notifications: 9,
@@ -33,10 +33,10 @@ export const goalsScreenData = {
   goals: [
     {
       id: "bali",
-      title: "Отпуск в Банкоке",
+      title: "Отпуск на бали",
       image: "/goals/bali-goal.png",
-      current: 100000,
-      target: 250000,
+      current: 25000,
+      target: 400000,
       account: {
         bankIcon: "/dashboard/balance/icon-sber.svg",
         label: "Счёт",

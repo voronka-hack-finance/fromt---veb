@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   ChevronRight,
   Ellipsis,
@@ -40,42 +42,50 @@ function AccountCard({
 }: {
   bank: TotalBalanceResponse["desktop"]["banks"][number];
 }) {
+  const accountHref = `/bank-accounts/${bank.id}`;
+
   return (
     <article className={styles.accountCard}>
-      <div className={styles.accountTop}>
-        <div className={styles.accountMeta}>
-          <div className={[styles.accountIcon, styles[`accountIcon${bank.tone[0].toUpperCase()}${bank.tone.slice(1)}`]].join(" ")}>
-            <Wallet size={20} strokeWidth={2} />
-          </div>
-
-          <div className={styles.accountText}>
-            <span>{bank.bank}</span>
-            <strong>{formatWholeCurrency(bank.amount)}</strong>
-          </div>
-        </div>
-
-        <div className={styles.cardActions}>
-          <button aria-label={`Редактировать ${bank.bank}`} className={styles.cardAction} type="button">
-            <Pencil size={16} strokeWidth={1.8} />
-          </button>
-          <button aria-label={`Удалить ${bank.bank}`} className={styles.cardAction} type="button">
-            <Trash2 size={16} strokeWidth={1.8} />
-          </button>
-        </div>
-      </div>
-
-      <div className={styles.badgeRow}>
-        {bank.accountBadges.map((badge) => (
-          <div className={styles.accountBadge} key={badge}>
-            <div className={[styles.badgeDot, styles[`badgeDot${bank.tone[0].toUpperCase()}${bank.tone.slice(1)}`]].join(" ")}>
-              {getToneBadge(bank.tone)}
+      <Link className={styles.accountCardLink} href={accountHref}>
+        <div className={styles.accountTop}>
+          <div className={styles.accountMeta}>
+            <div className={[styles.accountIcon, styles[`accountIcon${bank.tone[0].toUpperCase()}${bank.tone.slice(1)}`]].join(" ")}>
+              <Wallet size={20} strokeWidth={2} />
             </div>
-            <span>{badge}</span>
-          </div>
-        ))}
 
-        <button aria-label={`Ещё счета ${bank.bank}`} className={styles.moreBadge} type="button">
-          <Ellipsis size={14} strokeWidth={2} />
+            <div className={styles.accountText}>
+              <span>{bank.bank}</span>
+              <strong>{formatWholeCurrency(bank.amount)}</strong>
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.badgeRow}>
+          {bank.accountBadges.map((badge) => (
+            <div className={styles.accountBadge} key={badge}>
+              <div className={[styles.badgeDot, styles[`badgeDot${bank.tone[0].toUpperCase()}${bank.tone.slice(1)}`]].join(" ")}>
+                {getToneBadge(bank.tone)}
+              </div>
+              <span>{badge}</span>
+            </div>
+          ))}
+
+          <span aria-hidden className={styles.moreBadge}>
+            <Ellipsis size={14} strokeWidth={2} />
+          </span>
+        </div>
+      </Link>
+
+      <div className={styles.cardActions}>
+        <Link
+          aria-label={`Открыть ${bank.bank}`}
+          className={styles.cardAction}
+          href={accountHref}
+        >
+          <Pencil size={16} strokeWidth={1.8} />
+        </Link>
+        <button aria-label={`Удалить ${bank.bank}`} className={styles.cardAction} type="button">
+          <Trash2 size={16} strokeWidth={1.8} />
         </button>
       </div>
     </article>
@@ -83,6 +93,7 @@ function AccountCard({
 }
 
 export function DesktopTotalBalanceScreen({ screenData }: { screenData: TotalBalanceResponse }) {
+  const router = useRouter();
   const { desktop } = screenData;
 
   return (
@@ -116,7 +127,11 @@ export function DesktopTotalBalanceScreen({ screenData }: { screenData: TotalBal
                     <p>
                       Добавь <span>еще банков</span>, чтобы отслеживать свое финансовое состояние
                     </p>
-                    <button className={styles.addBankButton} type="button">
+                    <button
+                      className={styles.addBankButton}
+                      onClick={() => router.push("/bank-accounts/add")}
+                      type="button"
+                    >
                       {desktop.addBank.button}
                     </button>
                   </div>

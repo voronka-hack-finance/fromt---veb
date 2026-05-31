@@ -1615,15 +1615,31 @@ export async function loadTotalBalanceScreenData() {
     defaultFilterId: filters[1]?.id ?? totalBalanceScreenData.defaultFilterId,
     desktop: {
       ...totalBalanceScreenData.desktop,
-      banks: bankStats.slice(0, 6).map((bank, index) => ({
-        accountBadges: accounts
-          .filter((account) => getBankLabel(account) === bank.name)
-          .map((account) => `${account.account_type} • ${normalizeLabel(account.card_last4) || account.id.slice(-4)}`),
-        amount: Math.round(bank.amount),
-        bank: bank.name,
-        id: `${bank.name}-${index}`.toLowerCase(),
-        tone: bank.tone,
-      })),
+      banks:
+        accounts.filter((account) => !account.is_archived).length > 0
+          ? accounts
+              .filter((account) => !account.is_archived)
+              .slice(0, 6)
+              .map((account) => {
+                const bankId = getBankId(account);
+                const suffix = normalizeLabel(account.card_last4) || account.id.slice(-4);
+
+                return {
+                  accountBadges: [`${account.account_type} • ${suffix}`],
+                  amount: Math.round(parseDecimal(account.current_balance)),
+                  bank: `*${suffix}`,
+                  id: account.id,
+                  tone:
+                    bankId === "tbank"
+                      ? "yellow"
+                      : bankId === "alfa"
+                        ? "red"
+                        : bankId === "vtb" || bankId === "gpb"
+                          ? "blue"
+                          : "green",
+                } as const;
+              })
+          : totalBalanceScreenData.desktop.banks,
       topBanks: bankStats.slice(0, 4).map((bank) => ({
         amount: Math.round(bank.amount),
         badge: bank.badge,

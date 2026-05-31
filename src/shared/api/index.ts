@@ -24,6 +24,11 @@ export {
 } from "./dashboard";
 export { fetchGoals, useGoalsQuery, type GoalsResponse } from "./goals";
 export {
+  fetchGoalDetail,
+  useGoalDetailQuery,
+  type GoalDetailResponse,
+} from "./goal-detail";
+export {
   fetchIncomeBalance,
   useIncomeBalanceQuery,
   type IncomeBalanceResponse,

@@ -124,7 +124,7 @@ function OperationsScreenContent({
             <OperationsBreakdownCard />
           </Reveal>
 
-          <Reveal delay={0.12}>
+          <Reveal delay={0.12} immediate>
             <section className={styles.listSection}>
               {(operationsScreenData.operationGroups?.length
                 ? operationsScreenData.operationGroups
@@ -172,11 +172,10 @@ function OperationsScreenContent({
                   if (hasDetail) {
                     return (
                       <motion.div
+                        animate={{ opacity: 1, y: 0 }}
                         initial={{ opacity: 0, y: 18 }}
                         key={operation.id}
-                        viewport={{ once: true }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.45, delay: 0.04 * index }}
+                        transition={{ duration: 0.45, delay: 0.12 + 0.04 * index }}
                       >
                         <Link className={cardClassName} href={`/operations/${operation.id}`}>
                           {cardContent}
@@ -187,13 +186,12 @@ function OperationsScreenContent({
 
                   return (
                     <motion.button
+                      animate={{ opacity: 1, y: 0 }}
                       className={cardClassName}
                       initial={{ opacity: 0, y: 18 }}
                       key={operation.id}
                       type="button"
-                      viewport={{ once: true }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.45, delay: 0.04 * index }}
+                      transition={{ duration: 0.45, delay: 0.12 + 0.04 * index }}
                     >
                       {cardContent}
                     </motion.button>

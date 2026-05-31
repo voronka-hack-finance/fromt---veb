@@ -200,6 +200,12 @@
   gap: 24px;
 }
 
+.goalCardLink {
+  color: inherit;
+  display: block;
+  text-decoration: none;
+}
+
 .goalCard {
   border: 1px solid rgba(153, 153, 153, 0.4);
   border-radius: 24px;

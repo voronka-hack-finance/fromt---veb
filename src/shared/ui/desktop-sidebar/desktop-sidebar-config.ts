@@ -52,7 +52,7 @@ export function isHomeSubmenuItemActive(pathname: string, href: string) {
 export function getActiveMainNavId(pathname: string): MainNavId | null {
   if (pathname.startsWith("/categories")) return "categories";
   if (pathname.startsWith("/goals")) return "goals";
-  if (pathname === "/total") return "accounts";
+  if (pathname === "/total" || pathname.startsWith("/bank-accounts")) return "accounts";
   if (pathname.startsWith("/recommendations")) return "ai";
 
   return null;

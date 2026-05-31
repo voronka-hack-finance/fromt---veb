@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
+import { createPortal } from "react-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { X } from "lucide-react";
 
@@ -19,6 +20,7 @@ export function CreateGoalDialog({ open, onClose }: CreateGoalDialogProps) {
   const targetId = useId();
   const currentId = useId();
   const queryClient = useQueryClient();
+  const [mounted, setMounted] = useState(false);
   const [title, setTitle] = useState("");
   const [targetAmount, setTargetAmount] = useState("");
   const [currentAmount, setCurrentAmount] = useState("");
@@ -45,6 +47,10 @@ export function CreateGoalDialog({ open, onClose }: CreateGoalDialogProps) {
   });
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
     if (!open) {
       return;
     }
@@ -57,7 +63,7 @@ export function CreateGoalDialog({ open, onClose }: CreateGoalDialogProps) {
     };
   }, [open]);
 
-  if (!open) {
+  if (!open || !mounted) {
     return null;
   }
 
@@ -74,13 +80,14 @@ export function CreateGoalDialog({ open, onClose }: CreateGoalDialogProps) {
     mutation.mutate();
   }
 
-  return (
+  return createPortal(
     <div className={styles.backdrop} onClick={onClose} role="presentation">
-      <dialog
+      <div
         aria-labelledby={titleId}
+        aria-modal="true"
         className={styles.dialog}
         onClick={(event) => event.stopPropagation()}
-        open
+        role="dialog"
       >
         <div className={styles.header}>
           <h2 className={styles.title} id={titleId}>
@@ -137,7 +144,8 @@ export function CreateGoalDialog({ open, onClose }: CreateGoalDialogProps) {
             {mutation.isPending ? "Сохраняем..." : "Создать цель"}
           </button>
         </form>
-      </dialog>
-    </div>
+      </div>
+    </div>,
+    document.body,
   );
 }

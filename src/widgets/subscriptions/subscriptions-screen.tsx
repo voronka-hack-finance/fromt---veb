@@ -14,6 +14,7 @@ import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 
+import { CreateSubscriptionDialog } from "./create-subscription-dialog";
 import styles from "./subscriptions-screen.module.css";
 
 type TabId = SubscriptionsResponse["tabs"][number]["id"];
@@ -99,6 +100,7 @@ function SubscriptionsScreenContent({
   screenData: SubscriptionsResponse;
 }) {
   const [activeTab, setActiveTab] = useState<TabId>("all");
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
 
   const visibleSubscriptions = screenData.subscriptions.filter((item) => {
     if (activeTab === "active") return item.status === "active";
@@ -110,6 +112,7 @@ function SubscriptionsScreenContent({
   return (
     <DesktopSidebarLayout>
       <main className={styles.stage}>
+      <CreateSubscriptionDialog onClose={() => setIsCreateOpen(false)} open={isCreateOpen} />
       <div className={styles.shell}>
         <div className={styles.topSection}>
           <Reveal delay={0.03}>
@@ -172,7 +175,7 @@ function SubscriptionsScreenContent({
         </div>
 
         <Reveal delay={0.28}>
-          <button className={styles.addButton} type="button">
+          <button className={styles.addButton} onClick={() => setIsCreateOpen(true)} type="button">
             <span>Добавить подписку</span>
             <Plus aria-hidden size={24} strokeWidth={1.9} />
           </button>

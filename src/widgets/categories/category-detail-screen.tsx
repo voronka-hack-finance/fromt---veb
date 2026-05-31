@@ -81,6 +81,26 @@ function CategoryBankChip({
 
 type DetailItem = CategoryDetailData["groups"][number]["items"][number];
 
+function CategoryNotFound() {
+  return (
+    <main className={styles.mobileViewport}>
+      <div className={styles.mobileShell}>
+        <div className={styles.mobileContent}>
+          <header className={styles.mobileHeader}>
+            <Link aria-label="Назад" className={styles.mobileBackButton} href="/categories">
+              <ArrowLeft size={24} strokeWidth={2} />
+            </Link>
+            <h1 className={styles.mobileTitle}>Категория не найдена</h1>
+          </header>
+          <p style={{ color: "#676767", margin: "24px 0 0", textAlign: "center" }}>
+            <Link href="/categories">Вернуться к списку категорий</Link>
+          </p>
+        </div>
+      </div>
+    </main>
+  );
+}
+
 function DesktopCategoryDetailContent({
   categoryId,
   data,
@@ -88,7 +108,23 @@ function DesktopCategoryDetailContent({
   categoryId: string;
   data: CategoriesResponse;
 }) {
-  const category = data.screen.categories.find((item) => item.id === categoryId) ?? data.screen.categories[0];
+  const category = data.screen.categories.find((item) => item.id === categoryId);
+
+  if (!category) {
+    return (
+      <main className={styles.desktopViewport}>
+        <DesktopAppHeader />
+        <div className={styles.desktopShell}>
+          <DesktopSidebar />
+          <section className={styles.desktopContent}>
+            <h1>Категория не найдена</h1>
+            <Link href="/categories">Вернуться к списку категорий</Link>
+          </section>
+        </div>
+      </main>
+    );
+  }
+
   const details = data.detailsById?.[category.id] ?? getCategoryDetailData(category);
   const progress = details.limit.spent / details.limit.total;
   const chartStyle = { "--progress-angle": `${progress * 360}deg` } as CSSProperties;
@@ -229,7 +265,12 @@ function MobileCategoryDetailContent({
   categoryId: string;
   data: CategoriesResponse;
 }) {
-  const category = data.screen.categories.find((item) => item.id === categoryId) ?? data.screen.categories[0];
+  const category = data.screen.categories.find((item) => item.id === categoryId);
+
+  if (!category) {
+    return <CategoryNotFound />;
+  }
+
   const details = data.detailsById?.[category.id] ?? getCategoryDetailData(category);
   const progress = details.limit.spent / details.limit.total;
   const spentPercent = Math.round(progress * 100);

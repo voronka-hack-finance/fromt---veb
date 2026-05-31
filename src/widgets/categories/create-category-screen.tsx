@@ -70,6 +70,7 @@ function CreateCategoryScreenContent({ assets }: { assets: CategoriesResponse["a
       });
 
       await queryClient.invalidateQueries({ queryKey: queryKeys.categories });
+      await queryClient.refetchQueries({ queryKey: queryKeys.categories });
       router.push(`/categories/${category.id}`);
     } catch {
       setErrorMessage("Не удалось сохранить категорию. Попробуйте ещё раз.");

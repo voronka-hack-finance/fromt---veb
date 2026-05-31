@@ -328,7 +328,7 @@ function OperationsTrendsScreenContent({
             </section>
           </Reveal>
 
-          <Reveal delay={0.12}>
+          <Reveal delay={0.12} immediate>
             <section className={styles.listSection}>
               <div className={styles.yesterdayHeader}>
                 <span>{operationsScreenData.yesterday.label}</span>
@@ -339,13 +339,12 @@ function OperationsTrendsScreenContent({
               <div className={styles.operationsList}>
                 {operationsScreenData.operations.map((operation, index) => (
                   <motion.button
+                    animate={{ opacity: 1, y: 0 }}
                     className={styles.operationCard}
                     initial={{ opacity: 0, y: 18 }}
                     key={operation.id}
                     type="button"
-                    viewport={{ once: true }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.45, delay: 0.04 * index }}
+                    transition={{ duration: 0.45, delay: 0.12 + 0.04 * index }}
                   >
                     <div className={styles.operationRow}>
                       <OperationIcon icon={operation.icon} tone={operation.iconTone} />

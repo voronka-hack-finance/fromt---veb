@@ -196,6 +196,7 @@ export function CreditLoadScreenView() {
 }
 
 function CreditLoadScreenContent({ screenData }: { screenData: CreditLoadResponse }) {
+  const hasUpcomingPayments = screenData.upcomingPayments.length > 0;
   const initialSelectedDate = useMemo(
     () =>
       new Date(
@@ -255,13 +256,23 @@ function CreditLoadScreenContent({ screenData }: { screenData: CreditLoadRespons
                   <Plus size={20} strokeWidth={2} />
                 </Link>
 
-                <div className={styles.paymentsList}>
-                  {screenData.upcomingPayments.map((payment, index) => (
-                    <Reveal delay={0.14 + index * 0.04} key={payment.id}>
-                      <PaymentCard payment={payment} />
-                    </Reveal>
-                  ))}
-                </div>
+                {hasUpcomingPayments ? (
+                  <div className={styles.paymentsList}>
+                    {screenData.upcomingPayments.map((payment, index) => (
+                      <Reveal delay={0.14 + index * 0.04} key={payment.id}>
+                        <PaymentCard payment={payment} />
+                      </Reveal>
+                    ))}
+                  </div>
+                ) : (
+                  <div className={styles.emptyState}>
+                    <p className={styles.emptyTitle}>Пока нет активных кредитов</p>
+                    <p className={styles.emptyText}>
+                      Добавьте кредит, чтобы видеть платежи, уровень нагрузки и ближайшие даты в
+                      одном месте.
+                    </p>
+                  </div>
+                )}
               </section>
             </Reveal>
           </div>

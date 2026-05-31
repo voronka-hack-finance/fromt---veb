@@ -266,8 +266,11 @@
 }
 
 .balanceCard {
+  color: inherit;
+  display: block;
   grid-column: 1 / 3;
   grid-row: 1;
+  text-decoration: none;
 }
 
 .remainderCard {

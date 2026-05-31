@@ -249,6 +249,32 @@
   gap: 13px;
 }
 
+.emptyState {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(153, 153, 153, 0.28);
+  border-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px 18px;
+  text-align: left;
+}
+
+.emptyTitle {
+  color: #1c1b1b;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.emptyText {
+  color: #5c5c5c;
+  font-size: 14px;
+  line-height: 1.45;
+  margin: 0;
+}
+
 .paymentCard {
   background: #fff;
   border-radius: 28px;

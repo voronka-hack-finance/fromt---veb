@@ -95,6 +95,9 @@ function AccountCard({
 export function DesktopTotalBalanceScreen({ screenData }: { screenData: TotalBalanceResponse }) {
   const router = useRouter();
   const { desktop } = screenData;
+  const primaryFilter =
+    screenData.filters.find((filter) => filter.id === screenData.defaultFilterId) ??
+    screenData.filters[0];
 
   return (
     <main className={styles.desktopViewport}>
@@ -104,7 +107,20 @@ export function DesktopTotalBalanceScreen({ screenData }: { screenData: TotalBal
         <DesktopSidebar />
 
         <section className={styles.content}>
-          <h1 className={styles.pageTitle}>{desktop.title}</h1>
+          <h1 className={styles.pageTitle}>{screenData.title}</h1>
+
+          {primaryFilter ? (
+            <section className={styles.summaryCard}>
+              <div>
+                <p className={styles.summaryEyebrow}>Детализация всех средств</p>
+                <p className={styles.summaryAmount}>{formatWholeCurrency(primaryFilter.amount)}</p>
+                <p className={styles.summaryText}>{primaryFilter.subtitle}</p>
+              </div>
+              <Link className={styles.summaryLink} href="/bank-accounts">
+                Открыть счета
+              </Link>
+            </section>
+          ) : null}
 
           <div className={styles.contentGrid}>
             <div className={styles.leftColumn}>

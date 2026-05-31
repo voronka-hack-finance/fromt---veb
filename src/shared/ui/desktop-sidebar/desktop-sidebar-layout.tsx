@@ -16,9 +16,9 @@ export function DesktopSidebarLayout({ children }: { children: React.ReactNode }
         <AppBrand />
 
         <div className={styles.topBarActions}>
-          <button aria-label="Уведомления" className={styles.iconButton} type="button">
+          <Link aria-label="Уведомления" className={styles.iconButton} href="/notifications">
             <Bell size={18} strokeWidth={1.9} />
-          </button>
+          </Link>
           <Link aria-label="Настройки" className={styles.iconButton} href="/settings">
             <Settings2 size={18} strokeWidth={1.9} />
           </Link>

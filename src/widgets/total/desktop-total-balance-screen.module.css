@@ -148,6 +148,50 @@
   margin: 8px 0 14px;
 }
 
+.summaryCard {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 24px;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 20px 24px;
+}
+
+.summaryEyebrow {
+  color: #5c5c5c;
+  font-size: 14px;
+  margin: 0 0 8px;
+}
+
+.summaryAmount {
+  color: #232323;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 34px;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.summaryText {
+  color: #707784;
+  font-size: 14px;
+  margin: 0;
+}
+
+.summaryLink {
+  align-items: center;
+  background: #50b848;
+  border-radius: 999px;
+  color: #fff;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  text-decoration: none;
+}
+
 .contentGrid {
   align-items: stretch;
   display: grid;

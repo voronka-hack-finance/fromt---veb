@@ -13,6 +13,8 @@ function shouldShowMobileTabNav(pathname: string) {
     return !pathname.includes("/chat");
   }
   if (pathname.startsWith("/settings")) return true;
+  if (pathname.startsWith("/profile")) return true;
+  if (pathname === "/load") return true;
   if (pathname === "/total") return true;
 
   return false;

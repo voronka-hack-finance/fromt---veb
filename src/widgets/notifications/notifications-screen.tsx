@@ -81,6 +81,8 @@ function NotificationSectionBlock({
 }
 
 function NotificationsContent({ data }: { data: NotificationsResponse }) {
+  const sections = data.sections.filter((section) => section.items.length > 0);
+
   return (
     <DesktopSidebarLayout>
       <main className={styles.stage}>
@@ -95,13 +97,25 @@ function NotificationsContent({ data }: { data: NotificationsResponse }) {
             </header>
           </Reveal>
 
-          <div className={styles.sections}>
-            {data.sections.map((section, index) => (
-              <Reveal delay={0.06 + index * 0.04} key={section.id}>
-                <NotificationSectionBlock secondaryTitle={index > 0} section={section} />
-              </Reveal>
-            ))}
-          </div>
+          {sections.length > 0 ? (
+            <div className={styles.sections}>
+              {sections.map((section, index) => (
+                <Reveal delay={0.06 + index * 0.04} key={section.id}>
+                  <NotificationSectionBlock secondaryTitle={index > 0} section={section} />
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <Reveal delay={0.06}>
+              <section className={styles.emptyState}>
+                <h2 className={styles.emptyTitle}>Пока уведомлений нет</h2>
+                <p className={styles.emptyText}>
+                  Когда появятся рекомендации, лимиты или важные события по финансам, они будут
+                  собраны здесь.
+                </p>
+              </section>
+            </Reveal>
+          )}
         </div>
       </main>
     </DesktopSidebarLayout>

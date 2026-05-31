@@ -4,7 +4,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, Info, SlidersHorizontal } from "lucide-react";
 import { RubleBoldDuotoneIcon } from "@/shared/ui/icons/ruble-bold-duotone-icon";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { useIncomeBalanceQuery, type IncomeBalanceResponse } from "@/shared/api/income-balance";
@@ -68,7 +67,6 @@ export function IncomeBalanceScreen() {
 }
 
 function IncomeBalanceScreenContent({ screenData }: { screenData: IncomeBalanceResponse }) {
-  const router = useRouter();
   const trendPath = buildLineChartPaths(
     screenData.trend.map((point) => ({ value: point.value })),
     chartWidth,
@@ -94,23 +92,17 @@ function IncomeBalanceScreenContent({ screenData }: { screenData: IncomeBalanceR
             <Link aria-label="Назад" className={styles.backButton} href="/">
               <ArrowLeft size={22} strokeWidth={2} />
             </Link>
-            <button
-              className={styles.title}
-              onClick={() => router.push("/total")}
-              type="button"
-            >
-              {screenData.title}
-            </button>
+            <h1 className={styles.title}>{screenData.title}</h1>
           </header>
         </Reveal>
 
         <div className={styles.content}>
           <Reveal delay={0.08}>
             <section className={styles.balanceCard}>
-              <button className={styles.amount} onClick={() => router.push("/total")} type="button">
+              <div className={styles.amount}>
                 <span>{whole}</span>
                 <span className={styles.amountFraction}>, {fraction} ₽</span>
-              </button>
+              </div>
               <p className={styles.subtitle}>{screenData.subtitle}</p>
 
               <div className={styles.filterRow}>

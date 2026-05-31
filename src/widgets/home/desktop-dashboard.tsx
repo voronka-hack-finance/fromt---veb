@@ -131,7 +131,7 @@ export function DesktopDashboard() {
           </div>
 
           <div className={styles.dashboardGrid}>
-            <section className={styles.balanceCard}>
+            <Link className={styles.balanceCard} href="/total">
               <div className={styles.balanceContent}>
                 <div className={styles.balanceHeaderBlock}>
                   <div className={styles.balanceTitleWrap}>
@@ -167,7 +167,7 @@ export function DesktopDashboard() {
                 ))}
                 <ChevronRight aria-hidden className={styles.legendChevron} size={14} strokeWidth={2.2} />
               </div>
-            </section>
+            </Link>
 
             <Link className={styles.remainderCard} href="/income">
               <div className={styles.remainderHeader}>

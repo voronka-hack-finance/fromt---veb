@@ -120,7 +120,18 @@ export async function fetchCreditLoad(): Promise<CreditLoadResponse> {
       .sort((left, right) => left.paymentDay - right.paymentDay);
 
     if (!upcomingPayments.length) {
-      return toCreditLoadResponse(creditLoadScreenData);
+      const now = new Date();
+
+      return {
+        calendar: {
+          month: now.getMonth(),
+          paymentDays: [],
+          selectedDay: now.getDate(),
+          year: now.getFullYear(),
+        },
+        title: creditLoadScreenData.title,
+        upcomingPayments: [],
+      };
     }
 
     const referenceDate = getNextPaymentDate(debts.items[0]?.payment_day);

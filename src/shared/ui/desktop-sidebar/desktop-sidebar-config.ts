@@ -3,13 +3,13 @@ export const homeSubmenuItems = [
   { label: "Доходы и расходы", href: "/operations" },
   { label: "Остаток от дохода", href: "/income" },
   { label: "Инвестиции", href: "/investments" },
-  { label: "Всего средств", href: "/total" },
+  { label: "Нагрузка", href: "/load" },
 ] as const;
 
 export const mainNavItems = [
   { id: "categories", label: "Категории", href: "/categories" },
   { id: "goals", label: "Цели", href: "/goals" },
-  { id: "accounts", label: "Счета", href: "/total" },
+  { id: "accounts", label: "Счета", href: "/bank-accounts" },
   { id: "ai", label: "AI Рекомендации", href: "/recommendations" },
 ] as const;
 
@@ -29,6 +29,8 @@ export function isHomeSectionExpanded(pathname: string) {
   if (pathname.startsWith("/operations")) return true;
   if (pathname === "/income") return true;
   if (pathname === "/investments") return true;
+  if (pathname === "/total") return true;
+  if (pathname === "/load") return true;
 
   return false;
 }
@@ -42,17 +44,13 @@ export function isHomeSubmenuItemActive(pathname: string, href: string) {
     return pathname.startsWith("/operations");
   }
 
-  if (href === "/total") {
-    return false;
-  }
-
   return matchesPath(pathname, href);
 }
 
 export function getActiveMainNavId(pathname: string): MainNavId | null {
   if (pathname.startsWith("/categories")) return "categories";
   if (pathname.startsWith("/goals")) return "goals";
-  if (pathname === "/total" || pathname.startsWith("/bank-accounts")) return "accounts";
+  if (pathname.startsWith("/bank-accounts")) return "accounts";
   if (pathname.startsWith("/recommendations")) return "ai";
 
   return null;

@@ -107,6 +107,7 @@ function AgentChatContent({ chat }: { chat: AgentChatResponse }) {
   const [isReplying, setIsReplying] = useState(false);
   const messagesRef = useRef<HTMLDivElement>(null);
   const canSend = draft.trim().length > 0 && !isReplying;
+  const hasMessages = messages.length > 0;
 
   const scrollToBottom = useCallback(() => {
     const container = messagesRef.current;
@@ -183,13 +184,23 @@ function AgentChatContent({ chat }: { chat: AgentChatResponse }) {
           </header>
 
           <div className={styles.messages} ref={messagesRef}>
-            {messages.map((message) => (
-              <ChatMessageItem
-                key={message.id}
-                message={message}
-                onSuggestionClick={sendMessage}
-              />
-            ))}
+            {hasMessages ? (
+              messages.map((message) => (
+                <ChatMessageItem
+                  key={message.id}
+                  message={message}
+                  onSuggestionClick={sendMessage}
+                />
+              ))
+            ) : (
+              <div className={styles.emptyState}>
+                <h2 className={styles.emptyTitle}>Чат готов к диалогу</h2>
+                <p className={styles.emptyText}>
+                  Задайте вопрос агенту, чтобы получить рекомендации по расходам, накоплениям и
+                  финансовым привычкам.
+                </p>
+              </div>
+            )}
             {isReplying ? (
               <div className={`${styles.messageBlock} ${styles.messageBlockTight}`}>
                 <div className={styles.messageRow}>

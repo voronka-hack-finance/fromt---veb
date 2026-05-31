@@ -32,11 +32,11 @@ const navItems = [
     match: (path: string) => path.startsWith("/goals"),
   },
   {
-    id: "settings",
-    href: "/settings",
-    label: "Настройки",
+    id: "profile",
+    href: "/profile",
+    label: "Личный кабинет",
     icon: "/dashboard/nav/settings.svg",
-    match: (path: string) => path.startsWith("/settings"),
+    match: (path: string) => path.startsWith("/profile"),
   },
 ] as const;
 

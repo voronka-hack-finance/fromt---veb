@@ -220,148 +220,6 @@
   min-width: 0;
 }
 
-.categoryCard {
-  background: white;
-  border: none;
-  border-radius: 24px;
-  color: inherit;
-  cursor: pointer;
-  display: block;
-  height: 158px;
-  overflow: hidden;
-  padding: 0;
-  position: relative;
-  text-align: left;
-  text-decoration: none;
-  transition:
-    transform 180ms ease,
-    box-shadow 180ms ease;
-}
-
-.categoryCard:hover,
-.categoryCard:focus-visible {
-  box-shadow: 0 16px 30px rgba(31, 39, 26, 0.12);
-  transform: translateY(-2px);
-}
-
-.categoryCardDark {
-  background: #232323;
-  color: white;
-}
-
-.categoryTop {
-  align-items: flex-start;
-  display: flex;
-  justify-content: space-between;
-  left: 15px;
-  position: absolute;
-  top: 16px;
-  width: calc(100% - 30px);
-}
-
-.categoryIconWrap {
-  align-items: center;
-  background: rgba(0, 0, 0, 0.06);
-  border-radius: 100px;
-  display: inline-flex;
-  flex-shrink: 0;
-  height: 44px;
-  justify-content: center;
-  width: 44px;
-}
-
-.categoryIconImage {
-  display: block;
-  height: 16px;
-  width: 16px;
-}
-
-.categoryAction {
-  color: #444;
-  display: inline-flex;
-}
-
-.categoryTitle {
-  color: #5c5c5c;
-  font-family: var(--font-body), sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  left: 15px;
-  line-height: normal;
-  position: absolute;
-  top: 72px;
-  width: calc(100% - 30px);
-}
-
-.categoryCardDark .categoryTitle {
-  color: white;
-}
-
-.amountRow {
-  align-items: baseline;
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0;
-  left: 15px;
-  position: absolute;
-  top: 101px;
-  white-space: nowrap;
-}
-
-.amountStrong,
-.amountMuted {
-  font-family: var(--font-body), sans-serif;
-  font-size: 19px;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.amountStrong {
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.amountMuted {
-  color: rgba(189, 189, 189, 0.5);
-}
-
-.categoryCardDark .amountStrong {
-  color: white;
-}
-
-.categoryCardDark .amountMuted {
-  color: rgba(255, 255, 255, 0.5);
-}
-
-.progressTrack {
-  background: rgba(141, 141, 141, 0.3);
-  border-radius: 6px;
-  height: 10px;
-  left: 20px;
-  overflow: hidden;
-  position: absolute;
-  right: 20px;
-  top: 132px;
-}
-
-.progressTrackDark {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.progressValue {
-  background: #5fe274;
-  border-radius: 6px 0 0 6px;
-  height: 100%;
-  width: 0;
-}
-
-.progressValueLight {
-  background: white;
-}
-
-.progressValueDark {
-  background: #515151;
-}
-
 @media (max-width: 380px) {
   .promoBody {
     max-width: 170px;
@@ -397,10 +255,6 @@
   .grid {
     gap: 8px;
   }
-
-  .categoryCard {
-    height: 150px;
-  }
 }
 
 @media (max-width: 340px) {
@@ -425,12 +279,6 @@
   .grid {
     grid-template-columns: 1fr;
     max-width: none;
-  }
-
-  .amountRow {
-    flex-wrap: wrap;
-    top: 96px;
-    white-space: normal;
   }
 }
 

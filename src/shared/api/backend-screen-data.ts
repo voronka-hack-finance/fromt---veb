@@ -14,6 +14,7 @@ import {
   forecastYearPoints,
 } from "@/shared/data/dashboard";
 import { loadGoalsFromBackend } from "@/shared/lib/goals-screen";
+import { formatRecommendationInsightContent } from "@/shared/lib/recommendation-insight";
 import {
   buildRecurringExpensesSummary,
   loadSubscriptionsFromBackend,
@@ -180,26 +181,26 @@ const categoryKeywordToIcon: Array<[string, CategoryIconKey]> = [
   ["trip", "airplane"],
   ["pet", "paw"],
   ["жив", "paw"],
-  ["book", "teacher"],
-  ["обуч", "teacher"],
-  ["edu", "teacher"],
+  ["book", "study"],
+  ["обуч", "study"],
+  ["edu", "study"],
   ["health", "weight"],
   ["вес", "weight"],
   ["sport", "weight"],
   ["bank", "bank"],
   ["ипот", "bank"],
   ["loan", "bank"],
-  ["internet", "homeWifi"],
-  ["wifi", "homeWifi"],
-  ["дом", "homeWifi"],
+  ["internet", "wifi"],
+  ["wifi", "wifi"],
+  ["дом", "wifi"],
   ["auto", "car"],
   ["маш", "car"],
   ["fuel", "car"],
-  ["tech", "devices"],
-  ["device", "devices"],
-  ["тех", "devices"],
-  ["reserve", "reserve"],
-  ["накоп", "reserve"],
+  ["tech", "monitor"],
+  ["device", "monitor"],
+  ["тех", "monitor"],
+  ["reserve", "dindon"],
+  ["накоп", "dindon"],
   ["bag", "bag"],
   ["market", "bag"],
   ["shop", "bag"],
@@ -207,7 +208,18 @@ const categoryKeywordToIcon: Array<[string, CategoryIconKey]> = [
   ["food", "cloche"],
   ["каф", "cloche"],
   ["ресторан", "cloche"],
+  ["подпис", "xz"],
+  ["music", "xz"],
+  ["науш", "xz"],
 ];
+
+const legacyCategoryIconKeys: Record<string, CategoryIconKey> = {
+  devices: "monitor",
+  homeWifi: "wifi",
+  reserve: "dindon",
+  signpost: "arrow",
+  teacher: "study",
+};
 
 function parseDecimal(value: string | number | null | undefined) {
   if (typeof value === "number") {
@@ -220,6 +232,34 @@ function parseDecimal(value: string | number | null | undefined) {
 
   const normalized = Number.parseFloat(value.replace(",", "."));
   return Number.isFinite(normalized) ? normalized : 0;
+}
+
+function toNonNegativeAmount(value: string | number | null | undefined) {
+  return Math.max(0, parseDecimal(value));
+}
+
+function buildDisplayAccountBalances(accounts: AccountResponse[], totalBalance: number) {
+  const balances = new Map<string, number>();
+  const positiveBalances = accounts.map((account) => ({
+    account,
+    amount: toNonNegativeAmount(account.current_balance),
+  }));
+
+  if (positiveBalances.some((item) => item.amount > 0) || totalBalance <= 0) {
+    positiveBalances.forEach(({ account, amount }) => balances.set(account.id, amount));
+    return balances;
+  }
+
+  const weights = accounts.map((account) => Math.abs(parseDecimal(account.current_balance)));
+  const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+  const fallbackWeight = accounts.length ? 1 / accounts.length : 0;
+
+  accounts.forEach((account, index) => {
+    const ratio = totalWeight > 0 ? (weights[index] ?? 0) / totalWeight : fallbackWeight;
+    balances.set(account.id, Math.round(totalBalance * ratio));
+  });
+
+  return balances;
 }
 
 function normalizeLabel(value: string | null | undefined) {
@@ -301,8 +341,15 @@ function sortByDateDesc<T extends { created_at?: string | null; operation_at?: s
 function getCategoryIconKey(category: CategoryResponse) {
   const directKey = category.icon_key as CategoryIconKey | null;
 
-  if (directKey && directKey in categoriesAssets.icons) {
-    return directKey;
+  if (directKey) {
+    if (directKey in categoriesAssets.icons) {
+      return directKey;
+    }
+
+    const legacyKey = legacyCategoryIconKeys[directKey];
+    if (legacyKey) {
+      return legacyKey;
+    }
   }
 
   const haystack = `${category.name} ${category.description ?? ""}`.toLowerCase();
@@ -969,9 +1016,11 @@ function buildRecommendations(
         recommendation.agent_key as keyof typeof recommendationVisuals
       ] ??
       fallbackAgent;
-    const recommendationContent = isInvalidCopy(recommendation.content)
-      ? `${fallbackAgent.insightLead} ${fallbackAgent.insightRest}`.trim()
-      : recommendation.content.trim();
+    const recommendationContent = formatRecommendationInsightContent(
+      isInvalidCopy(recommendation.content)
+        ? `${fallbackAgent.insightLead} ${fallbackAgent.insightRest}`.trim()
+        : recommendation.content.trim(),
+    );
     const [lead, ...rest] = recommendationContent.split(/(?<=\.)\s+/);
     const recommendationTitle = isInvalidCopy(recommendation.title)
       ? fallbackAgent.title
@@ -1087,7 +1136,7 @@ function buildCategoryBankStats(accounts: AccountResponse[]) {
               : "green",
     };
 
-    entry.amount += parseDecimal(account.current_balance);
+    entry.amount += toNonNegativeAmount(account.current_balance);
     grouped.set(bankId, entry);
   });
 
@@ -1201,17 +1250,14 @@ export async function loadDashboardScreenData() {
   const liveForecastPoints = buildForecastSeries(transactions, 6);
   const liveDesktopForecastPoints = buildForecastSeries(transactions, 9);
   const liveYearForecastPoints = buildQuarterForecastSeries(transactions);
-  const totalBalance = accounts.reduce(
-    (sum, account) => sum + parseDecimal(account.current_balance),
-    0,
-  );
+  const availableAmount = parseDecimal(availableBalance.available_amount);
+  const totalBalance = availableAmount;
   const receipts = transactions
     .filter((transaction) => transaction.type === "income")
     .reduce((sum, transaction) => sum + parseDecimal(transaction.operation_amount), 0);
   const expenses = transactions
     .filter((transaction) => transaction.type === "expense")
     .reduce((sum, transaction) => sum + Math.abs(parseDecimal(transaction.operation_amount)), 0);
-  const availableAmount = parseDecimal(availableBalance.available_amount);
   const expectedIncomeTotal = parseDecimal(availableBalance.expected_income_total);
   const expectedExpenseTotal = parseDecimal(availableBalance.expected_expense_total);
   const regularExpenseSubscriptions = regularExpensesResponse.items
@@ -1578,10 +1624,8 @@ export async function loadTotalBalanceScreenData() {
     ]);
 
   const accounts = accountsResponse.items;
-  const totalBalance = accounts.reduce(
-    (sum, account) => sum + parseDecimal(account.current_balance),
-    0,
-  );
+  const totalBalance = toNonNegativeAmount(availableBalance.available_amount);
+  const displayAccountBalances = buildDisplayAccountBalances(accounts, totalBalance);
   const healthTrend = buildHealthHistoryTrend(
     healthHistory.items,
     totalBalanceScreenData.filters[0].trend.length,
@@ -1601,9 +1645,9 @@ export async function loadTotalBalanceScreenData() {
         })),
     },
     ...accounts.slice(0, 3).map((account) => ({
-      amount: parseDecimal(account.current_balance),
+      amount: displayAccountBalances.get(account.id) ?? 0,
       id: account.id,
-      label: `${Math.round(parseDecimal(account.current_balance))} ₽`,
+      label: `${Math.round(displayAccountBalances.get(account.id) ?? 0)} ₽`,
       subtitle: getBankLabel(account),
       trend: buildMonthSeries(
         transactionsResponse.items.filter((transaction) => transaction.account_id === account.id),
@@ -1615,13 +1659,23 @@ export async function loadTotalBalanceScreenData() {
     })),
   ];
   const bankStats = buildCategoryBankStats(accounts);
-  const availableAmount = parseDecimal(availableBalance.available_amount);
-  const expectedExpensesTotal = parseDecimal(availableBalance.expected_expense_total);
-  const scenarioMonths = Math.max(1, Math.round(totalBalance / Math.max(expectedExpensesTotal, 1)));
+  const transactionExpensesTotal = transactionsResponse.items
+    .filter((transaction) => resolveTransactionType(transaction) === "expense")
+    .reduce((sum, transaction) => sum + getTransactionAbsAmount(transaction), 0);
+  const expectedExpensesTotal = toNonNegativeAmount(availableBalance.expected_expense_total);
+  const avgSpend = Math.max(
+    0,
+    Math.round(expectedExpensesTotal || transactionExpensesTotal),
+  );
+  const scenarioMonths = Math.max(1, Math.round(totalBalance / Math.max(avgSpend, 1)));
+  const spendingCalendar = buildSpendingCalendarGroups(transactionsResponse.items);
 
   return {
     ...totalBalanceScreenData,
-    defaultFilterId: filters[1]?.id ?? totalBalanceScreenData.defaultFilterId,
+    defaultFilterId: totalBalanceScreenData.filters[0].id,
+    spendingCalendar: spendingCalendar.length
+      ? spendingCalendar
+      : spendingCalendarMockGroups,
     desktop: {
       ...totalBalanceScreenData.desktop,
       banks:
@@ -1635,7 +1689,7 @@ export async function loadTotalBalanceScreenData() {
 
                 return {
                   accountBadges: [`${account.account_type} • ${suffix}`],
-                  amount: Math.round(parseDecimal(account.current_balance)),
+                  amount: Math.round(displayAccountBalances.get(account.id) ?? 0),
                   bank: `*${suffix}`,
                   id: account.id,
                   tone:
@@ -1660,7 +1714,7 @@ export async function loadTotalBalanceScreenData() {
     scenarios: totalBalanceScreenData.scenarios.map((scenario, index) => ({
       ...scenario,
       allAccounts: Math.round(totalBalance),
-      avgSpend: Math.round(expectedExpensesTotal),
+      avgSpend,
       months: Math.max(1, scenarioMonths + index - 1),
     })),
   };

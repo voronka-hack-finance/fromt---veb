@@ -3,6 +3,8 @@
 import { useQuery } from "@tanstack/react-query";
 
 import { totalBalanceScreenData } from "@/shared/data/total-balance";
+import { spendingCalendarMockGroups } from "@/shared/data/spending-calendar";
+import type { SpendingCalendarGroup } from "@/shared/lib/spending-calendar";
 
 import { loadTotalBalanceScreenData, tryLoadScreenData } from "./backend-screen-data";
 import { mockDelay } from "./client";
@@ -52,13 +54,18 @@ export type TotalBalanceResponse = {
       tone: "green" | "yellow" | "red" | "blue";
     }>;
   };
+  spendingCalendar: ReadonlyArray<SpendingCalendarGroup>;
 };
 
 export async function fetchTotalBalance(): Promise<TotalBalanceResponse> {
   await mockDelay();
   return tryLoadScreenData(
     loadTotalBalanceScreenData,
-    () => totalBalanceScreenData as TotalBalanceResponse,
+    () =>
+      ({
+        ...totalBalanceScreenData,
+        spendingCalendar: spendingCalendarMockGroups,
+      }) as TotalBalanceResponse,
   ) as Promise<TotalBalanceResponse>;
 }
 

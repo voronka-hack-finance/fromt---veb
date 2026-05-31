@@ -1,14 +1,12 @@
-<svg preserveAspectRatio="none" width="100%" height="100%" overflow="visible" style="display: block;" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="car">
-<path id="Vector" d="M10.34 1.88667H5.66C4 1.88667 3.63333 2.71333 3.42 3.72667L2.66667 7.33333H13.3333L12.58 3.72667C12.3667 2.71333 12 1.88667 10.34 1.88667Z" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector_2" d="M14.66 13.2133C14.7333 13.9933 14.1067 14.6667 13.3067 14.6667H12.0533C11.3333 14.6667 11.2333 14.36 11.1067 13.98L10.9733 13.58C10.7867 13.0333 10.6667 12.6667 9.70667 12.6667H6.29333C5.33333 12.6667 5.19333 13.08 5.02667 13.58L4.89333 13.98C4.76667 14.36 4.66667 14.6667 3.94667 14.6667H2.69333C1.89333 14.6667 1.26667 13.9933 1.34 13.2133L1.71333 9.15333C1.80667 8.15333 2 7.33333 3.74667 7.33333H12.2533C14 7.33333 14.1933 8.15333 14.2867 9.15333L14.66 13.2133Z" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector_3" d="M2.66667 5.33333H2" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector_4" d="M14 5.33333H13.3333" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector_5" d="M8 2V3.33333" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector_6" d="M7 3.33333H9" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector_7" d="M4 10H6" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<path id="Vector_8" d="M10 10H12" stroke="var(--stroke-0, #1F1F1F)" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
-<g id="Vector_9" opacity="0">
-</g>
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g opacity="0.8">
+<path d="M10.3398 1.88666H5.65984C3.99984 1.88666 3.63317 2.71332 3.41984 3.72666L2.6665 7.33332H13.3332L12.5798 3.72666C12.3665 2.71332 11.9998 1.88666 10.3398 1.88666Z" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.6598 13.2133C14.7332 13.9933 14.1065 14.6666 13.3065 14.6666H12.0532C11.3332 14.6666 11.2332 14.36 11.1065 13.98L10.9732 13.58C10.7865 13.0333 10.6665 12.6666 9.70649 12.6666H6.29316C5.33316 12.6666 5.19316 13.08 5.02649 13.58L4.89316 13.98C4.76649 14.36 4.66649 14.6666 3.94649 14.6666H2.69316C1.89316 14.6666 1.26649 13.9933 1.33982 13.2133L1.71316 9.15331C1.80649 8.15331 1.99982 7.33331 3.74649 7.33331H12.2532C13.9998 7.33331 14.1932 8.15331 14.2865 9.15331L14.6598 13.2133Z" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M2.66667 5.33331H2" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M14.0002 5.33331H13.3335" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8 2V3.33333" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M7 3.33331H9" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M4 10H6" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 10H12" stroke="#1F1F1F" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </svg>

@@ -116,6 +116,147 @@
   margin: 0;
 }
 
+.calendarCard {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(153, 153, 153, 0.28);
+  border-radius: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: min(62vh, 520px);
+  min-height: 0;
+  overflow: hidden;
+  padding: 18px 16px 16px;
+}
+
+.calendarHeader {
+  align-items: center;
+  display: flex;
+  flex-shrink: 0;
+  justify-content: space-between;
+}
+
+.calendarTitleWrap {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.calendarCardTitle {
+  color: #171717;
+  font-family: var(--font-heading), sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0;
+}
+
+.calendarGroups {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding-right: 2px;
+}
+
+.calendarGroups::-webkit-scrollbar {
+  width: 4px;
+}
+
+.calendarGroups::-webkit-scrollbar-thumb {
+  background: rgba(143, 150, 162, 0.35);
+  border-radius: 999px;
+}
+
+.calendarGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calendarGroupHeader {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.calendarGroupHeader strong,
+.calendarGroupHeader span {
+  color: #171717;
+  flex-shrink: 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.calendarDivider {
+  background: rgba(35, 35, 35, 0.16);
+  flex: 1;
+  height: 1px;
+}
+
+.calendarList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.calendarItem {
+  align-items: center;
+  background: #ececec;
+  border-radius: 18px;
+  color: inherit;
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 10px 12px;
+  text-decoration: none;
+}
+
+.calendarItemMeta {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 10px;
+  min-width: 0;
+}
+
+.calendarBadge {
+  align-items: center;
+  background: #ffffff;
+  border-radius: 999px;
+  color: #8b8b8b;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 700;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.calendarCategory {
+  color: #9b9b9b;
+  font-size: 11px;
+}
+
+.calendarTitle {
+  color: #171717;
+  font-size: 13px;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendarAmount {
+  flex-shrink: 0;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
 .actions {
   display: grid;
   gap: 10px;

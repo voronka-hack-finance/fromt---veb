@@ -87,7 +87,7 @@ export const categoriesScreenData = {
       spent: 3200,
       total: 5000,
       tone: "light",
-      icon: "homeWifi",
+      icon: "wifi",
       progress: 0.64,
     },
     {
@@ -105,7 +105,7 @@ export const categoriesScreenData = {
       spent: 2800,
       total: 6000,
       tone: "light",
-      icon: "teacher",
+      icon: "study",
       progress: 0.47,
     },
     {
@@ -114,7 +114,7 @@ export const categoriesScreenData = {
       spent: 12500,
       total: 20000,
       tone: "light",
-      icon: "devices",
+      icon: "monitor",
       progress: 0.63,
     },
     {
@@ -123,7 +123,7 @@ export const categoriesScreenData = {
       spent: 15000,
       total: 30000,
       tone: "light-darkbar",
-      icon: "reserve",
+      icon: "dindon",
       progress: 0.5,
     },
   ] as const,

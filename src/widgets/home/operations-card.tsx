@@ -40,7 +40,7 @@ export function OperationsCard() {
           <button
             aria-label="Выбрать период"
             className={styles.iconButton}
-            onClick={() => router.push("/operations/trends")}
+            onClick={() => router.push("/load")}
             type="button"
           >
             <img alt="" aria-hidden className={styles.icon20} draggable={false} src={assets.calendar} />

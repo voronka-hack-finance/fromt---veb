@@ -5,16 +5,18 @@ export type CategoryIconKey = keyof typeof categoriesAssets.icons;
 export const createCategoryIconOptions = [
   "paw",
   "bag",
-  "reserve",
+  "dindon",
   "coffee",
   "weight",
-  "teacher",
-  "signpost",
+  "study",
+  "arrow",
   "bank",
-  "homeWifi",
+  "wifi",
   "car",
-  "devices",
+  "monitor",
   "airplane",
+  "cloche",
+  "xz",
 ] as const satisfies readonly CategoryIconKey[];
 
 export const createCategoryScreenData = {

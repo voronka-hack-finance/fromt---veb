@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, CalendarDays } from "lucide-react";
 
 import { useTotalBalanceQuery, type TotalBalanceResponse } from "@/shared/api/total-balance";
 import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { DesktopSidebarLayout } from "@/shared/ui/desktop-sidebar/desktop-sidebar-layout";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
+import { SpendingCalendarGroups } from "@/widgets/home/spending-calendar-groups";
 
 import styles from "./load-screen.module.css";
 
@@ -44,6 +45,22 @@ function LoadContent({ data }: { data: TotalBalanceResponse }) {
                   {primaryFilter.subtitle}. Ниже показано, на сколько месяцев хватит средств при
                   разных сценариях трат.
                 </p>
+              </section>
+
+              <section className={styles.calendarCard}>
+                <div className={styles.calendarHeader}>
+                  <div className={styles.calendarTitleWrap}>
+                    <CalendarDays size={20} strokeWidth={1.9} />
+                    <h2 className={styles.calendarCardTitle}>Календарь трат</h2>
+                  </div>
+                </div>
+
+                <SpendingCalendarGroups
+                  dateTag="strong"
+                  groups={data.spendingCalendar}
+                  styles={styles}
+                  totalTag="span"
+                />
               </section>
 
               <section className={styles.scenarioGrid}>

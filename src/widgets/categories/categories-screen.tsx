@@ -1,37 +1,15 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { Settings2 } from "lucide-react";
 
 import { useCategoriesQuery, type CategoriesResponse } from "@/shared/api/categories";
-import { formatCurrencyParts } from "@/shared/lib/formatters";
 import { QueryBoundary } from "@/shared/ui/query-state/query-state";
 import { Reveal } from "@/shared/ui/reveal/reveal";
 import { AppTopBar } from "@/widgets/home/app-top-bar";
 
+import { CategoryCard } from "./category-card";
 import { DesktopCategoriesScreen } from "./desktop-categories-screen";
 import styles from "./categories-screen.module.css";
-
-function CategoryIcon({
-  assets,
-  icon,
-}: {
-  assets: CategoriesResponse["assets"];
-  icon: CategoriesResponse["screen"]["categories"][number]["icon"];
-}) {
-  return (
-    <div className={styles.categoryIconWrap}>
-      <img
-        alt=""
-        aria-hidden
-        className={styles.categoryIconImage}
-        draggable={false}
-        src={assets.icons[icon]}
-      />
-    </div>
-  );
-}
 
 export function CategoriesScreenView() {
   const query = useCategoriesQuery();
@@ -102,47 +80,9 @@ function CategoriesScreenContent({ data }: { data: CategoriesResponse }) {
             </Reveal>
 
             <div className={styles.grid}>
-              {categoriesScreenData.categories.map((category) => {
-                const spent = formatCurrencyParts(category.spent).whole;
-                const total = formatCurrencyParts(category.total).whole;
-                const dark = category.tone === "dark";
-                const darkBar = category.tone === "light-darkbar";
-
-                return (
-                  <Link
-                    className={[styles.categoryCard, dark ? styles.categoryCardDark : ""].join(" ")}
-                    href={`/categories/${category.id}`}
-                    key={category.id}
-                  >
-                    <div className={styles.categoryTop}>
-                      <CategoryIcon assets={assets} icon={category.icon} />
-                      <span aria-hidden className={styles.categoryAction}>
-                        <Settings2 size={18} strokeWidth={1.8} />
-                      </span>
-                    </div>
-
-                    <div className={styles.categoryTitle}>{category.title}</div>
-
-                    <div className={styles.amountRow}>
-                      <span className={styles.amountStrong}>{spent} ₽</span>
-                      <span className={styles.amountMuted}>/{total} ₽</span>
-                    </div>
-
-                    <div className={[styles.progressTrack, dark ? styles.progressTrackDark : ""].join(" ")}>
-                      <motion.div
-                        animate={{ width: `${category.progress * 100}%` }}
-                        className={[
-                          styles.progressValue,
-                          dark ? styles.progressValueLight : "",
-                          darkBar ? styles.progressValueDark : "",
-                        ].join(" ")}
-                        initial={{ width: 0 }}
-                        transition={{ delay: 0.08, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                      />
-                    </div>
-                  </Link>
-                );
-              })}
+              {categoriesScreenData.categories.map((category) => (
+                <CategoryCard assets={assets} category={category} key={category.id} />
+              ))}
             </div>
           </div>
         </div>
